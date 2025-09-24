@@ -18,7 +18,7 @@ function Navbar() {
 
         {/* القائمة - نص */}
         <ul
-          className={`hidden md:flex gap-6 absolute md:static left-1/2 transform -translate-x-1/2`}
+          className={`hidden md:flex gap-6 absolute md:static left-1/2 transform -translate-x-1/2 z-50`}
         >
           <li>
             <Link to="/" className="hover:underline">Home</Link>
@@ -59,7 +59,7 @@ function Navbar() {
 
       {/* القائمة في الموبايل */}
       <div
-        className={`absolute top-16 left-0 w-full bg-[#edf2fa] transition-all duration-500 ease-in-out overflow-hidden md:hidden
+        className={`absolute top-16 left-0 w-full bg-[#edf2fa] z-40 transition-all duration-500 ease-in-out overflow-hidden md:hidden
         ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
       >
         <ul className="flex flex-col gap-4 p-4">

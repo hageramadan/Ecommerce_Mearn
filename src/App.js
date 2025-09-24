@@ -14,14 +14,17 @@ import Register from './Pages/Register/Register';
 function App() {
   return (
      <BrowserRouter>
-      <Routes>
+        <Routes>
         <Route element={<UserLayout />}>
-          <Route path="/" element={<Home/>} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          
+            <Route path="/" element={<Home/>} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+       
+        
         </Route>
         {/* Routes للادمن */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -30,6 +33,8 @@ function App() {
           <Route path="orders" element={<Orders />} />
         </Route>
       </Routes>
+  
+   
     </BrowserRouter>
   );
 }
