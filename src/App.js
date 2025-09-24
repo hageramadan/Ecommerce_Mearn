@@ -10,6 +10,7 @@ import Dashboard from './Pages/Admin/Dashboard';
 import Orders from './Pages/Admin/Orders';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
+import AccountDetails from './Pages/Account Details/accountDetails.js';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/AccountDetails" element={<AccountDetails />} />
         </Route>
         {/* Routes للادمن */}
         <Route path="/admin" element={<AdminLayout />}>
