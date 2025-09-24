@@ -89,7 +89,7 @@ function ProductDetails() {
             {/* add to cart button */}
             <button
               onClick={handleAddToCart}
-              className="w-full md:w-auto px-6 py-3 bg-yellow-500 text-white font-medium rounded-lg shadow hover:bg-yellow-600 transition"
+              className="w-full md:w-auto px-6 py-3 bg-[rgb(254,153,0)] text-white rounded-lg shadow hover:bg-[rgb(230,130,0)] transition "
             >
               Add to Cart
             </button>
@@ -103,7 +103,7 @@ function ProductDetails() {
         <div className="flex items-center gap-6 mb-6">
           <div className="text-center">
             <p className="text-4xl font-bold">4.5</p>
-            <p className="text-yellow-500 text-lg">★★★★★</p>
+            <p className="text-[rgb(254,153,0)] text-lg">★★★★★</p>
             <p className="text-gray-500 text-sm">Based on 125 reviews</p>
           </div>
           {/* Bars */}
@@ -113,7 +113,7 @@ function ProductDetails() {
                 <span>{star}</span>
                 <div className="flex-1 h-2 bg-gray-200 rounded">
                   <div
-                    className="h-2 bg-yellow-400 rounded"
+                    className="h-2 bg-[rgb(254,153,0)] rounded"
                     style={{
                       width: `${[40, 30, 15, 10, 5][i]}%`,
                     }}
@@ -140,7 +140,7 @@ function ProductDetails() {
                 </div>
               </div>
               <p className="text-gray-700 mb-2">{review.text}</p>
-              <p className="text-yellow-500">
+              <p className="text-[rgb(254,153,0)]">
                 {"★".repeat(review.rating)}
                 {"☆".repeat(5 - review.rating)}
               </p>
