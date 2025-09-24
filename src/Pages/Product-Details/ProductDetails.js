@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -11,6 +11,7 @@ function ProductDetails() {
     id,
     name: "Premium Cotton T-Shirt",
     price: 29.99,
+    category: "Men's Clothes",
     description:
       "This classic t-shirt is made from 100% premium cotton, offering both comfort and durability. Available in a variety of colors and sizes, it's perfect for everyday wear.",
 
@@ -43,6 +44,15 @@ function ProductDetails() {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+      <nav className="text-sm text-gray-500 mb-4">
+        <Link to="/" className="hover:underline">
+          Home
+        </Link>{" "}
+        /{" "}
+        <span className="hover:underline cursor-default">
+          {product.category}
+        </span>
+      </nav>
       {/* Product Section */}
       <div className="grid md:grid-cols-2 gap-10 mb-10">
         {/* صورة المنتج */}
