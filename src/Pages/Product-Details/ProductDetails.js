@@ -1,4 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { StarIcon as StarSolid } from "@heroicons/react/24/solid";
+import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -7,6 +9,7 @@ function ProductDetails() {
   const handleAddToCart = () => {
     navigate("/cart");
   };
+
   const product = {
     id,
     name: "Premium Cotton T-Shirt",
@@ -14,7 +17,6 @@ function ProductDetails() {
     category: "Men's Clothes",
     description:
       "This classic t-shirt is made from 100% premium cotton, offering both comfort and durability. Available in a variety of colors and sizes, it's perfect for everyday wear.",
-
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "White", "Gray"],
     reviews: [
@@ -44,6 +46,7 @@ function ProductDetails() {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+      {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4">
         <Link to="/" className="hover:underline">
           Home
@@ -53,9 +56,10 @@ function ProductDetails() {
           {product.category}
         </span>
       </nav>
+
       {/* Product Section */}
       <div className="grid md:grid-cols-2 gap-10 mb-10">
-        {/* صورة المنتج */}
+        {/* photo Products*/}
         <div className="flex justify-center">
           <img
             src="./image1.png"
@@ -64,7 +68,7 @@ function ProductDetails() {
           />
         </div>
 
-        {/* product detalis*/}
+        {/* product details */}
         <div>
           <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
           <p className="text-2xl text-gray-600 font-semibold mb-4">
@@ -72,7 +76,7 @@ function ProductDetails() {
           </p>
           <p className="text-gray-600 mb-6">{product.description}</p>
 
-          {/*  Size & Color */}
+          {/* Size & Color */}
           <div className="grid grid-cols-1 gap-4 mb-6">
             <div className="grid grid-cols-2 gap-4">
               <select className="border rounded-lg px-4 py-3 w-full">
@@ -89,7 +93,7 @@ function ProductDetails() {
             {/* add to cart button */}
             <button
               onClick={handleAddToCart}
-              className="w-full md:w-auto px-6 py-3 bg-[rgb(254,153,0)] text-white rounded-lg shadow hover:bg-[rgb(230,130,0)] transition "
+              className="w-full md:w-auto px-6 py-3 bg-[rgb(254,153,0)] text-white rounded-lg shadow hover:bg-[rgb(230,130,0)] transition"
             >
               Add to Cart
             </button>
@@ -103,7 +107,18 @@ function ProductDetails() {
         <div className="flex items-center gap-6 mb-6">
           <div className="text-center">
             <p className="text-4xl font-bold">4.5</p>
-            <p className="text-[rgb(254,153,0)] text-lg">★★★★★</p>
+            <div className="flex justify-center">
+              {Array.from({ length: 5 }).map((_, i) =>
+                i < 4 ? (
+                  <StarSolid
+                    key={i}
+                    className="h-5 w-5 text-[rgb(254,153,0)]"
+                  />
+                ) : (
+                  <StarOutline key={i} className="h-5 w-5 text-gray-300" />
+                )
+              )}
+            </div>
             <p className="text-gray-500 text-sm">Based on 125 reviews</p>
           </div>
           {/* Bars */}
@@ -140,10 +155,18 @@ function ProductDetails() {
                 </div>
               </div>
               <p className="text-gray-700 mb-2">{review.text}</p>
-              <p className="text-[rgb(254,153,0)]">
-                {"★".repeat(review.rating)}
-                {"☆".repeat(5 - review.rating)}
-              </p>
+              <div className="flex">
+                {Array.from({ length: 5 }).map((_, i) =>
+                  i < review.rating ? (
+                    <StarSolid
+                      key={i}
+                      className="h-5 w-5 text-[rgb(254,153,0)]"
+                    />
+                  ) : (
+                    <StarOutline key={i} className="h-5 w-5 text-gray-300" />
+                  )
+                )}
+              </div>
             </div>
           ))}
         </div>
