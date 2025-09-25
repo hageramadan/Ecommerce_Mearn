@@ -14,10 +14,10 @@ import AccountDetails from './Pages/Account Details/accountDetails.js';
 
 function App() {
   return (
-     <BrowserRouter>
+    <BrowserRouter>
       <Routes>
         <Route element={<UserLayout />}>
-          <Route path="/" element={<Home/>} />
+          <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
