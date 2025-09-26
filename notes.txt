@@ -2,3 +2,17 @@ Wagdi
 1- make orders succes (twister  , message , sweet alert...)
 2-cancel go to user cart
 
+Hager
+Add Home Categories
+
+
+all
+1- make static pages dynamic with api
+
+Admin
+Backend 
+
+Ahmed 
+1-intercaptor 
+User Static Pages --> Done
+
