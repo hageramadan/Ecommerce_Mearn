@@ -1,4 +1,3 @@
-import './App.css';
 import { BrowserRouter , Route , Routes } from 'react-router-dom';
 import UserLayout from './Layouts/UserLayout';
 import Home from './Pages/Home/Home';
@@ -10,18 +9,20 @@ import Dashboard from './Pages/Admin/Dashboard';
 import Orders from './Pages/Admin/Orders';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
-import Order from './Pages/Orders/Order';
+import Order from "./Pages/Orders/Order"
+
 function App() {
   return (
-    <BrowserRouter>
+     <BrowserRouter>
       <Routes>
         <Route element={<UserLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home/>} />
           <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/Order" element={<Order />} />
         </Route>
         {/* Routes للادمن */}
         <Route path="/admin" element={<AdminLayout />}>
