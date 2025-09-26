@@ -57,7 +57,7 @@ const Login = () => {
             required
             autoComplete="email"
           />
-          
+
           <InputField
             id="password"
             name="password"
@@ -71,7 +71,7 @@ const Login = () => {
             rightElement={forgotPasswordLink}
           />
         </div>
-        
+
         <div className="submit-section">
           <Button
             type="submit"
