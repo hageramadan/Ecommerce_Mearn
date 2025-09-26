@@ -15,7 +15,7 @@ import ProductDetails from "./Pages/Product-Details/ProductDetails"
 function App() {
   return (
      <BrowserRouter>
-      <Routes>
+        <Routes>
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home/>} />
           <Route path="/products" element={<Products />} />
@@ -34,6 +34,8 @@ function App() {
           <Route path="orders" element={<Orders />} />
         </Route>
       </Routes>
+  
+   
     </BrowserRouter>
   );
 }

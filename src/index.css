@@ -3,7 +3,21 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
 
 *{
     font-family: 'Open Sans', sans-serif;
+}
+.bg-orange-app{
+    background-color: rgb(254 153 0) !important;
+}
+.text-orange-app{
+    color: rgb(254 153 0) !important;
+}
+.bg-orange-app:hover{
+    background-color: rgb(240, 142, 1) !important;
+}
+.text-orange-app:hover{
+    color: rgb(240,142,1) !important;
 }
