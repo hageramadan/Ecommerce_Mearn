@@ -1,10 +1,9 @@
 import ProductCard from "../../Components/Product-card"
 import pro from '../../assets/p1.jpg';
-import c1 from '../../assets/c1.jpg';
-import c2 from '../../assets/c2.jpg';
-import c3 from '../../assets/c3.jpg';
-import c4 from '../../assets/c4.jpg';
-import c5 from '../../assets/c5.jpg';
+import c1 from '../../assets/c1.webp';
+import c2 from '../../assets/c2.webp';
+import c3 from '../../assets/c3.webp';
+
 import Slider from "react-slick";
 import { NextArrow, PrevArrow } from "./Arrow.js"; 
 import d1 from '../../assets/deal.avif';
@@ -23,7 +22,7 @@ function Home(){
   slidesToShow: 1,
   slidesToScroll: 1,
   autoplay: true,
-  autoplaySpeed: 3000,
+  autoplaySpeed: 2000,
   nextArrow: <NextArrow />,   
   prevArrow: <PrevArrow />    
 };
@@ -32,14 +31,13 @@ function Home(){
     <>
   
     <div className="mx-4 md:mx-40 mt-0 relative">
-        <div className="relative group">
+        <div className="relative group mb-2">
             {/* Slider */}
             <Slider {...settings}>
               <img src={c1} alt="cover" className="w-full object-cover rounded-md" />
               <img src={c2} alt="cover" className="w-full object-cover rounded-md" />
               <img src={c3} alt="cover" className="w-full object-cover rounded-md" />
-              <img src={c4} alt="cover" className="w-full object-cover rounded-md" />
-              <img src={c5} alt="cover" className="w-full object-cover rounded-md" />
+          
             </Slider>
         </div>
 
