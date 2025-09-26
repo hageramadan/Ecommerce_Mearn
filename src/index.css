@@ -9,6 +9,9 @@
 *{
     font-family: 'Open Sans', sans-serif;
 }
+body{
+    background-color: #ece6d8;
+}
 .bg-orange-app{
     background-color: rgb(254 153 0) !important;
 }

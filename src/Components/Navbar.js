@@ -6,14 +6,14 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="p-4 flex items-center bg-[#edf2fa] relative">
+    <nav className="p-4 flex items-center bg-[#ece6d8] relative shadow">
       {/* الحاوية الرئيسية: 3 أعمدة */}
       <div className="flex justify-between items-center w-full">
         
         {/* Logo - شمال */}
         <div className="flex gap-2 items-center">
           <img className="w-10 h-10" src="./favicon.png" alt="buy" />
-          <Link to="/" className="text-[1.3rem] font-normal">Buybuy</Link>
+          <Link to="/" className="text-[1.3rem] font-normal">Ebuy</Link>
         </div>
 
         {/* القائمة - نص */}
