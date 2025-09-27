@@ -38,14 +38,14 @@ axiosInstance.interceptors.response.use(
     (error) => {
         const errorMessage = error.response?.data?.status_message || error.message;
         
-        console.error('API Error Details:', {
-            message: errorMessage,
-            status: error.response?.status,
-            statusText: error.response?.statusText,
-            data: error.response?.data,
-            url: error.config?.url,
-            method: error.config?.method
-        });
+        // console.error('API Error Details:', {
+        //     message: errorMessage,
+        //     status: error.response?.status,
+        //     statusText: error.response?.statusText,
+        //     data: error.response?.data,
+        //     url: error.config?.url,
+        //     method: error.config?.method
+        // });
 
         return Promise.reject({
             message: errorMessage,
