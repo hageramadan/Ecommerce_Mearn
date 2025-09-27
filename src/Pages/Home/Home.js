@@ -65,7 +65,6 @@ function Home() {
                 </div>
               </Slider>
             </div>
-
             {/* Grid Images */}
             <div className="flex  gap-1 h-96 ">
               <ProductHover img={c4} title="Kids Collection" desc="Choose your style" animationClass="animate-slide-top"/>
@@ -76,5 +75,4 @@ function Home() {
     </>
   );
 }
-
 export default Home;
