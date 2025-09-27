@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -56,9 +57,9 @@ const Login = () => {
                   Password
                 </label>
                 <div className="forgot-password">
-                  <a href="#" className="forgot-link">
+                  <Link to="/" className="forgot-link">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="field-input-wrapper">
@@ -92,9 +93,9 @@ const Login = () => {
         <div className="signup-section">
           <p className="signup-text">
             Don't have an account?{' '}
-            <a href="#" className="signup-link">
+            <Link to="/" className="signup-link">
               Sign up now
-            </a>
+            </Link>
           </p>
         </div>
       </div>

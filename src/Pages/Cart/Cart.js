@@ -48,7 +48,7 @@ function Cart() {
   );
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100">
+    <div className="p-6 min-h-screen ">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">🛒 Shopping Cart</h2>
 
       {cartItems.length === 0 ? (
