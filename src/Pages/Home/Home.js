@@ -72,11 +72,7 @@ function Home() {
               <ProductHover img={c5} title="Man Collection" desc="Choose your style" animationClass="animate-slide-right"  />
             </div>
           </div>
-
-
       </div>
-
-     
     </>
   );
 }
