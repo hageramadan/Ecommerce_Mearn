@@ -1,5 +1,6 @@
 import React from 'react';
 import './AuthCard.css';
+import { Link } from 'react-router-dom';
 
 const AuthCard = ({ 
   title, 
@@ -27,13 +28,13 @@ const AuthCard = ({
             <p className="auth-footer-text">
               {footerText}{' '}
               {footerLink && (
-                <a 
-                  href={footerLink} 
+                <Link 
+                  to={footerLink} 
                   className="auth-footer-link"
                   onClick={onFooterLinkClick}
                 >
                   {footerLinkText}
-                </a>
+                </Link>
               )}
             </p>
           </div>

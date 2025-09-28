@@ -78,7 +78,7 @@ const Login = () => {
       title="Sign In"
       subtitle="Access your account"
       footerText="Don't have an account?"
-      footerLink="#"
+      footerLink="/register"
       footerLinkText="Sign up now"
     >
       {errorMessage && (
