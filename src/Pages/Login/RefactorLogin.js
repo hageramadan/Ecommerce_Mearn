@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './RefactorLogin.css';
 import AuthCard from '../../Components/AuthCard.js';
 import InputField from '../../Components/InputField.js';
 import Button from '../../Components/Button.js';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import getToken from '../../Redux/Actions/loginAction.js';
+import Alert from '@mui/material/Alert';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
+  const navigate = useNavigate();
+
+  const tokenDispatch = useDispatch();
+
+  const errorMessage = useSelector((state) => state.auth.error);
+  const token = useSelector((state) => state.auth.token);
+  useEffect(() => {
+    // console.log({ errorMessage });
+    // <Alert severity="error">{errorMessage}</Alert>
+    if (token != null) {
+      navigate('/');
+    }
+  }, [token])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +40,9 @@ const Login = () => {
     e.preventDefault();
     // Handle login logic here
     console.log('Login attempt:', formData);
+    tokenDispatch(getToken({ userNameOrMail: formData.email, Password: formData.password }));
   };
+
 
   const lockIcon = (
     <svg className="lock-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -30,11 +50,11 @@ const Login = () => {
     </svg>
   );
 
-  const forgotPasswordLink = (
-    <a href="#" className="forgot-link">
-      Forgot password?
-    </a>
-  );
+  // const forgotPasswordLink = (
+  //   <a href="#" className="forgot-link">
+  //     Forgot password?
+  //   </a>
+  // );
 
   return (
     <AuthCard
@@ -44,6 +64,18 @@ const Login = () => {
       footerLink="#"
       footerLinkText="Sign up now"
     >
+      {errorMessage && (
+        <Alert severity="error" style={{ marginBottom: '1rem' }}>
+          {errorMessage}
+        </Alert>
+      )}
+
+      {token && (
+        <Alert severity="success" style={{ marginBottom: '1rem' }}>
+          welome
+        </Alert>
+      )
+      }
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-fields">
           <InputField
@@ -68,7 +100,7 @@ const Login = () => {
             onChange={handleChange}
             required
             autoComplete="current-password"
-            rightElement={forgotPasswordLink}
+            // rightElement={forgotPasswordLink}
           />
         </div>
 
