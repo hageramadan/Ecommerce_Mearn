@@ -21,10 +21,11 @@ axiosInstance.interceptors.request.use(
         // Only add auth header for non-login requests
         if (!config.url.includes('/auth/login')) {
             const token = localStorage.getItem('authToken');
+            const Bearer = localStorage.getItem('Bearer');
             console.log('Token from localStorage:', token ? '***exists***' : 'null');
 
             if (token) {
-                config.headers.Authorization = `admin ${token}`;
+                config.headers.Authorization = `${Bearer} ${token}`;
                 console.log('Authorization header added');
             } else {
                 console.warn('No token found in localStorage for protected route');
