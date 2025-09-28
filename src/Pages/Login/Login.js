@@ -1,8 +1,10 @@
-import React, {  useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Login.css';
-import { Link } from 'react-router-dom';
-import { useDispatch} from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import getToken from '../../Redux/Actions/loginAction.js';
+import Alert from '@mui/material/Alert';
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,10 +12,19 @@ const Login = () => {
     password: ''
   });
 
+  const navigate  = useNavigate();
+
   const tokenDispatch = useDispatch();
 
-  
-
+  const errorMessage = useSelector((state) => state.auth.error);
+  const token = useSelector((state)=> state.auth.token);
+  useEffect(() => {
+    // console.log({ errorMessage });
+    // <Alert severity="error">{errorMessage}</Alert>
+    if (token != null) {
+      navigate('/');
+    }
+  }, [token])
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -22,16 +33,13 @@ const Login = () => {
     }));
   };
 
-  // useEffect(()=>
-  // {
-    
-  // },[formData])
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle login logic here
     console.log('Login attempt:', formData);
-    tokenDispatch(getToken({userNameOrMail : formData.email , Password : formData.password}));
+    tokenDispatch(getToken({ userNameOrMail: formData.email, Password: formData.password }));
   };
 
   return (
@@ -41,7 +49,19 @@ const Login = () => {
           <h1 className="login-title">Sign In</h1>
           <p className="login-subtitle">Access your account</p>
         </div>
-        
+        {errorMessage&& (
+          <Alert severity="error" style={{ marginBottom: '1rem' }}>
+            {errorMessage}
+          </Alert>
+        )}
+
+        {token && (
+          <Alert severity="success" style={{ marginBottom: '1rem' }}>
+            welome
+          </Alert>
+        )
+        }
+
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-fields">
             <div className="field-group">
@@ -62,7 +82,7 @@ const Login = () => {
                 />
               </div>
             </div>
-            
+
             <div className="field-group">
               <div className="password-header">
                 <label htmlFor="password" className="field-label">
@@ -89,7 +109,7 @@ const Login = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="submit-section">
             <button type="submit" className="submit-button">
               <span className="button-icon">
@@ -101,7 +121,7 @@ const Login = () => {
             </button>
           </div>
         </form>
-        
+
         <div className="signup-section">
           <p className="signup-text">
             Don't have an account?{' '}

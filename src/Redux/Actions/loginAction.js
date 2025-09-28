@@ -15,18 +15,13 @@ export default function getToken({ userNameOrMail, Password }) {
             });
             return res;
         })
-        .catch((err) => {
-            console.error('❌ API Error Details:');
-            console.error('Status:', err.response?.status);
-            console.error('Error message:', err.response?.data?.message);
-            console.error('Full error response:', err.response?.data);
-            
+        .catch((err) => {    
+            console.log({err})        
             dispatch({
                 type: "TOKEN_ERROR",
-                payload: err.response?.data?.message || err.message
+                payload: err.response?.data?.info
             });
             
-            return Promise.reject(err);
         });
     }
 }
