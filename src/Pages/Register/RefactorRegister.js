@@ -44,7 +44,7 @@ const Register = () => {
       title="Create Account"
       subtitle="Join us today"
       footerText="Already have an account?"
-      footerLink="#"
+      footerLink="/login"
       footerLinkText="Sign in"
     >
       <form onSubmit={handleSubmit} className="register-form">
