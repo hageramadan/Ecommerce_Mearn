@@ -1,3 +1,4 @@
+
 const INITIAL_STATE = {
     token: null,
     error: null

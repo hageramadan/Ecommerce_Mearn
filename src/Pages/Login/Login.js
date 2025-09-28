@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import './Login.css';
 import { Link } from 'react-router-dom';
+import { useDispatch} from 'react-redux';
+import getToken from '../../Redux/Actions/loginAction.js';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
+  const tokenDispatch = useDispatch();
+
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,10 +22,16 @@ const Login = () => {
     }));
   };
 
+  // useEffect(()=>
+  // {
+    
+  // },[formData])
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle login logic here
     console.log('Login attempt:', formData);
+    tokenDispatch(getToken({userNameOrMail : formData.email , Password : formData.password}));
   };
 
   return (

@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
     baseURL: "https://iti-node-js-ecommerce.vercel.app",
-    timeout: 10000, // Add timeout
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -11,46 +11,66 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('authToken');
-        console.log('Token from localStorage:', {token});
+        console.log('📤 Request interceptor:', {
+            method: config.method?.toUpperCase(),
+            url: `${config.baseURL}${config.url}`,
+            data: config.data
+        });
         
-        if (token) {
-            config.headers.Authorization = `admin ${token}`;
-            console.log('Authorization header set:', config.headers.Authorization);
+        // Only add auth header for non-login requests
+        if (!config.url.includes('/auth/login')) {
+            const token = localStorage.getItem('authToken');
+            console.log('Token from localStorage:', token ? '***exists***' : 'null');
+            
+            if (token) {
+                config.headers.Authorization = `admin ${token}`;
+                console.log('Authorization header added');
+            } else {
+                console.warn('No token found in localStorage for protected route');
+            }
         } else {
-            console.warn('No token found in localStorage');
+            console.log('Login request - skipping auth header');
         }
         
-        // IMPORTANT: Must return config
         return config;
     },
     (error) => {
-        console.error('Request interceptor error:', error);
+        console.error('❌ Request interceptor error:', error);
         return Promise.reject(error);
     }
 )
 
 axiosInstance.interceptors.response.use(
     (response) => {
-        console.log('Response received:', response.status);
+        console.log('📥 Response interceptor - Success:', {
+            status: response.status,
+            url: response.config.url,
+            dataType: typeof response.data
+        });
         return response;
     },
     (error) => {
-        const errorMessage = error.response?.data?.status_message || error.message;
-        
-        // console.error('API Error Details:', {
-        //     message: errorMessage,
-        //     status: error.response?.status,
-        //     statusText: error.response?.statusText,
-        //     data: error.response?.data,
-        //     url: error.config?.url,
-        //     method: error.config?.method
-        // });
-
-        return Promise.reject({
-            message: errorMessage,
+        console.error('📥 Response interceptor - Error:', {
             status: error.response?.status,
-            data: error.response?.data
+            statusText: error.response?.statusText,
+            url: error.config?.url,
+            errorData: error.response?.data
         });
+        
+        // Don't modify the error structure too much
+        // Let the original axios error through with some enhancements
+        if (error.response) {
+            // Add custom message but keep original structure
+            const customMessage = error.response.data?.message || 
+                                 error.response.data?.error || 
+                                 error.response.statusText || 
+                                 'Request failed';
+            
+            error.customMessage = customMessage;
+        }
+        
+        return Promise.reject(error);
     }
 );
+
+export default axiosInstance
