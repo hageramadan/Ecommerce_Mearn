@@ -12,7 +12,6 @@ import Register from "./Pages/Register/Register";
 import Order from "./Pages/Orders/Order";
 import ProductDetails from "./Pages/Product-Details/ProductDetails.js";
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -25,8 +24,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/Order" element={<Order />} />
-          <Route path="/details" element={<ProductDetails />} />
-       
+          <Route path="/details/:id" element={<ProductDetails />} />
         </Route>
         {/* Routes للادمن */}
         <Route path="/admin" element={<AdminLayout />}>
