@@ -9,6 +9,9 @@ import { NextArrow, PrevArrow } from "../../Components/Arrow.js";
 import glass from "../../assets/bgnav.jpg";
 import ProductHover from '../../Components/ProductHover.js';
 import HeroBanner from '../../Components/HeroBanner.js';
+import Category from '../../Components/Category.js';
+import ProductCard from '../../Components/Product-card.js';
+import Offer from '../../Components/Offer.js';
 
 
 function Home() {
@@ -36,10 +39,7 @@ function Home() {
 
   return (
     <>
-      {/* Hero Banner */}
        <HeroBanner img={glass} />
-
-      {/* Scrolling Message */}
       <div className="overflow-hidden whitespace-nowrap shadow text-sm">
         <div className="flex animate-marquee">
           {repeatedMessages.map((msg, index) => (
@@ -47,8 +47,7 @@ function Home() {
           ))}
         </div>
       </div>
-
-      {/* Slider + Grid */}
+    
       <div className="mx-4 md:mx-40 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2  gap-2">
             {/* Slider */}
@@ -72,6 +71,18 @@ function Home() {
             </div>
           </div>
       </div>
+     <Category/>
+     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-4 md:mx-40 my-12'>
+    <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style"/>
+    <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style"/>
+    <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style"/>
+    <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style"/>
+    <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style"/>
+    <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style"/>
+    <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style"/>
+    <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style"/>
+     </div>
+     <Offer/>
     </>
   );
 }
