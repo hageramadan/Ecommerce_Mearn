@@ -3,13 +3,43 @@ import './RefactorLogin.css';
 import AuthCard from '../../Components/AuthCard.js';
 import InputField from '../../Components/InputField.js';
 import Button from '../../Components/Button.js';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import getToken from '../../Redux/Actions/loginAction.js';
-import Alert from '@mui/material/Alert';
 import Checkbox from '../../Components/checkBox.js';
+import axiosInstance from '../../AxiosInstance/axiosConfig.js';
+import { useNavigate } from 'react-router-dom';
+
+
+
+const sendLoginRequest = async ({emailOrUsername, password}) => {
+  let body = {};
+  
+  try {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailOrUsernameInput = String(emailOrUsername);
+    
+    // Fix: regex.test() not string.test()
+    if (regex.test(emailOrUsernameInput)) {
+      body = {
+        email: emailOrUsername,
+        password: password
+      };
+    } else {
+      body = {
+        userName: emailOrUsername,
+        password: password  // Fix: lowercase 'password' to match
+      };
+    }
+    
+    const response = await axiosInstance.post('/auth/login', body);
+    localStorage.setItem("authToken", response.data.data);
+    return response.data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
+};
 
 const Login = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -20,18 +50,6 @@ const Login = () => {
     email: '',
     password: ''
   });
-
-  const navigate = useNavigate();
-  const tokenDispatch = useDispatch();
-  const errorMessage = useSelector((state) => state.auth.error);
-  const token = useSelector((state) => state.auth.token);
-
-  useEffect(() => {
-    if (token != null) {
-      navigate('/');
-    }
-  }, [token, navigate]);
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prevState => ({
@@ -73,18 +91,15 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    
-    // Validate form
-    
-    
     console.log('Login attempt:', formData);
-    
-    tokenDispatch(getToken({ 
-      userNameOrMail: formData.email, 
-      Password: formData.password,
-    }));
+    try {
+        await sendLoginRequest({emailOrUsername : formData.email , password : formData.password});
+        navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const lockIcon = (
@@ -112,17 +127,17 @@ const Login = () => {
       footerLink="/register"
       footerLinkText="Sign up now"
     >
-      {errorMessage && (
+      {/* {errorMessage && (
         <Alert severity="error" style={{ marginBottom: '1rem' }}>
           {errorMessage}
         </Alert>
-      )}
+      )} */}
 
-      {token && (
+      {/* {token && (
         <Alert severity="success" style={{ marginBottom: '1rem' }}>
           Welcome
         </Alert>
-      )}
+      )} */}
       
       <form onSubmit={handleSubmit} className="login-form" noValidate>
         <div className="form-fields">

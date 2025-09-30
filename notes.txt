@@ -1,6 +1,6 @@
 Ahmed
-    Done --> concent sign and register with api & form validation  
-    Not Done--> handle login and register failed & Router Guard
+    Done --> concent sign and register with api & form validation & Router Guard
+    Not Done--> handle login and register failed and spinner
     
     New
         1- Washilst node js Crud
@@ -21,3 +21,7 @@ Admin
     Orders  --> Wagdi
     Categories --> Hager + Style 
     Products  ---> Marzouk
+
+
+1-Remove Redux
+2- Handle Error message
