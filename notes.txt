@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+1-make button with orange
+2- Deploy API 
+=======
 Wagdi
 1- make orders succes (twister  , message , sweet alert...)
 2-cancel go to user cart
@@ -16,3 +20,4 @@ Ahmed
 1-intercaptor 
 User Static Pages --> Done
 
+>>>>>>> dev

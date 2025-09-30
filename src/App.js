@@ -7,10 +7,13 @@ import Wishlist from "./Pages/Wishlist/Wishlist";
 import AdminLayout from "./Layouts/AdminLayout";
 import Dashboard from "./Pages/Admin/Dashboard";
 import Orders from "./Pages/Admin/Orders";
-import Login from "./Pages/Login/Login";
-import Register from "./Pages/Register/Register";
+import Register from "./Pages/Register/RefactorRegister.js";
+import AccountDetails from "./Pages/Account Details/accountDetails.js";
+// import Login from "./Pages/Login/Login";
+// import Register from "./Pages/Register/Register";
 import Order from "./Pages/Orders/Order";
 import ProductDetails from "./Pages/Product-Details/ProductDetails.js";
+import Login from "./Pages/Login/RefactorLogin.js";
 
 function App() {
   return (

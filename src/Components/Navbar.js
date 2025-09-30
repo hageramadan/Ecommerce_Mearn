@@ -9,25 +9,28 @@ import {
 } from "@heroicons/react/24/outline";
 import SearchOverlay from "./Search";
 
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <nav className="px-9 py-2 flex items-center relative shadow">
-        <div className="flex justify-between items-center w-full">
+      <nav className="flex items-center relative shadow px-2 md:px-20">
+        <div className="flex w-full items-center justify-between">
           {/* Logo */}
-          <Link to="/">
-            <img
-              className="w-40 h-26 cursor-pointer"
-              src="./logo.png"
-              alt="buy"
-            />
-          </Link>
-
+          <div className="py-2">
+                 <Link to="/">
+                <img
+                  className="w-40 h-26 cursor-pointer"
+                  src="./logo.png"
+                  alt="buy"
+                />
+              </Link>
+          </div>
+         
           {/* Links (Desktop) */}
           <ul
-            className={`hidden md:flex  laptop:hidden gap-6 absolute md:static left-1/2 transform -translate-x-1/2 z-50`}
+            className={`  gap-4 hidden md:flex labtop:hidden`}
           >
             <li>
               <Link to="/" className="hover:text-black/60">
@@ -50,23 +53,23 @@ function Navbar() {
               </Link>
             </li>
           </ul>
-
           {/* Icons */}
-          <div className="flex gap-4 cursor-pointer items-center">
+        
+          <div className="flex cursor-pointer items-center gap-2">
             <SearchOverlay />
-            <Link to="/wishlist" className="icon-link">
+            <Link to="/wishlist" className="icon-link ">
               <HeartIcon className="w-6 h-6" />
             </Link>
-            <Link to="/cart" className="icon-link">
+            <Link to="/cart" className="icon-link ">
               <ShoppingBagIcon className="w-6 h-6" />
             </Link>
-            <Link to="/login" className="icon-link">
+            <Link to="/login" className="icon-link " >
               <UserIcon className="w-6 h-6" />
             </Link>
 
             {/* Mobile Menu Button */}
             <button
-              className=" laptop:block hidden  icon-link"
+              className=" block md:hidden  icon-link"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
