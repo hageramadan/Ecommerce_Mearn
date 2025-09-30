@@ -15,6 +15,7 @@ import Order from "./Pages/Orders/Order";
 import ProductDetails from "./Pages/Product-Details/ProductDetails.js";
 import Login from "./Pages/Login/RefactorLogin.js";
 import MangeProducts from "./Pages/Admin/Products.js";
+import ProtectedRoute from "./Components/Router/ProtectedRoute.js";
 
 function App() {
   return (
