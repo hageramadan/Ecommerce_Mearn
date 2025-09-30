@@ -5,10 +5,9 @@ import {
   ShoppingBagIcon,
   UserIcon,
   Bars3Icon,
-  XMarkIcon
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import SearchOverlay from "./Search";
-
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,19 +18,17 @@ function Navbar() {
         <div className="flex w-full items-center justify-between">
           {/* Logo */}
           <div className="py-2">
-                 <Link to="/">
-                <img
-                  className="w-40 h-26 cursor-pointer"
-                  src="./logo.png"
-                  alt="buy"
-                />
-              </Link>
+            <Link to="/">
+              <img
+                className="w-40 h-26 cursor-pointer"
+                src="/logo.png"
+                alt="buy"
+              />
+            </Link>
           </div>
-         
+
           {/* Links (Desktop) */}
-          <ul
-            className={`  gap-4 hidden md:flex labtop:hidden`}
-          >
+          <ul className={`  gap-4 hidden md:flex labtop:hidden`}>
             <li>
               <Link to="/" className="hover:text-black/60">
                 Home
@@ -54,7 +51,7 @@ function Navbar() {
             </li>
           </ul>
           {/* Icons */}
-        
+
           <div className="flex cursor-pointer items-center gap-2">
             <SearchOverlay />
             <Link to="/wishlist" className="icon-link ">
@@ -63,7 +60,7 @@ function Navbar() {
             <Link to="/cart" className="icon-link ">
               <ShoppingBagIcon className="w-6 h-6" />
             </Link>
-            <Link to="/login" className="icon-link " >
+            <Link to="/login" className="icon-link ">
               <UserIcon className="w-6 h-6" />
             </Link>
 
@@ -72,7 +69,11 @@ function Navbar() {
               className=" block md:hidden  icon-link"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
+              {isOpen ? (
+                <XMarkIcon className="w-6 h-6" />
+              ) : (
+                <Bars3Icon className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -84,7 +85,6 @@ function Navbar() {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-       
         <ul className="p-4 flex flex-col gap-4 pt-8">
           <li>
             <Link to="/" className="hover:text-orange-500">
@@ -106,7 +106,6 @@ function Navbar() {
               Contact
             </Link>
           </li>
-       
         </ul>
       </div>
     </>

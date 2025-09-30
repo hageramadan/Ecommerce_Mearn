@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../../AxiosInstance/axiosConfig";
+import axiosInstance from "../../AxiosInstance/axiosConfig";
 
 function ProductDetails() {
   const { id } = useParams();
