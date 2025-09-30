@@ -40,7 +40,7 @@ function MangeProducts() {
       .catch((err) => console.error(err));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const imageFile = formData.get("images");
@@ -59,24 +59,49 @@ function MangeProducts() {
       headers: { "Content-Type": "multipart/form-data" },
     };
 
-    if (editingProduct) {
-      axiosInstance
-        .put(`/products/${editingProduct._id}`, data, config)
-        .then((res) => {
-          setProducts((prev) =>
-            prev.map((p) => (p._id === editingProduct._id ? res.data.data : p))
-          );
-          setShowForm(false);
-        })
-        .catch((err) => console.error(err));
-    } else {
-      axiosInstance
-        .post("/products", data, config)
-        .then((res) => {
-          setProducts((prev) => [...prev, res.data.data]);
-          setShowForm(false);
-        })
-        .catch((err) => console.error(err));
+    try {
+      const res = editingProduct
+        ? await axiosInstance.put(
+            `/products/${editingProduct._id}`,
+            data,
+            config
+          )
+        : await axiosInstance.post("/products", data, config);
+
+      const newProduct = res.data.data;
+      setProducts((prev) =>
+        editingProduct
+          ? prev.map((p) => (p._id === editingProduct._id ? newProduct : p))
+          : [...prev, newProduct]
+      );
+      setShowForm(false);
+      return {}; // no errors
+    } catch (err) {
+      const rawErrors = err.response?.data?.errors;
+      const mappedErrors = {};
+
+      if (Array.isArray(rawErrors)) {
+        rawErrors.forEach((msg) => {
+          const lowerMsg = msg.toLowerCase();
+          if (lowerMsg.includes("name")) mappedErrors.name = msg;
+          if (lowerMsg.includes("price")) mappedErrors.price = msg;
+          if (lowerMsg.includes("quantity")) mappedErrors.quantity = msg;
+          if (lowerMsg.includes("category")) mappedErrors.category = msg;
+          if (lowerMsg.includes("image") || lowerMsg.includes("images"))
+            mappedErrors.images = msg;
+        });
+      } else if (typeof rawErrors === "object") {
+        Object.assign(mappedErrors, rawErrors);
+      }
+
+      if (Object.keys(mappedErrors).length > 0) {
+        return { errors: mappedErrors };
+      } else if (err.response?.data?.message) {
+        return { errors: { general: err.response.data.message } };
+      } else {
+        console.error(err);
+        return { errors: { general: "Unexpected error occurred" } };
+      }
     }
   };
 
