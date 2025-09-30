@@ -3,17 +3,20 @@ import './RegisterRefactor.css';
 import AuthCard from '../../Components/AuthCard.js';
 import InputField from '../../Components/InputField.js';
 import Button from '../../Components/Button.js';
+import axiosInstance from '../../AxiosInstance/axiosConfig.js';
 
 const Register = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
+    dateOfBirth: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    username: ''
   });
 
-  const handleChange = (e) => {
+  const handleChange =  (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
@@ -21,16 +24,30 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
-    
     // Handle registration logic here
-    console.log('Registration attempt:', formData);
+    const date = new Date(formData.dateOfBirth);
+    const formated = date.toLocaleDateString('en-US',
+      {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric'
+      }).replace(/\//g, '-');
+
+      const formattedDate = 
+      {
+        ...formData,
+        dateOfBirth: formated
+      }
+
+     const response =  await sendRegisterRequest(formattedDate);
+    console.log('Registration attempt:', formattedDate,response);
   };
 
   const userIcon = (
@@ -62,7 +79,7 @@ const Register = () => {
               autoComplete="given-name"
               className="name-field"
             />
-            
+
             <InputField
               id="last-name"
               name="lastName"
@@ -76,7 +93,7 @@ const Register = () => {
               className="name-field"
             />
           </div>
-          
+
           <InputField
             id="email-address"
             name="email"
@@ -88,7 +105,32 @@ const Register = () => {
             required
             autoComplete="email"
           />
-          
+
+
+          <InputField
+            id="username"
+            name="username"
+            type="text"
+            label="username"
+            placeholder="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+            autoComplete="username"
+          />
+
+          <InputField
+            id="date-of-birth"
+            name="dateOfBirth"
+            type="date"
+            label="Date of Birth"
+            placeholder=""
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+            required
+            autoComplete="bday"
+          />
+
           <InputField
             id="password"
             name="password"
@@ -100,7 +142,7 @@ const Register = () => {
             required
             autoComplete="new-password"
           />
-          
+
           <InputField
             id="confirm-password"
             name="confirmPassword"
@@ -113,7 +155,7 @@ const Register = () => {
             autoComplete="new-password"
           />
         </div>
-        
+
         <div className="submit-section">
           <Button
             type="submit"
@@ -127,6 +169,25 @@ const Register = () => {
       </form>
     </AuthCard>
   );
+};
+
+const sendRegisterRequest = async (data) => {
+  try {
+    const response = await axiosInstance.post('/auth/signup', {
+      firstName : data.firstName,
+      secondName : data.lastName,
+      email : data.email,
+      DOB : data.dateOfBirth,
+      password : data.password,
+      role : "user",
+      userName : data.username
+    });
+  console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
 };
 
 export default Register;

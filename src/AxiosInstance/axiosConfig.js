@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(
         });
 
         // Only add auth header for non-login requests
-        if (!config.url.includes('/auth/login')) {
+        if (!config.url.includes('/auth/login') && !config.url.includes('/auth/signup')) {
             const token = localStorage.getItem('authToken');
             const Bearer = localStorage.getItem('Bearer');
             console.log('Token from localStorage:', token ? '***exists***' : 'null');
