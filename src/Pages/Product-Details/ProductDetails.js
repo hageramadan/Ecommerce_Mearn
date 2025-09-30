@@ -47,7 +47,7 @@ function ProductDetails() {
           <img
             src={
               product.images?.length > 0
-                ? `${axiosInstance.defaults.baseURL}/images/${product.images[0]}`
+                ? `https://raw.githubusercontent.com/MMarzoo/my-image/main/images/${product.images[0]}`
                 : "/placeholder.png"
             }
             alt={product.name}
