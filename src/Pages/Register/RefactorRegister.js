@@ -16,38 +16,138 @@ const Register = () => {
     username: ''
   });
 
-  const handleChange =  (e) => {
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    dateOfBirth: '',
+    password: '',
+    confirmPassword: '',
+    username: ''
+  });
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
-  };
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        [name]: ''
+      }));
+    }
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+    if (!validateForm()) {
       return;
     }
-    // Handle registration logic here
-    const date = new Date(formData.dateOfBirth);
-    const formated = date.toLocaleDateString('en-US',
-      {
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // First Name validation
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    } else if (formData.firstName.trim().length < 2) {
+      newErrors.firstName = 'First name must be at least 2 characters';
+    }
+    
+    // Last Name validation
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    } else if (formData.lastName.trim().length < 2) {
+      newErrors.lastName = 'Last name must be at least 2 characters';
+    }
+    
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    
+    // Username validation
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (formData.username.trim().length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      newErrors.username = 'Username can only contain letters, numbers, and underscores';
+    }
+    
+    // Date of Birth validation
+    if (!formData.dateOfBirth) {
+      newErrors.dateOfBirth = 'Date of birth is required';
+    } else {
+      const dob = new Date(formData.dateOfBirth);
+      const today = new Date();
+      const age = today.getFullYear() - dob.getFullYear();
+      if (age < 13) {
+        newErrors.dateOfBirth = 'You must be at least 13 years old';
+      } else if (age > 120) {
+        newErrors.dateOfBirth = 'Please enter a valid date of birth';
+      }
+    }
+    
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    } else if (!/(?=.*[a-z])/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one lowercase letter';
+    } else if (!/(?=.*[A-Z])/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one uppercase letter';
+    } else if (!/(?=.*\d)/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one number';
+    }
+    
+    // Confirm Password validation
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+    // Validate form
+    try {
+      // Format date
+      const date = new Date(formData.dateOfBirth);
+      const formatted = date.toLocaleDateString('en-US', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric'
       }).replace(/\//g, '-');
 
-      const formattedDate = 
-      {
+      const formattedDate = {
         ...formData,
-        dateOfBirth: formated
-      }
+        dateOfBirth: formatted
+      };
 
-     const response =  await sendRegisterRequest(formattedDate);
-    console.log('Registration attempt:', formattedDate,response);
+      const response = await sendRegisterRequest(formattedDate);
+      console.log('Registration attempt:', formattedDate, response);
+    } catch (error) {
+      // Handle API errors
+      if (error.response?.data?.message) {
+        setErrors(prev => ({
+          ...prev,
+          email: error.response.data.info
+        }));
+      }
+    }
   };
 
   const userIcon = (
@@ -64,7 +164,7 @@ const Register = () => {
       footerLink="/login"
       footerLinkText="Sign in"
     >
-      <form onSubmit={handleSubmit} className="register-form">
+      <form onSubmit={handleSubmit} className="register-form" noValidate>
         <div className="form-fields">
           <div className="name-fields">
             <InputField
@@ -75,9 +175,9 @@ const Register = () => {
               placeholder="John"
               value={formData.firstName}
               onChange={handleChange}
-              required
               autoComplete="given-name"
               className="name-field"
+              error={errors.firstName}
             />
 
             <InputField
@@ -88,9 +188,9 @@ const Register = () => {
               placeholder="Doe"
               value={formData.lastName}
               onChange={handleChange}
-              required
               autoComplete="family-name"
               className="name-field"
+              error={errors.lastName}
             />
           </div>
 
@@ -102,21 +202,20 @@ const Register = () => {
             placeholder="you@example.com"
             value={formData.email}
             onChange={handleChange}
-            required
             autoComplete="email"
+            error={errors.email}
           />
-
 
           <InputField
             id="username"
             name="username"
             type="text"
-            label="username"
+            label="Username"
             placeholder="username"
             value={formData.username}
             onChange={handleChange}
-            required
             autoComplete="username"
+            error={errors.username}
           />
 
           <InputField
@@ -127,8 +226,8 @@ const Register = () => {
             placeholder=""
             value={formData.dateOfBirth}
             onChange={handleChange}
-            required
             autoComplete="bday"
+            error={errors.dateOfBirth}
           />
 
           <InputField
@@ -139,8 +238,8 @@ const Register = () => {
             placeholder="••••••••"
             value={formData.password}
             onChange={handleChange}
-            required
             autoComplete="new-password"
+            error={errors.password}
           />
 
           <InputField
@@ -151,8 +250,8 @@ const Register = () => {
             placeholder="••••••••"
             value={formData.confirmPassword}
             onChange={handleChange}
-            required
             autoComplete="new-password"
+            error={errors.confirmPassword}
           />
         </div>
 
@@ -174,15 +273,15 @@ const Register = () => {
 const sendRegisterRequest = async (data) => {
   try {
     const response = await axiosInstance.post('/auth/signup', {
-      firstName : data.firstName,
-      secondName : data.lastName,
-      email : data.email,
-      DOB : data.dateOfBirth,
-      password : data.password,
-      role : "user",
-      userName : data.username
+      firstName: data.firstName,
+      secondName: data.lastName,
+      email: data.email,
+      DOB: data.dateOfBirth,
+      password: data.password,
+      role: "user",
+      userName: data.username
     });
-  console.log(response.data);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Registration error:', error);

@@ -12,7 +12,8 @@ const InputField = ({
     required = false,
     autoComplete,
     rightElement,
-    className = ''
+    className = '',
+    error = ''
 }) => {
     return (
         <div className={`field-group ${className}`}>
@@ -32,13 +33,17 @@ const InputField = ({
                     name={name}
                     type={type}
                     autoComplete={autoComplete}
-                    required={required}
-                    className="field-input"
+                    className={`field-input ${error ? 'field-input-error' : ''}`}
                     placeholder={placeholder}
                     value={value}
                     onChange={onChange}
                 />
             </div>
+            {error && (
+                <p className="field-error-message">
+                    {error}
+                </p>
+            )}
         </div>
     );
 };
