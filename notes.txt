@@ -1,16 +1,15 @@
 Ahmed
-    Done --> concent sign and register with api 
-    Not Done--> form validation & handle login and register failed & Router Guard
-
+    Done --> concent sign and register with api & form validation  
+    Not Done--> handle login and register failed & Router Guard
+    
     New
-
         1- Washilst node js Crud
         2- Redux front page 
-
 
 Marzouk
     Done --> Product Details
     Not Done --> handle add to cart functionality & make default image make default image 
+
 Hager 
     Done --->Home Categories and Product static
     Not Done --> Connected with api & make default image 
@@ -20,5 +19,5 @@ Wagdi
 
 Admin
     Orders  --> Wagdi
-    Categories --> Hager + Syle 
+    Categories --> Hager + Style 
     Products  ---> Marzouk
