@@ -8,12 +8,13 @@ import AdminLayout from "./Layouts/AdminLayout";
 import Dashboard from "./Pages/Admin/Dashboard";
 import Orders from "./Pages/Admin/Orders";
 import Register from "./Pages/Register/RefactorRegister.js";
-import AccountDetails from "./Pages/Account Details/accountDetails.js";
+
 // import Login from "./Pages/Login/Login";
 // import Register from "./Pages/Register/Register";
 import Order from "./Pages/Orders/Order";
 import ProductDetails from "./Pages/Product-Details/ProductDetails.js";
 import Login from "./Pages/Login/RefactorLogin.js";
+import MangeProducts from "./Pages/Admin/Products.js";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
         {/* Routes للادمن */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<Products />} />
+          <Route path="products" element={<MangeProducts />} />
           <Route path="orders" element={<Orders />} />
         </Route>
       </Routes>
