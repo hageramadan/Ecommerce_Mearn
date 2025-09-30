@@ -7,7 +7,6 @@ function ProductForm({ editingProduct, onSubmit, onCancel }) {
     e.preventDefault();
     const result = await onSubmit(e);
 
-    // إذا الأخطاء جاية كـ array من الرسائل
     if (Array.isArray(result?.errors)) {
       const mappedErrors = {};
 
