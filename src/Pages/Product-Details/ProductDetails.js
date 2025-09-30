@@ -1,47 +1,30 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { StarIcon as StarSolid } from "@heroicons/react/24/solid";
-import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../../AxiosInstance/axiosConfig";
 
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axiosInstance
+      .get(`/products/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        setProduct(res.data.data);
+      })
+      .catch((err) => console.error("Error fetching product:", err))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) return <p>Loading</p>;
+  if (!product) return <p>product not found</p>;
+
   const handleAddToCart = () => {
     navigate("/cart");
-  };
-
-  const product = {
-    id,
-    name: "Premium Cotton T-Shirt",
-    price: 29.99,
-    category: "Men's Clothes",
-    description:
-      "This classic t-shirt is made from 100% premium cotton, offering both comfort and durability. Available in a variety of colors and sizes, it's perfect for everyday wear.",
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["Black", "White", "Gray"],
-    reviews: [
-      {
-        user: "Liam Carter",
-        date: "2023-08-15",
-        rating: 5,
-        text: "Great quality t-shirt! The fabric is soft and comfortable, and the fit is perfect. I've washed it several times, and it still looks new.",
-        avatar: "https://i.pravatar.cc/40?img=1",
-      },
-      {
-        user: "Sophia Bennett",
-        date: "2023-07-22",
-        rating: 4,
-        text: "I like the t-shirt, but the color was slightly different from what I expected. Overall, it's a good product for the price.",
-        avatar: "https://i.pravatar.cc/40?img=2",
-      },
-      {
-        user: "Ethan Harper",
-        date: "2023-06-10",
-        rating: 5,
-        text: "Excellent t-shirt! The material is high-quality, and the stitching is well-done. I highly recommend this product.",
-        avatar: "https://i.pravatar.cc/40?img=3",
-      },
-    ],
   };
 
   return (
@@ -53,7 +36,7 @@ function ProductDetails() {
         </Link>{" "}
         /{" "}
         <span className="hover:underline cursor-default">
-          {product.category}
+          {product.category?.Name}
         </span>
       </nav>
 
@@ -62,7 +45,11 @@ function ProductDetails() {
         {/* photo Products*/}
         <div className="flex justify-center">
           <img
-            src="./image1.png"
+            src={
+              product.images?.length > 0
+                ? `https://raw.githubusercontent.com/MMarzoo/my-image/main/images/${product.images[0]}`
+                : "/placeholder.png"
+            }
             alt={product.name}
             className="rounded-lg shadow-md w-full max-w-md object-cover"
           />
@@ -80,14 +67,10 @@ function ProductDetails() {
           <div className="grid grid-cols-1 gap-4 mb-6">
             <div className="grid grid-cols-2 gap-4">
               <select className="border rounded-lg px-4 py-3 w-full">
-                {product.sizes.map((size) => (
-                  <option key={size}>{size}</option>
-                ))}
+                <option>Default</option>
               </select>
               <select className="border rounded-lg px-4 py-3 w-full">
-                {product.colors.map((color) => (
-                  <option key={color}>{color}</option>
-                ))}
+                <option>Default</option>
               </select>
             </div>
             {/* add to cart button */}
@@ -98,77 +81,6 @@ function ProductDetails() {
               Add to Cart
             </button>
           </div>
-        </div>
-      </div>
-
-      {/* Reviews */}
-      <div>
-        <h2 className="text-xl font-bold mb-4">Customer Reviews</h2>
-        <div className="flex items-center gap-6 mb-6">
-          <div className="text-center">
-            <p className="text-4xl font-bold">4.5</p>
-            <div className="flex justify-center">
-              {Array.from({ length: 5 }).map((_, i) =>
-                i < 4 ? (
-                  <StarSolid
-                    key={i}
-                    className="h-5 w-5 text-[rgb(254,153,0)]"
-                  />
-                ) : (
-                  <StarOutline key={i} className="h-5 w-5 text-gray-300" />
-                )
-              )}
-            </div>
-            <p className="text-gray-500 text-sm">Based on 125 reviews</p>
-          </div>
-          {/* Bars */}
-          <div className="flex-1">
-            {[5, 4, 3, 2, 1].map((star, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm mb-1">
-                <span>{star}</span>
-                <div className="flex-1 h-2 bg-gray-200 rounded">
-                  <div
-                    className="h-2 bg-[rgb(254,153,0)] rounded"
-                    style={{
-                      width: `${[40, 30, 15, 10, 5][i]}%`,
-                    }}
-                  ></div>
-                </div>
-                <span>{[40, 30, 15, 10, 5][i]}%</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Comments */}
-        <div className="space-y-6">
-          {product.reviews.map((review, index) => (
-            <div key={index} className="border-b pb-4">
-              <div className="flex items-center gap-3 mb-2">
-                <img
-                  src={review.avatar}
-                  alt={review.user}
-                  className="w-10 h-10 rounded-full"
-                />
-                <div>
-                  <p className="font-semibold">{review.user}</p>
-                  <p className="text-xs text-gray-500">{review.date}</p>
-                </div>
-              </div>
-              <p className="text-gray-700 mb-2">{review.text}</p>
-              <div className="flex">
-                {Array.from({ length: 5 }).map((_, i) =>
-                  i < review.rating ? (
-                    <StarSolid
-                      key={i}
-                      className="h-5 w-5 text-[rgb(254,153,0)]"
-                    />
-                  ) : (
-                    <StarOutline key={i} className="h-5 w-5 text-gray-300" />
-                  )
-                )}
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

@@ -9,8 +9,7 @@ import { NextArrow, PrevArrow } from "../../Components/Arrow.js";
 import glass from "../../assets/bgnav.jpg";
 import ProductHover from '../../Components/ProductHover.js';
 import HeroBanner from '../../Components/HeroBanner.js';
-// import { useEffect, useState } from 'react';
-// import { axiosInstance } from '../../AxiosInstance/axiosConfig.js';
+import CateCard from '../../Components/CateCard.js';
 
 
 function Home() {
@@ -105,6 +104,11 @@ function Home() {
               <ProductHover img={c5} title="Man Collection" desc="Choose your style" animationClass="animate-slide-right"  />
             </div>
           </div>
+      </div>
+      <div className="flex justify-around mx-4 md:mx-40 mt-6 items-center" >
+        <CateCard image={c4} name="Kids Collection"/>
+        <CateCard image={c4} name="Kids Collection"/>
+        <CateCard image={c4} name="Kids Collection"/>
       </div>
     </>
   );
