@@ -17,6 +17,13 @@ const Login = () => {
     isAdmin: false
   });
 
+  const [error , setError] = useState(
+    {
+      email: '',
+      password: ''
+    }
+  );
+
   const navigate = useNavigate();
   const tokenDispatch = useDispatch();
   const errorMessage = useSelector((state) => state.auth.error);
