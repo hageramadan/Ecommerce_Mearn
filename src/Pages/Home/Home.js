@@ -34,7 +34,39 @@ function Home() {
     nextArrow: <NextArrow />,   
     prevArrow: <PrevArrow />    
   };
+//   const [userData, setUserData] = useState(null);
+//   const [error, setError] = useState(null);
+//   useEffect(() => {
+//     // Debug token
+//     const token = localStorage.getItem('authToken');
+//     console.log('Current token:', token);
+    
+//     if (!token) {
+//         console.error('No auth token found! Make sure you\'re logged in.');
+//         setError('No authentication token found');
+//         return;
+//     }
 
+//     const abortController = new AbortController();
+    
+//     axiosInstance
+//         .get('/category', { signal: abortController.signal })
+//         .then((response) => {
+//             console.log('User Data:', response.data);
+//             setUserData(response.data);
+//         })
+//         .catch((err) => {
+//             if (err.name === 'AbortError') {
+//                 console.log('Request aborted');
+//             } else {
+//                 console.error('Error fetching user:', err);
+//                 setError(err.message);
+//             }
+//         });
+
+//     return () => abortController.abort();
+// }, []);
+// console.log(userData)
   return (
     <>
       {/* Hero Banner */}
