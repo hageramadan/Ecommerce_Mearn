@@ -3,7 +3,6 @@ import './RefactorLogin.css';
 import AuthCard from '../../Components/AuthCard.js';
 import InputField from '../../Components/InputField.js';
 import Button from '../../Components/Button.js';
-// import Checkbox from '../../Components/Checkbox.js';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import getToken from '../../Redux/Actions/loginAction.js';
@@ -17,6 +16,11 @@ const Login = () => {
     isAdmin: false
   });
 
+  const [errors, setErrors] = useState({
+    email: '',
+    password: ''
+  });
+
   const navigate = useNavigate();
   const tokenDispatch = useDispatch();
   const errorMessage = useSelector((state) => state.auth.error);
@@ -26,7 +30,7 @@ const Login = () => {
     if (token != null) {
       navigate('/');
     }
-  }, [token]);
+  }, [token, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -34,13 +38,49 @@ const Login = () => {
       ...prevState,
       [name]: type === 'checkbox' ? checked : value
     }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        [name]: ''
+      }));
+    }
+
+    if (!validateForm()) {
+      return;
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email or username is required';
+    } else if (formData.email.includes('@') && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate form
+    
+    
     console.log('Login attempt:', formData);
     
-    // You can modify the login action to include admin flag if needed
     tokenDispatch(getToken({ 
       userNameOrMail: formData.email, 
       Password: formData.password,
@@ -53,25 +93,16 @@ const Login = () => {
     </svg>
   );
 
-  const adminCheck = formData.isAdmin
+  const adminCheck = formData.isAdmin;
 
-  useEffect(()=>
-  {
-    console.log({adminCheck})
+  useEffect(() => {
+    console.log({ adminCheck });
     if (adminCheck) {
-      localStorage.setItem("Bearer","admin")
+      localStorage.setItem("Bearer", "admin");
+    } else {
+      localStorage.setItem("Bearer", "Bearer");
     }
-    else
-    {
-      localStorage.setItem("Bearer","Bearer")
-    }
-  },[adminCheck])
-
-  // const forgotPasswordLink = (
-  //   <a href="#" className="forgot-link">
-  //     Forgot password?
-  //   </a>
-  // );
+  }, [adminCheck]);
 
   return (
     <AuthCard
@@ -89,11 +120,11 @@ const Login = () => {
 
       {token && (
         <Alert severity="success" style={{ marginBottom: '1rem' }}>
-          welcome
+          Welcome
         </Alert>
       )}
       
-      <form onSubmit={handleSubmit} className="login-form">
+      <form onSubmit={handleSubmit} className="login-form" noValidate>
         <div className="form-fields">
           <InputField
             id="email-address"
@@ -103,8 +134,8 @@ const Login = () => {
             placeholder="you@example.com"
             value={formData.email}
             onChange={handleChange}
-            required
             autoComplete="email"
+            error={errors.email}
           />
           
           <InputField
@@ -115,9 +146,8 @@ const Login = () => {
             placeholder="••••••••"
             value={formData.password}
             onChange={handleChange}
-            required
             autoComplete="current-password"
-            // rightElement={forgotPasswordLink}
+            error={errors.password}
           />
           
           <Checkbox
