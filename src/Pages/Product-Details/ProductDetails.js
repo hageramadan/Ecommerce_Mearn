@@ -2,6 +2,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosInstance/axiosConfig";
 import Spinner from "../../Components/spinner";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Redux/CartSlice";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -9,6 +11,8 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axiosInstance
@@ -25,6 +29,7 @@ function ProductDetails() {
   if (!product) return <p>product not found</p>;
 
   const handleAddToCart = () => {
+    dispatch(addToCart(product));
     navigate("/cart");
   };
 

@@ -1,9 +1,8 @@
-import { applyMiddleware, createStore } from "redux";
-import combineReducers from "./compineReducres.js"; // اسم الملف ثابت
-import { composeWithDevTools } from "redux-devtools-extension";
-import thunk from "redux-thunk"; // صحح الاستيراد
+import { configureStore } from "@reduxjs/toolkit";
+import { cartReducer } from "./CartSlice";
 
-export const myStore = createStore(
-  combineReducers,
-  composeWithDevTools(applyMiddleware(thunk))
-);
+export const myStore = configureStore({
+  reducer: {
+    cart: cartReducer,
+  },
+});
