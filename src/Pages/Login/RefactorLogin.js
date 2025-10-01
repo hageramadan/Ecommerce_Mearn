@@ -3,48 +3,86 @@ import './RefactorLogin.css';
 import AuthCard from '../../Components/AuthCard.js';
 import InputField from '../../Components/InputField.js';
 import Button from '../../Components/Button.js';
-// import Checkbox from '../../Components/Checkbox.js';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import getToken from '../../Redux/Actions/loginAction.js';
-import Alert from '@mui/material/Alert';
 import Checkbox from '../../Components/checkBox.js';
+import { useNavigate } from 'react-router-dom';
+import { sendLoginRequest } from '../../api/auth/api.auth.js';
+import Alert from '@mui/material/Alert';
+import Spinner from '../../Components/spinner.js';
+
+
+
+
 
 const Login = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     isAdmin: false
   });
 
-  const navigate = useNavigate();
-  const tokenDispatch = useDispatch();
-  const errorMessage = useSelector((state) => state.auth.error);
-  const token = useSelector((state) => state.auth.token);
+  const [errors, setErrors] = useState({
+    email: '',
+    password: ''
+  });
 
-  useEffect(() => {
-    if (token != null) {
-      navigate('/');
-    }
-  }, [token]);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const [errorMessage, seterrorMessage] = useState('');
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prevState => ({
       ...prevState,
       [name]: type === 'checkbox' ? checked : value
     }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        [name]: ''
+      }));
+    }
+
+    if (!validateForm()) {
+      return;
+    }
   };
 
-  const handleSubmit = (e) => {
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email or username is required';
+    } else if (formData.email.includes('@') && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Login attempt:', formData);
-    
-    // You can modify the login action to include admin flag if needed
-    tokenDispatch(getToken({ 
-      userNameOrMail: formData.email, 
-      Password: formData.password,
-    }));
+    setIsLoading(true)
+    try {
+      await sendLoginRequest({ emailOrUsername: formData.email, password: formData.password });
+      setIsLoading(false)
+      navigate("/");
+    } catch (error) {
+      seterrorMessage(error.response.data.info)
+      console.log(error, `error message : ${error.response.data.info}`);
+      setIsLoading(false)
+    }
   };
 
   const lockIcon = (
@@ -53,95 +91,84 @@ const Login = () => {
     </svg>
   );
 
-  const adminCheck = formData.isAdmin
+  const adminCheck = formData.isAdmin;
 
-  useEffect(()=>
-  {
-    console.log({adminCheck})
+  useEffect(() => {
+    console.log({ adminCheck });
     if (adminCheck) {
-      localStorage.setItem("Bearer","admin")
+      localStorage.setItem("Bearer", "admin");
+    } else {
+      localStorage.setItem("Bearer", "Bearer");
     }
-    else
-    {
-      localStorage.setItem("Bearer","Bearer")
-    }
-  },[adminCheck])
-
-  // const forgotPasswordLink = (
-  //   <a href="#" className="forgot-link">
-  //     Forgot password?
-  //   </a>
-  // );
+  }, [adminCheck]);
 
   return (
-    <AuthCard
-      title="Sign In"
-      subtitle="Access your account"
-      footerText="Don't have an account?"
-      footerLink="/register"
-      footerLinkText="Sign up now"
-    >
-      {errorMessage && (
-        <Alert severity="error" style={{ marginBottom: '1rem' }}>
-          {errorMessage}
-        </Alert>
+    <>
+      {isLoading && (
+        <Spinner />
       )}
 
-      {token && (
-        <Alert severity="success" style={{ marginBottom: '1rem' }}>
-          welcome
-        </Alert>
-      )}
-      
-      <form onSubmit={handleSubmit} className="login-form">
-        <div className="form-fields">
-          <InputField
-            id="email-address"
-            name="email"
-            type="email"
-            label="Email or Username"
-            placeholder="you@example.com"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            autoComplete="email"
-          />
-          
-          <InputField
-            id="password"
-            name="password"
-            type="password"
-            label="Password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            autoComplete="current-password"
-            // rightElement={forgotPasswordLink}
-          />
-          
-          <Checkbox
-            id="admin-login"
-            name="isAdmin"
-            label="Log as admin"
-            checked={formData.isAdmin}
-            onChange={handleChange}
-            description="Check this box to access admin features"
-          />
-        </div>
-        
-        <div className="submit-section">
-          <Button
-            type="submit"
-            variant="primary"
-            fullWidth
-            leftIcon={lockIcon}
-          >
-            Log in
-          </Button>
-        </div>
-      </form>
-    </AuthCard>
+      <AuthCard
+        title="Sign In"
+        subtitle="Access your account"
+        footerText="Don't have an account?"
+        footerLink="/register"
+        footerLinkText="Sign up now"
+      >
+        {errorMessage && (
+          <Alert severity="error" style={{ marginBottom: '1rem' }}>
+            {errorMessage}
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit} className="login-form" noValidate>
+          <div className="form-fields">
+            <InputField
+              id="email-address"
+              name="email"
+              type="email"
+              label="Email or Username"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              autoComplete="email"
+              error={errors.email}
+            />
+
+            <InputField
+              id="password"
+              name="password"
+              type="password"
+              label="Password"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="current-password"
+              error={errors.password}
+            />
+
+            <Checkbox
+              id="admin-login"
+              name="isAdmin"
+              label="Log as admin"
+              checked={formData.isAdmin}
+              onChange={handleChange}
+              description="Check this box to access admin features"
+            />
+          </div>
+
+          <div className="submit-section">
+            <Button
+              type="submit"
+              variant="primary"
+              fullWidth
+              leftIcon={lockIcon}
+            >
+              Log in
+            </Button>
+          </div>
+        </form>
+      </AuthCard>
+    </>
   );
 };
 

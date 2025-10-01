@@ -8,12 +8,14 @@ import AdminLayout from "./Layouts/AdminLayout";
 import Dashboard from "./Pages/Admin/Dashboard";
 import Orders from "./Pages/Admin/Orders";
 import Register from "./Pages/Register/RefactorRegister.js";
+
 // import Login from "./Pages/Login/Login";
 // import Register from "./Pages/Register/Register";
 import Order from "./Pages/Orders/Order";
 import ProductDetails from "./Pages/Product-Details/ProductDetails.js";
 import Login from "./Pages/Login/RefactorLogin.js";
-import Categories from "./Pages/Admin/Categories.js";
+import MangeProducts from "./Pages/Admin/Products.js";
+import ProtectedRoute from "./Components/Router/ProtectedRoute.js";
 
 function App() {
   return (
@@ -21,18 +23,21 @@ function App() {
       <Routes>
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/Order" element={<Order />} />
+
           <Route path="/details/:id" element={<ProductDetails />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/products" element={<Products />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/Order" element={<Order />} />
+          </Route>
         </Route>
         {/* Routes للادمن */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<Products />} />
+          <Route path="products" element={<MangeProducts />} />
           <Route path="orders" element={<Orders />} />
           <Route path="categories" element={<Categories />} />
         </Route>

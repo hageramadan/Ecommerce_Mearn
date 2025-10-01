@@ -1,23 +1,26 @@
-<<<<<<< HEAD
-1-make button with orange
-2- Deploy API 
-=======
+Ahmed
+    Done --> concent sign and register with api & form validation & Router Guard & handle login and register failed and spinner
+    
+    New
+        1- Washilst node js Crud
+        2- Redux front page 
+
+Marzouk
+    Done --> Product Details
+    Not Done --> handle add to cart functionality & make default image make default image 
+
+Hager 
+    Done --->Home Categories and Product static
+    Not Done --> Connected with api & make default image 
 Wagdi
-1- make orders succes (twister  , message , sweet alert...)
-2-cancel go to user cart
-
-Hager
-Add Home Categories
-
-
-all
-1- make static pages dynamic with api
+    Done --> cart & order static pages
+    Not Done --> Connected with api
 
 Admin
-Backend 
+    Orders  --> Wagdi
+    Categories --> Hager + Style 
+    Products  ---> Marzouk
 
-Ahmed 
-1-intercaptor 
-User Static Pages --> Done
 
->>>>>>> dev
+1-Remove Redux
+2- Handle Error message
