@@ -16,6 +16,7 @@ import ProductDetails from "./Pages/Product-Details/ProductDetails.js";
 import Login from "./Pages/Login/RefactorLogin.js";
 import MangeProducts from "./Pages/Admin/Products.js";
 import ProtectedRoute from "./Components/Router/ProtectedRoute.js";
+import Categories from "./Pages/Admin/Categories.js";
 
 function App() {
   return (
@@ -23,7 +24,6 @@ function App() {
       <Routes>
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
-
           <Route path="/details/:id" element={<ProductDetails />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

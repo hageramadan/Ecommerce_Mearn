@@ -12,9 +12,10 @@ import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
 import Offer from '../../Components/Offer.js';
+import { getCategories } from '../../api/category/categoryApi.js';
 
 
-function Home() {
+async function Home() {
   const message = (
     <span className="flex items-center gap-2">
       <BoltIcon className="w-4 h-4 " />
@@ -36,39 +37,13 @@ function Home() {
     nextArrow: <NextArrow />,   
     prevArrow: <PrevArrow />    
   };
-//   const [userData, setUserData] = useState(null);
-//   const [error, setError] = useState(null);
-//   useEffect(() => {
-//     // Debug token
-//     const token = localStorage.getItem('authToken');
-//     console.log('Current token:', token);
-    
-//     if (!token) {
-//         console.error('No auth token found! Make sure you\'re logged in.');
-//         setError('No authentication token found');
-//         return;
-//     }
 
-//     const abortController = new AbortController();
-    
-//     axiosInstance
-//         .get('/category', { signal: abortController.signal })
-//         .then((response) => {
-//             console.log('User Data:', response.data);
-//             setUserData(response.data);
-//         })
-//         .catch((err) => {
-//             if (err.name === 'AbortError') {
-//                 console.log('Request aborted');
-//             } else {
-//                 console.error('Error fetching user:', err);
-//                 setError(err.message);
-//             }
-//         });
-
-//     return () => abortController.abort();
-// }, []);
-// console.log(userData)
+ try {
+  const allCategories = await getCategories()
+  console.log(allCategories);
+   } catch (error) {
+    console.log(error);
+   }
   return (
     <>
        <HeroBanner img={glass} />

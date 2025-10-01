@@ -1,51 +1,23 @@
 import { useState, useEffect } from "react";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { getCategories } from "../../api/category/categoryApi";
 
-export default function Categories() {
-  const [categories, setCategories] = useState([]);
+export default async function Categories() {
+  const  [categories, setCategories] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [editId, setEditId] = useState(null);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/categories")
-      .then((res) => res.json())
-      .then((data) => setCategories(data));
-  }, []);
+   try {
+  // const allCategories = await getCategories()
+  // console.log(allCategories);
+   } catch (error) {
+    // console.log(error);
+   }
 
-  const handleSave = async () => {
-    if (editId) {
-      const res = await fetch(`http://localhost:5000/api/categories/${editId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: categoryName }),
-      });
-      const data = await res.json();
-      setCategories(categories.map(cat => (cat._id === editId ? data.category : cat)));
-      setEditId(null);
-    } else {
-      // إضافة
-      const res = await fetch("http://localhost:5000/api/categories", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: categoryName }),
-      });
-      const data = await res.json();
-      setCategories([...categories, data.category]);
-    }
-    setCategoryName("");
-  };
-
-  // حذف
-  const handleDelete = async (id) => {
-    await fetch(`http://localhost:5000/api/categories/${id}`, { method: "DELETE" });
-    setCategories(categories.filter(cat => cat._id !== id));
-  };
-
-  const handleEdit = (id, name) => {
-    setEditId(id);
-    setCategoryName(name);
-  };
-
+  function handleSave(){}
+  function handleEdit(){}
+  function handleDelete(){}
+  
   return (
     <div className="p-4">
       <div className="flex gap-2 mb-4">
