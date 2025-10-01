@@ -39,7 +39,6 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="products" element={<MangeProducts />} />
           <Route path="orders" element={<Orders />} />
-          <Route path="categories" element={<Categories />} />
         </Route>
       </Routes>
     </BrowserRouter>
