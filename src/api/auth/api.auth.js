@@ -28,3 +28,23 @@ export const sendLoginRequest = async ({emailOrUsername, password}) => {
     throw error;
   }
 };
+
+
+export const sendRegisterRequest = async (data) => {
+  try {
+    const response = await axiosInstance.post('/auth/signup', {
+      firstName: data.firstName,
+      secondName: data.lastName,
+      email: data.email,
+      DOB: data.dateOfBirth,
+      password: data.password,
+      role: "user",
+      userName: data.username
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
+};

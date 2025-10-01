@@ -7,6 +7,7 @@ import Checkbox from '../../Components/checkBox.js';
 import { useNavigate } from 'react-router-dom';
 import { sendLoginRequest } from '../../api/auth/api.auth.js';
 import Alert from '@mui/material/Alert';
+import Spinner from '../../Components/spinner.js';
 
 
 
@@ -104,9 +105,7 @@ const Login = () => {
   return (
     <>
       {isLoading && (
-        <div className="loading-overlay">
-          <div className="spinner"></div>
-        </div>
+        <Spinner />
       )}
 
       <AuthCard

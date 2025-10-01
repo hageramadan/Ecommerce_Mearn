@@ -3,7 +3,9 @@ import './RegisterRefactor.css';
 import AuthCard from '../../Components/AuthCard.js';
 import InputField from '../../Components/InputField.js';
 import Button from '../../Components/Button.js';
-import axiosInstance from '../../AxiosInstance/axiosConfig.js';
+import { sendRegisterRequest } from '../../api/auth/api.auth.js';
+import Alert from '@mui/material/Alert';
+import Spinner from '../../Components/spinner.js';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -26,13 +28,17 @@ const Register = () => {
     username: ''
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [errorMessage, seterrorMessage] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prevErrors => ({
@@ -48,28 +54,28 @@ const Register = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     // First Name validation
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'First name is required';
     } else if (formData.firstName.trim().length < 2) {
       newErrors.firstName = 'First name must be at least 2 characters';
     }
-    
+
     // Last Name validation
     if (!formData.lastName.trim()) {
       newErrors.lastName = 'Last name is required';
     } else if (formData.lastName.trim().length < 2) {
       newErrors.lastName = 'Last name must be at least 2 characters';
     }
-    
+
     // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     // Username validation
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required';
@@ -78,7 +84,7 @@ const Register = () => {
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
       newErrors.username = 'Username can only contain letters, numbers, and underscores';
     }
-    
+
     // Date of Birth validation
     if (!formData.dateOfBirth) {
       newErrors.dateOfBirth = 'Date of birth is required';
@@ -92,7 +98,7 @@ const Register = () => {
         newErrors.dateOfBirth = 'Please enter a valid date of birth';
       }
     }
-    
+
     // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
@@ -105,14 +111,14 @@ const Register = () => {
     } else if (!/(?=.*\d)/.test(formData.password)) {
       newErrors.password = 'Password must contain at least one number';
     }
-    
+
     // Confirm Password validation
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -123,30 +129,29 @@ const Register = () => {
       return;
     }
     // Validate form
+    // Format date
+    const date = new Date(formData.dateOfBirth);
+    const formatted = date.toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    }).replace(/\//g, '-');
+
+    const formattedDate = {
+      ...formData,
+      dateOfBirth: formatted
+    };
+    setIsLoading(true)
     try {
-      // Format date
-      const date = new Date(formData.dateOfBirth);
-      const formatted = date.toLocaleDateString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric'
-      }).replace(/\//g, '-');
-
-      const formattedDate = {
-        ...formData,
-        dateOfBirth: formatted
-      };
-
       const response = await sendRegisterRequest(formattedDate);
+      setIsLoading(false)
+      seterrorMessage(``)
       console.log('Registration attempt:', formattedDate, response);
     } catch (error) {
       // Handle API errors
-      if (error.response?.data?.message) {
-        setErrors(prev => ({
-          ...prev,
-          email: error.response.data.info
-        }));
-      }
+      seterrorMessage(error.response.data.info)
+      setIsLoading(false)
+      console.log(error, `error message : ${error.response.data.info}`);
     }
   };
 
@@ -157,6 +162,10 @@ const Register = () => {
   );
 
   return (
+    <>
+    {isLoading && (
+        <Spinner />
+      )}
     <AuthCard
       title="Create Account"
       subtitle="Join us today"
@@ -164,6 +173,11 @@ const Register = () => {
       footerLink="/login"
       footerLinkText="Sign in"
     >
+      {errorMessage && (
+        <Alert severity="error" style={{ marginBottom: '1rem' }}>
+          {errorMessage}
+        </Alert>
+      )}
       <form onSubmit={handleSubmit} className="register-form" noValidate>
         <div className="form-fields">
           <div className="name-fields">
@@ -267,26 +281,8 @@ const Register = () => {
         </div>
       </form>
     </AuthCard>
+    </>
   );
-};
-
-const sendRegisterRequest = async (data) => {
-  try {
-    const response = await axiosInstance.post('/auth/signup', {
-      firstName: data.firstName,
-      secondName: data.lastName,
-      email: data.email,
-      DOB: data.dateOfBirth,
-      password: data.password,
-      role: "user",
-      userName: data.username
-    });
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Registration error:', error);
-    throw error;
-  }
 };
 
 export default Register;
