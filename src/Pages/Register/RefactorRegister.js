@@ -6,8 +6,11 @@ import Button from '../../Components/Button.js';
 import { sendRegisterRequest } from '../../api/auth/api.auth.js';
 import Alert from '@mui/material/Alert';
 import Spinner from '../../Components/spinner.js';
+import SuccessPopup from '../../Components/successPopup.js';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -31,6 +34,8 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [errorMessage, seterrorMessage] = useState('');
+
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -146,6 +151,7 @@ const Register = () => {
       const response = await sendRegisterRequest(formattedDate);
       setIsLoading(false)
       seterrorMessage(``)
+      setShowSuccessPopup(true);
       console.log('Registration attempt:', formattedDate, response);
     } catch (error) {
       // Handle API errors
@@ -153,6 +159,11 @@ const Register = () => {
       setIsLoading(false)
       console.log(error, `error message : ${error.response.data.info}`);
     }
+  };
+
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    navigate('/login');
   };
 
   const userIcon = (
@@ -163,124 +174,130 @@ const Register = () => {
 
   return (
     <>
-    {isLoading && (
+      {isLoading && (
         <Spinner />
       )}
-    <AuthCard
-      title="Create Account"
-      subtitle="Join us today"
-      footerText="Already have an account?"
-      footerLink="/login"
-      footerLinkText="Sign in"
-    >
-      {errorMessage && (
-        <Alert severity="error" style={{ marginBottom: '1rem' }}>
-          {errorMessage}
-        </Alert>
-      )}
-      <form onSubmit={handleSubmit} className="register-form" noValidate>
-        <div className="form-fields">
-          <div className="name-fields">
+
+      <SuccessPopup
+        open={showSuccessPopup}
+        onClose={handleClosePopup}
+        email={formData.email}
+      />
+      <AuthCard
+        title="Create Account"
+        subtitle="Join us today"
+        footerText="Already have an account?"
+        footerLink="/login"
+        footerLinkText="Sign in"
+      >
+        {errorMessage && (
+          <Alert severity="error" style={{ marginBottom: '1rem' }}>
+            {errorMessage}
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit} className="register-form" noValidate>
+          <div className="form-fields">
+            <div className="name-fields">
+              <InputField
+                id="first-name"
+                name="firstName"
+                type="text"
+                label="First Name"
+                placeholder="John"
+                value={formData.firstName}
+                onChange={handleChange}
+                autoComplete="given-name"
+                className="name-field"
+                error={errors.firstName}
+              />
+
+              <InputField
+                id="last-name"
+                name="lastName"
+                type="text"
+                label="Last Name"
+                placeholder="Doe"
+                value={formData.lastName}
+                onChange={handleChange}
+                autoComplete="family-name"
+                className="name-field"
+                error={errors.lastName}
+              />
+            </div>
+
             <InputField
-              id="first-name"
-              name="firstName"
-              type="text"
-              label="First Name"
-              placeholder="John"
-              value={formData.firstName}
+              id="email-address"
+              name="email"
+              type="email"
+              label="Email Address"
+              placeholder="you@example.com"
+              value={formData.email}
               onChange={handleChange}
-              autoComplete="given-name"
-              className="name-field"
-              error={errors.firstName}
+              autoComplete="email"
+              error={errors.email}
             />
 
             <InputField
-              id="last-name"
-              name="lastName"
+              id="username"
+              name="username"
               type="text"
-              label="Last Name"
-              placeholder="Doe"
-              value={formData.lastName}
+              label="Username"
+              placeholder="username"
+              value={formData.username}
               onChange={handleChange}
-              autoComplete="family-name"
-              className="name-field"
-              error={errors.lastName}
+              autoComplete="username"
+              error={errors.username}
+            />
+
+            <InputField
+              id="date-of-birth"
+              name="dateOfBirth"
+              type="date"
+              label="Date of Birth"
+              placeholder=""
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+              autoComplete="bday"
+              error={errors.dateOfBirth}
+            />
+
+            <InputField
+              id="password"
+              name="password"
+              type="password"
+              label="Password"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="new-password"
+              error={errors.password}
+            />
+
+            <InputField
+              id="confirm-password"
+              name="confirmPassword"
+              type="password"
+              label="Confirm Password"
+              placeholder="••••••••"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              autoComplete="new-password"
+              error={errors.confirmPassword}
             />
           </div>
 
-          <InputField
-            id="email-address"
-            name="email"
-            type="email"
-            label="Email Address"
-            placeholder="you@example.com"
-            value={formData.email}
-            onChange={handleChange}
-            autoComplete="email"
-            error={errors.email}
-          />
-
-          <InputField
-            id="username"
-            name="username"
-            type="text"
-            label="Username"
-            placeholder="username"
-            value={formData.username}
-            onChange={handleChange}
-            autoComplete="username"
-            error={errors.username}
-          />
-
-          <InputField
-            id="date-of-birth"
-            name="dateOfBirth"
-            type="date"
-            label="Date of Birth"
-            placeholder=""
-            value={formData.dateOfBirth}
-            onChange={handleChange}
-            autoComplete="bday"
-            error={errors.dateOfBirth}
-          />
-
-          <InputField
-            id="password"
-            name="password"
-            type="password"
-            label="Password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
-            autoComplete="new-password"
-            error={errors.password}
-          />
-
-          <InputField
-            id="confirm-password"
-            name="confirmPassword"
-            type="password"
-            label="Confirm Password"
-            placeholder="••••••••"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            autoComplete="new-password"
-            error={errors.confirmPassword}
-          />
-        </div>
-
-        <div className="submit-section">
-          <Button
-            type="submit"
-            variant="primary"
-            fullWidth
-            leftIcon={userIcon}
-          >
-            Create Account
-          </Button>
-        </div>
-      </form>
-    </AuthCard>
+          <div className="submit-section">
+            <Button
+              type="submit"
+              variant="primary"
+              fullWidth
+              leftIcon={userIcon}
+            >
+              Create Account
+            </Button>
+          </div>
+        </form>
+      </AuthCard>
     </>
   );
 };
