@@ -3,7 +3,8 @@ import UserLayout from "./Layouts/UserLayout";
 import Home from "./Pages/Home/Home";
 import Products from "./Pages/Products/Products";
 import Cart from "./Pages/Cart/Cart";
-import Wishlist from "./Pages/Wishlist/Wishlist";
+// import Wishlist from "./Pages/Wishlist/Wishlist";
+// import Wishlist from "./Pages/Wishlist/WishlistRefactor";
 import AdminLayout from "./Layouts/AdminLayout";
 import Dashboard from "./Pages/Admin/Dashboard";
 import Orders from "./Pages/Admin/Orders";
@@ -16,6 +17,7 @@ import ProductDetails from "./Pages/Product-Details/ProductDetails.js";
 import Login from "./Pages/Login/RefactorLogin.js";
 import MangeProducts from "./Pages/Admin/Products.js";
 import ProtectedRoute from "./Components/Router/ProtectedRoute.js";
+import Wishlist from "./Pages/Wishlist/WishlistRefactor.js";
 
 function App() {
   return (
