@@ -3,6 +3,7 @@ import axiosInstance from "../../AxiosInstance/axiosConfig";
 import ProductForm from "../../Components/ProductForm";
 import ProductTable from "../../Components/ProductTable";
 import ProductFilters from "../../Components/ProductFilter";
+import Spinner from "../../Components/spinner";
 
 function MangeProducts() {
   const [products, setProducts] = useState([]);
@@ -105,7 +106,7 @@ function MangeProducts() {
     }
   };
 
-  if (loading) return <p>loading...</p>;
+  if (loading) return <Spinner />;
 
   let filteredProducts = [...products];
 
