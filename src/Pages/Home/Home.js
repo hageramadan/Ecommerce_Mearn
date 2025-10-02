@@ -14,25 +14,10 @@ import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
 import Offer from '../../Components/Offer.js';
-import { getCategories } from '../../api/category/categoryApi.js';
-import { useEffect, useState } from 'react';
 
 // Remove 'async' here ↓
 function Home() {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const allCategories = await getCategories();
-        console.log(allCategories);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+ 
 
   const message = (
     <span className="flex items-center gap-2">
