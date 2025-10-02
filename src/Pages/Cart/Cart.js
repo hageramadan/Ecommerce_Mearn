@@ -1,140 +1,189 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../AxiosInstance/axiosConfig";
+import "../Cart/cart.css";
+import placeholderImage from "./placeholder.jpg";
 
 function Cart() {
-  // بيانات ثابتة مؤقتًا
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Nike Air Max",
-      price: 120,
-      quantity: 2,
-      image: "https://via.placeholder.com/100",
-    },
-    {
-      id: 2,
-      name: "Adidas Sneakers",
-      price: 80,
-      quantity: 1,
-      image: "https://via.placeholder.com/100",
-    },
-  ]);
+  const [cart, setCart] = useState({ items: [] });
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // دوال تعديل الكمية
-  const increaseQuantity = (id) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  const imageBaseUrl = "http://localhost:3000/uploads/";
+
+  const fetchCart = async () => {
+    console.log("Starting fetchCart...");
+    try {
+      setLoading(true);
+      const res = await axiosInstance.get("/cart");
+      console.log("Cart Data:", res.data.data);
+      try {
+        setCart(res.data.data || { items: [] });
+        console.log("Cart state updated successfully");
+      } catch (stateError) {
+        console.error("❌ Error updating cart state:", stateError);
+      }
+    } catch (err) {
+      console.error("❌ Error fetching cart:", err.response?.data || err.message);
+      setCart({ items: [] });
+    } finally {
+      setLoading(false);
+      console.log("fetchCart completed");
+    }
   };
 
-  const decreaseQuantity = (id) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
+  const removeItem = async (productId, e) => {
+    console.log("Remove button clicked - ProductId:", productId);
+    try {
+      console.log("Sending DELETE request to /cart/remove...");
+      const res = await axiosInstance.delete("/cart/remove", { data: { productId } });
+      console.log("Remove API Response:", res.data);
+      fetchCart();
+    } catch (err) {
+      console.error("❌ Error removing item:", err.response?.data || err.message);
+    }
+    console.log("Remove action completed");
+    e.stopPropagation();
+    e.preventDefault();
   };
 
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+  const updateQuantity = async (productId, quantity, e) => {
+    console.log("Update quantity button clicked - ProductId:", productId, "Quantity:", quantity);
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      if (quantity <= 0) {
+        console.log("Quantity <= 0, calling removeItem...");
+        return removeItem(productId, e);
+      }
+      console.log("Sending PUT request to /cart/update...");
+      const payload = { productId, quantity };
+      const res = await axiosInstance.put("/cart/update", payload);
+      console.log("Update API Response:", res.data);
+      fetchCart();
+    } catch (err) {
+      console.error("❌ Error updating quantity:", err.response?.data || err.message);
+    }
+    console.log("Update quantity action completed");
   };
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  useEffect(() => {
+    console.log("useEffect triggered for fetchCart");
+    fetchCart();
+  }, []);
+
+  if (loading) return <p>Loading cart...</p>;
+  if (!cart.items || cart.items.length === 0) return <p>Your cart is empty 🛒</p>;
+
+  const subtotal = cart.items.reduce(
+    (sum, item) => sum + item.productId.price * item.quantity,
     0
   );
+  const shipping = 5.0;
+  const taxRate = 0.09;
+  const tax = subtotal * taxRate;
+  const total = subtotal + shipping + tax;
 
   return (
-    <div className="p-6 min-h-screen ">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">🛒 Shopping Cart</h2>
+    <div className="cart-container">
+      <h2 className="cart-title">Your Shopping Cart</h2>
 
-      {cartItems.length === 0 ? (
-        <p className="text-gray-600 text-lg">Your cart is empty.</p>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* المنتجات */}
-          <div className="lg:col-span-2 space-y-4">
-            {cartItems.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between bg-white shadow-md p-4 rounded-2xl"
+      <div className="cart-items">
+        {cart.items.map((item) => (
+          <div key={item.productId._id} className="cart-item">
+            <img
+              src={item.productId.images?.[0] ? `${imageBaseUrl}${item.productId.images[0]}` : placeholderImage}
+              alt={item.productId.name || "Product Image"}
+              className="cart-item-image"
+              onError={(e) => {
+                e.target.src = placeholderImage;
+                e.target.alt = "No Image Available";
+              }}
+            />
+            <div className="cart-item-details">
+              <h4>{item.productId.name}</h4>
+              <p className="size-color">
+                {item.productId.size ? `Size: ${item.productId.size}` : ""}
+                {item.productId.size && item.productId.color ? "; " : ""}
+                {item.productId.color ? `Color: ${item.productId.color}` : ""}
+              </p>
+              <p>${item.productId.price.toFixed(2)}</p>
+            </div>
+            <div className="cart-item-actions">
+              <button
+                type="button"
+                onClick={(e) => {
+                  console.log("Minus button clicked");
+                  e.preventDefault();
+                  e.stopPropagation();
+                  updateQuantity(item.productId._id, item.quantity - 1, e);
+                }}
               >
-                {/* صورة + بيانات */}
-                <div className="flex items-center gap-4">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-24 h-24 rounded-lg object-cover border"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-lg text-gray-800">
-                      {item.name}
-                    </h3>
-                    <p className="text-gray-500">${item.price}</p>
-                  </div>
-                </div>
-
-                {/* الكمية + السعر + remove */}
-                <div className="flex items-center gap-6">
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => decreaseQuantity(item.id)}
-                      className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300"
-                    >
-                      ➖
-                    </button>
-                    <span className="px-4 py-1 border rounded-lg bg-gray-50">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => increaseQuantity(item.id)}
-                      className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300"
-                    >
-                      ➕
-                    </button>
-                  </div>
-                  <p className="font-bold text-lg text-gray-800">
-                    ${item.price * item.quantity}
-                  </p>
-                  <button
-                    onClick={() => removeItem(item.id)}
-                    className="text-red-500 font-medium hover:underline"
-                  >
-                    ❌ Remove
-                  </button>
-                </div>
-              </div>
-            ))}
+                -
+              </button>
+              <span>{item.quantity}</span>
+              <button
+                type="button"
+                onClick={(e) => {
+                  console.log("Plus button clicked");
+                  e.preventDefault();
+                  e.stopPropagation();
+                  updateQuantity(item.productId._id, item.quantity + 1, e);
+                }}
+              >
+                +
+              </button>
+            </div>
+            <div className="cart-item-price">
+              ${(item.productId.price * item.quantity).toFixed(2)}
+            </div>
+            <button
+              type="button"
+              className="remove-btn"
+              onClick={(e) => {
+                console.log("Remove button clicked");
+                e.preventDefault();
+                e.stopPropagation();
+                removeItem(item.productId._id, e);
+              }}
+            >
+              X
+            </button>
           </div>
+        ))}
+      </div>
 
-          {/* الملخص */}
-<div className="bg-white shadow-lg p-8 rounded-2xl h-fit w-full lg:w-96">
-  <h3 className="text-2xl font-bold mb-6 text-gray-800">
-    📦 Order Summary
-  </h3>
-  <div className="flex justify-between mb-4 text-lg">
-    <span className="text-gray-600">Subtotal</span>
-    <span className="font-medium">${subtotal}</span>
-  </div>
-  <div className="flex justify-between mb-4 text-lg">
-    <span className="text-gray-600">Shipping</span>
-    <span className="font-medium">$10</span>
-  </div>
-  <hr className="my-4" />
-  <div className="flex justify-between text-xl font-bold text-gray-800">
-    <span>Total</span>
-    <span>${subtotal + 10}</span>
-  </div>
-  <button className="w-full mt-6 bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition text-lg">
-    ✅ Checkout
-  </button>
-</div>
-
+      <div className="cart-summary">
+        <div className="summary-details">
+          <div className="summary-row">
+            <span>Subtotal</span>
+            <span>${subtotal.toFixed(2)}</span>
+          </div>
+          <div className="summary-row">
+            <span>Shipping</span>
+            <span>${shipping.toFixed(2)}</span>
+          </div>
+          <div className="summary-row">
+            <span>Tax</span>
+            <span>${tax.toFixed(2)}</span>
+          </div>
         </div>
-      )}
+        <div className="summary-row total">
+          <span>Total</span>
+          <span>${total.toFixed(2)}</span>
+        </div>
+        <button
+          type="button"
+          className="checkout-btn"
+          onClick={(e) => {
+            console.log("Checkout button clicked");
+            e.preventDefault();
+            navigate("/order");
+          }}
+        >
+          Proceed to Checkout
+        </button>
+      </div>
     </div>
   );
 }

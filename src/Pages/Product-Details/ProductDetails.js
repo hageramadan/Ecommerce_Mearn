@@ -1,6 +1,9 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosInstance/axiosConfig";
+import Spinner from "../../Components/spinner";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Redux/CartSlice";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -8,6 +11,8 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axiosInstance
@@ -20,10 +25,11 @@ function ProductDetails() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <p>Loading</p>;
+  if (loading) return <Spinner />;
   if (!product) return <p>product not found</p>;
 
   const handleAddToCart = () => {
+    dispatch(addToCart(product));
     navigate("/cart");
   };
 
@@ -67,10 +73,14 @@ function ProductDetails() {
           <div className="grid grid-cols-1 gap-4 mb-6">
             <div className="grid grid-cols-2 gap-4">
               <select className="border rounded-lg px-4 py-3 w-full">
-                <option>Default</option>
+                <option disabled selected>
+                  Size
+                </option>
               </select>
               <select className="border rounded-lg px-4 py-3 w-full">
-                <option>Default</option>
+                <option disabled selected>
+                  Color
+                </option>
               </select>
             </div>
             {/* add to cart button */}
