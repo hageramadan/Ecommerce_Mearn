@@ -12,7 +12,7 @@ const WishlistContainer = ({ wishlistItems, onRemoveItem }) => {
         <div className="space-y-6">
           {wishlistItems.map((item, index) => (
             <ProductCard
-              key={item.id}
+              key={item._id}
               item={item}
               animationDelay={index * 0.1}
               onRemove={onRemoveItem}

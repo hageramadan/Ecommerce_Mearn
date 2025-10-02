@@ -4,7 +4,7 @@ import axiosInstance from "../../AxiosInstance/axiosConfig.js";
 export const getwishlist = async () => {
     try {
         const response = await axiosInstance.get('/wishlist');
-        return response.data.items;
+        return response.data;
     } catch (error) {
         console.log(error.data)
     }
@@ -20,11 +20,13 @@ export const addwishlist = async (productID) => {
 
     }
 };
-export const removewishlist = async (productID) => { 
+export const removeFromwishlist = async (productID) => { 
     try {
-        const response = await axiosInstance.post(`/wishlist`,
+        const response = await axiosInstance.delete(`wishlist/remove`,
             {
-                productId: productID
+                data : {
+                    productId: productID
+                }
             }
         );
     } catch (error) {

@@ -6,7 +6,7 @@ const ProductCard = ({
     onRemove
 }) => {
     const {
-        id,
+        _id,
         name,
         price,
         image,
@@ -54,7 +54,7 @@ const ProductCard = ({
             <div className="flex items-center gap-2">
                 <button
                     className="p-2 rounded-full hover:bg-slate-200/60 transition-colors text-slate-500"
-                    onClick={() => onRemove(id)}
+                    onClick={() => onRemove(_id)}
                 >
                     <span>🗑️</span>
                 </button>
