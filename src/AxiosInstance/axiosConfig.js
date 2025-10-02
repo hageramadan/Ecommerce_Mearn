@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://iti-node-js-ecommerce.vercel.app",
+  baseURL: "http://3.142.91.245:3000",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
