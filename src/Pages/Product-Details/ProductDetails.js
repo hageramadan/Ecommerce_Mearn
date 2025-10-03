@@ -38,6 +38,20 @@ function ProductDetails() {
     }
   };
 
+  const handleAddToWishlist = async () => {
+    try {
+      const res = await axiosInstance.post("/wishlist/add", {
+        productId: product._id,
+      });
+      console.log("Added to wishlist:", res.data);
+      navigate("/wisghlist");
+      alert(" Product added to wishlist!");
+    } catch (err) {
+      console.error("Error adding to cart:", err.response?.data || err.message);
+      alert("Product don't add to wishlist!");
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Breadcrumb */}
@@ -94,6 +108,12 @@ function ProductDetails() {
               className="w-full md:w-auto px-6 py-3 bg-[rgb(254,153,0)] text-white rounded-lg shadow hover:bg-[rgb(230,130,0)] transition"
             >
               Add to Cart
+            </button>
+            <button
+              onClick={handleAddToWishlist}
+              className="w-full md:w-auto px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
+            >
+              Add to Wishlist
             </button>
           </div>
         </div>
