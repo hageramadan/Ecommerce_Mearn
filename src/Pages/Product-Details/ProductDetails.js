@@ -2,8 +2,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosInstance/axiosConfig";
 import Spinner from "../../Components/spinner";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../Redux/CartSlice";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -11,8 +9,7 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const dispatch = useDispatch();
+  const [quantity] = useState(1);
 
   useEffect(() => {
     axiosInstance
@@ -28,9 +25,17 @@ function ProductDetails() {
   if (loading) return <Spinner />;
   if (!product) return <p>product not found</p>;
 
-  const handleAddToCart = () => {
-    dispatch(addToCart(product));
-    navigate("/cart");
+  const handleAddToCart = async () => {
+    try {
+      const res = await axiosInstance.post("/cart/add", {
+        productId: product._id,
+        quantity: quantity,
+      });
+      console.log("Added to cart:", res.data);
+      navigate("/cart");
+    } catch (err) {
+      console.error("Error adding to cart:", err.response?.data || err.message);
+    }
   };
 
   return (

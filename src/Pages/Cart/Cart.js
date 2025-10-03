@@ -9,7 +9,8 @@ function Cart() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const imageBaseUrl = "http://localhost:3000/uploads/";
+  const imageBaseUrl =
+    "https://raw.githubusercontent.com/MMarzoo/my-image/main/images/";
 
   const fetchCart = async () => {
     console.log("Starting fetchCart...");
@@ -24,7 +25,10 @@ function Cart() {
         console.error("❌ Error updating cart state:", stateError);
       }
     } catch (err) {
-      console.error("❌ Error fetching cart:", err.response?.data || err.message);
+      console.error(
+        "❌ Error fetching cart:",
+        err.response?.data || err.message
+      );
       setCart({ items: [] });
     } finally {
       setLoading(false);
@@ -36,11 +40,16 @@ function Cart() {
     console.log("Remove button clicked - ProductId:", productId);
     try {
       console.log("Sending DELETE request to /cart/remove...");
-      const res = await axiosInstance.delete("/cart/remove", { data: { productId } });
+      const res = await axiosInstance.delete("/cart/remove", {
+        data: { productId },
+      });
       console.log("Remove API Response:", res.data);
       fetchCart();
     } catch (err) {
-      console.error("❌ Error removing item:", err.response?.data || err.message);
+      console.error(
+        "❌ Error removing item:",
+        err.response?.data || err.message
+      );
     }
     console.log("Remove action completed");
     e.stopPropagation();
@@ -48,7 +57,12 @@ function Cart() {
   };
 
   const updateQuantity = async (productId, quantity, e) => {
-    console.log("Update quantity button clicked - ProductId:", productId, "Quantity:", quantity);
+    console.log(
+      "Update quantity button clicked - ProductId:",
+      productId,
+      "Quantity:",
+      quantity
+    );
     e.preventDefault();
     e.stopPropagation();
     try {
@@ -62,7 +76,10 @@ function Cart() {
       console.log("Update API Response:", res.data);
       fetchCart();
     } catch (err) {
-      console.error("❌ Error updating quantity:", err.response?.data || err.message);
+      console.error(
+        "❌ Error updating quantity:",
+        err.response?.data || err.message
+      );
     }
     console.log("Update quantity action completed");
   };
@@ -73,7 +90,8 @@ function Cart() {
   }, []);
 
   if (loading) return <p>Loading cart...</p>;
-  if (!cart.items || cart.items.length === 0) return <p>Your cart is empty 🛒</p>;
+  if (!cart.items || cart.items.length === 0)
+    return <p>Your cart is empty 🛒</p>;
 
   const subtotal = cart.items.reduce(
     (sum, item) => sum + item.productId.price * item.quantity,
@@ -92,7 +110,11 @@ function Cart() {
         {cart.items.map((item) => (
           <div key={item.productId._id} className="cart-item">
             <img
-              src={item.productId.images?.[0] ? `${imageBaseUrl}${item.productId.images[0]}` : placeholderImage}
+              src={
+                item.productId.images?.[0]
+                  ? `${imageBaseUrl}${item.productId.images[0]}`
+                  : placeholderImage
+              }
               alt={item.productId.name || "Product Image"}
               className="cart-item-image"
               onError={(e) => {
@@ -100,6 +122,7 @@ function Cart() {
                 e.target.alt = "No Image Available";
               }}
             />
+
             <div className="cart-item-details">
               <h4>{item.productId.name}</h4>
               <p className="size-color">
