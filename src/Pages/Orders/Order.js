@@ -8,9 +8,9 @@ function Order() {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [message, setMessage] = useState("");
 
-  const imageBaseUrl = "http://localhost:3000/uploads/"; // غيّره لو بتستخدم Vercel
+  const imageBaseUrl =
+    "https://raw.githubusercontent.com/MMarzoo/my-image/main/images/";
 
-  // ⬅️ هجيب الكارت عشان أعمل بيه الأوردر
   const fetchCart = async () => {
     try {
       setLoading(true);
@@ -66,8 +66,15 @@ function Order() {
       {/* Items */}
       <div className="space-y-3">
         {cart.items.map((item) => {
-          const imageUrl = item.productId.images?.[0] ? `${imageBaseUrl}${item.productId.images[0]}` : placeholderImage;
-          console.log("Image URL for product", item.productId._id, ":", imageUrl);
+          const imageUrl = item.productId.images?.[0]
+            ? `${imageBaseUrl}${item.productId.images[0]}`
+            : placeholderImage;
+          console.log(
+            "Image URL for product",
+            item.productId._id,
+            ":",
+            imageUrl
+          );
           return (
             <div
               key={item._id}
@@ -78,7 +85,11 @@ function Order() {
                 alt={item.productId.name || "Product Image"}
                 className="w-24 h-24 rounded-lg object-cover border-2 border-gray-200 mr-3"
                 onError={(e) => {
-                  console.log("Image failed to load for product", item.productId._id, "using placeholder");
+                  console.log(
+                    "Image failed to load for product",
+                    item.productId._id,
+                    "using placeholder"
+                  );
                   e.target.src = placeholderImage;
                   e.target.alt = "No Image Available";
                 }}
@@ -119,7 +130,9 @@ function Order() {
 
       {/* Payment Method */}
       <div className="mt-6">
-        <h4 className="font-semibold mb-3 text-center">Choose Payment Method</h4>
+        <h4 className="font-semibold mb-3 text-center">
+          Choose Payment Method
+        </h4>
         <div className="grid grid-cols-2 gap-3">
           <div
             onClick={() => setPaymentMethod("paypal")}
