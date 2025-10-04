@@ -19,6 +19,7 @@ import MangeProducts from "./Pages/Admin/Products.js";
 import ProtectedRoute from "./Components/Router/ProtectedRoute.js";
 import { ToastContainer } from "react-toastify";
 import Wishlist from "./Pages/Wishlist/WishlistRefactor.js";
+import Categories from "./Pages/Admin/Categories.js";
 
 function App() {
   return (

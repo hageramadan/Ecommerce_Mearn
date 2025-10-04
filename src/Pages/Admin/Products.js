@@ -4,6 +4,8 @@ import ProductForm from "../../Components/ProductForm";
 import ProductTable from "../../Components/ProductTable";
 import ProductFilters from "../../Components/ProductFilter";
 import Spinner from "../../Components/spinner";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 
 function MangeProducts() {
   const [products, setProducts] = useState([]);
@@ -174,53 +176,15 @@ function MangeProducts() {
         onDelete={handleDelete}
       />
       <div className="flex justify-center mt-6">
-        <nav className="inline-flex -space-x-px">
-          <button
-            onClick={() => setPage(1)}
-            disabled={page === 1}
-            className="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 disabled:opacity-50"
-          >
-            First
-          </button>
-
-          <button
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            disabled={page === 1}
-            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
-          >
-            Prev
-          </button>
-
-          {[...Array(totalPages)].map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setPage(index + 1)}
-              className={`px-3 py-2 border border-gray-300 ${
-                page === index + 1
-                  ? "bg-[rgb(254,153,0)] text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-
-          <button
-            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={page === totalPages}
-            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
-          >
-            Next
-          </button>
-
-          <button
-            onClick={() => setPage(totalPages)}
-            disabled={page === totalPages}
-            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 disabled:opacity-50"
-          >
-            Last
-          </button>
-        </nav>
+        <Stack spacing={2}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(e, value) => setPage(value)}
+            color="warning"
+            size="large"
+          />
+        </Stack>
       </div>
       {showForm && (
         <ProductForm
