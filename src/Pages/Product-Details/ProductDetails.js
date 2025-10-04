@@ -40,11 +40,11 @@ function ProductDetails() {
 
   const handleAddToWishlist = async () => {
     try {
-      const res = await axiosInstance.post("/wishlist/add", {
+      const res = await axiosInstance.post("/wishlist", {
         productId: product._id,
       });
       console.log("Added to wishlist:", res.data);
-      navigate("/wisghlist");
+      navigate("/wishlist");
       alert(" Product added to wishlist!");
     } catch (err) {
       console.error("Error adding to cart:", err.response?.data || err.message);
