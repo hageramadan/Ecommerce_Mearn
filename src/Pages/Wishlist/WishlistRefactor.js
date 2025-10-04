@@ -33,7 +33,15 @@ const Wishlist = () => {
   const handleRemoveItem = async (id) => {
     console.log(id)
     await removeFromwishlist(id)
-    setWishlistItems(wishlistItems.filter(item => item._id !== id));
+
+    const updatedItems = wishlistItems.filter(item => item._id !== id);
+    setWishlistItems(updatedItems);
+
+    console.log(updatedItems) // This will show the correct filtered array
+
+    if (updatedItems.length === 0) {
+      setIsEmpty(true);
+    }
   };
 
   return (
@@ -49,14 +57,14 @@ const Wishlist = () => {
       }
 
       {
-        !isEmpty &&(
-        <div className="flex flex-col min-h-screen bg-[#f5f7f8] text-slate-800 font-['Inter',sans-serif]">
-        <WishlistContainer
-          wishlistItems={wishlistItems}
-          onRemoveItem={handleRemoveItem}
-        />
-      </div>
-      )}
+        !isEmpty && (
+          <div className="flex flex-col min-h-screen bg-[#0000] text-slate-800 font-['Inter',sans-serif]">
+            <WishlistContainer
+              wishlistItems={wishlistItems}
+              onRemoveItem={handleRemoveItem}
+            />
+          </div>
+        )}
     </>);
 };
 

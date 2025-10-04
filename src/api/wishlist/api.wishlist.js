@@ -11,7 +11,7 @@ export const getwishlist = async () => {
 };
 export const addwishlist = async (productID) => {
     try {
-        const response = await axiosInstance.post(`/wishlist/remove`,
+        const response = await axiosInstance.post(`/wishlist`,
             {
                 productId: productID
             }
