@@ -48,12 +48,13 @@ function MangeProducts() {
 
     const data = new FormData();
     data.append("name", formData.get("name"));
+    data.append("description", formData.get("description"));
     data.append("price", formData.get("price"));
     data.append("quantity", formData.get("quantity"));
     data.append("category", formData.get("category"));
 
     if (imageFile && imageFile.name) {
-      data.append("images", imageFile);
+      data.append("images", formData.get("images"));
     }
 
     const config = {
@@ -85,6 +86,7 @@ function MangeProducts() {
         rawErrors.forEach((msg) => {
           const lowerMsg = msg.toLowerCase();
           if (lowerMsg.includes("name")) mappedErrors.name = msg;
+          if (lowerMsg.includes("description")) mappedErrors.name = msg;
           if (lowerMsg.includes("price")) mappedErrors.price = msg;
           if (lowerMsg.includes("quantity")) mappedErrors.quantity = msg;
           if (lowerMsg.includes("category")) mappedErrors.category = msg;

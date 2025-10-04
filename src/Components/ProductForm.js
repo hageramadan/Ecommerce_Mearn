@@ -12,6 +12,8 @@ function ProductForm({ editingProduct, onSubmit, onCancel }) {
 
       result.errors.forEach((msg) => {
         if (msg.toLowerCase().includes("name")) mappedErrors.name = msg;
+        if (msg.toLowerCase().includes("description"))
+          mappedErrors.description = msg;
         if (msg.toLowerCase().includes("price")) mappedErrors.price = msg;
         if (msg.toLowerCase().includes("quantity")) mappedErrors.quantity = msg;
         if (msg.toLowerCase().includes("category")) mappedErrors.category = msg;
@@ -34,6 +36,7 @@ function ProductForm({ editingProduct, onSubmit, onCancel }) {
         {editingProduct ? "Edit Product" : "Add Product"}
       </h2>
       <form onSubmit={handleSubmit}>
+        {/* Product Name */}
         <input
           name="name"
           defaultValue={editingProduct?.name || ""}
@@ -44,6 +47,21 @@ function ProductForm({ editingProduct, onSubmit, onCancel }) {
           <span className="text-red-600 text-sm block mb-2">{errors.name}</span>
         )}
 
+        {/* Description */}
+        <textarea
+          name="description"
+          defaultValue={editingProduct?.description || ""}
+          placeholder="Description"
+          className="border p-2 rounded w-full mb-1"
+          rows={3}
+        />
+        {errors.description && (
+          <span className="text-red-600 text-sm block mb-2">
+            {errors.description}
+          </span>
+        )}
+
+        {/* Price */}
         <input
           name="price"
           type="number"
@@ -57,6 +75,7 @@ function ProductForm({ editingProduct, onSubmit, onCancel }) {
           </span>
         )}
 
+        {/* Quantity */}
         <input
           name="quantity"
           type="number"
@@ -70,6 +89,7 @@ function ProductForm({ editingProduct, onSubmit, onCancel }) {
           </span>
         )}
 
+        {/* Category */}
         <input
           name="category"
           defaultValue={editingProduct?.category?.Name || ""}
@@ -82,6 +102,7 @@ function ProductForm({ editingProduct, onSubmit, onCancel }) {
           </span>
         )}
 
+        {/* Images */}
         <input
           name="images"
           type="file"
@@ -94,6 +115,7 @@ function ProductForm({ editingProduct, onSubmit, onCancel }) {
           </span>
         )}
 
+        {/* Buttons */}
         <div className="flex gap-2 mt-2">
           <button
             type="submit"
