@@ -17,7 +17,6 @@ import ProductDetails from "./Pages/Product-Details/ProductDetails.js";
 import Login from "./Pages/Login/RefactorLogin.js";
 import MangeProducts from "./Pages/Admin/Products.js";
 import ProtectedRoute from "./Components/Router/ProtectedRoute.js";
-import Categories from "./Pages/Admin/Categories.js";
 import { ToastContainer } from "react-toastify";
 import Wishlist from "./Pages/Wishlist/WishlistRefactor.js";
 
