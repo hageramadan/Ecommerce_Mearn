@@ -17,7 +17,7 @@ function MangeProducts() {
 
   useEffect(() => {
     axiosInstance
-      .get("/products/")
+      .get("/products/all")
       .then((res) => {
         setProducts(res.data.data);
       })
