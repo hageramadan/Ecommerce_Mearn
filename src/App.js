@@ -3,7 +3,8 @@ import UserLayout from "./Layouts/UserLayout";
 import Home from "./Pages/Home/Home";
 import Products from "./Pages/Products/Products";
 import Cart from "./Pages/Cart/Cart";
-import Wishlist from "./Pages/Wishlist/Wishlist";
+// import Wishlist from "./Pages/Wishlist/Wishlist";
+// import Wishlist from "./Pages/Wishlist/WishlistRefactor";
 import AdminLayout from "./Layouts/AdminLayout";
 import Dashboard from "./Pages/Admin/Dashboard";
 import Orders from "./Pages/Admin/Orders";
@@ -18,6 +19,7 @@ import MangeProducts from "./Pages/Admin/Products.js";
 import ProtectedRoute from "./Components/Router/ProtectedRoute.js";
 import Categories from "./Pages/Admin/Categories.js";
 import { ToastContainer } from "react-toastify";
+import Wishlist from "./Pages/Wishlist/WishlistRefactor.js";
 
 function App() {
   return (
@@ -40,7 +42,6 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="products" element={<MangeProducts />} />
           <Route path="orders" element={<Orders />} />
-          <Route path="categories" element={<Categories />} />
         </Route>
       </Routes>
       <ToastContainer position="top-right" autoClose={2000} />
