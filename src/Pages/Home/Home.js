@@ -12,16 +12,22 @@ import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
 import Offer from '../../Components/Offer.js';
-import Spinner from '../../Components/spinner.js'; 
+import { getwishlist } from '../../api/wishlist/api.wishlist.js';
+import { addToWishlist } from '../../Redux/wishlist.slice.js';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../AxiosInstance/axiosConfig.js';
-import { motion } from "framer-motion"; 
+import Spinner from '../../Components/spinner.js';
+import { motion } from 'framer-motion';
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [visibleCount, setVisibleCount] = useState(8);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -37,6 +43,27 @@ function Home() {
       });
   }, []);
 
+  // إعادة ضبط عدد المنتجات عند تغيير الكاتيجوري
+  useEffect(() => {
+    setVisibleCount(8);
+  }, [selectedCategory]);
+  const dispatch = useDispatch()
+  async function getwishlisonLoading() {
+    try {
+      const response = await getwishlist()
+      const items = response.data.items
+      for (let index = 0; index < items.length; index++) {
+        dispatch(addToWishlist(items[index]._id))
+      }
+    } catch (error) {
+
+    }
+  }
+
+  useEffect(() => {
+    getwishlisonLoading()
+    console.log("function executed-------------------------------");
+  },[])
   const message = (
     <span className="flex items-center gap-2">
       <BoltIcon className="w-4 h-4 " />
@@ -63,20 +90,21 @@ function Home() {
     ? products.filter(p => p.category?.Name === selectedCategory)
     : products;
 
-  // Variants للأنيميشن
+  // Framer Motion Variants
   const containerVariants = {
     hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
+    visible: { transition: { staggerChildren: 0.15 } },
   };
 
   const cardVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
+
+  // دوال Cart/Wishlist/Details
+  const addToCart = (product) => console.log("Add to Cart", product);
+  // const addToWishlist = (product) => console.log("Add to Wishlist", product);
+  const goToDetails = (id) => navigate(`/details/${id}`);
 
   return (
     <>
@@ -106,22 +134,15 @@ function Home() {
             </Slider>
           </div>
           <div className="flex gap-1 h-96">
-            <ProductHover
-              img={c4}
-              title="Kids Collection"
-              desc="Choose your style"
-            />
-            <ProductHover
-              img={c5}
-              title="Man Collection"
-              desc="Choose your style"
-            />
+            <ProductHover img={c4} title="Kids Collection" desc="Choose your style" />
+            <ProductHover img={c5} title="Man Collection" desc="Choose your style" />
           </div>
         </div>
       </div>
 
       {loading ? (
-        <div className="flex justify-center items-center my-16">
+        <div className="flex flex-col justify-center items-center my-16 gap-8">
+          <Spinner />
           <Spinner />
         </div>
       ) : (
@@ -135,11 +156,13 @@ function Home() {
             animate="visible"
           >
             {filteredProducts.slice(0, visibleCount).map((product, index) => (
-              <motion.div
-                key={product._id || index}
-                variants={cardVariants}
-              >
-                <ProductCard products={[product]} />
+              <motion.div key={product._id || index} variants={cardVariants}>
+                <ProductCard
+                  products={[product]}
+                  addToCart={addToCart}
+                  addToWishlist={addToWishlist}
+                  goToDetails={goToDetails}
+                />
               </motion.div>
             ))}
           </motion.div>
@@ -150,7 +173,7 @@ function Home() {
                 onClick={() => setVisibleCount(prev => prev + 8)}
                 className="px-6 py-2 bg-orange-600 text-white rounded hover:bg-gray-800 transition"
               >
-               show more
+                Show More
               </button>
             </div>
           )}

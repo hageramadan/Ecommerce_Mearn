@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   HeartIcon,
@@ -17,9 +17,14 @@ import { toggeleTheme } from "../Redux/theme.slice.js";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [wishlistNumber, setwishlistNumber] = useState(0)
   const lang = useSelector((state) => state.langReducer.lang);
   const theme = useSelector((state) => state.themeReducer);
+  const wishlistItems = useSelector((state) => state.wishlistReducer.items);
+
+
+
+
   const dispatch = useDispatch();
 
   console.log({ lang, theme });
@@ -34,6 +39,12 @@ function Navbar() {
     dispatch(toggeleLang());
   };
 
+
+
+  useEffect(() => {
+    console.log({ wishlistItems })
+    setwishlistNumber(wishlistItems.length)
+  }, [wishlistItems])
   // Define navbar classes based on theme
   const navbarBg = theme === "dark" ? "bg-gray-800" : "bg-white";
   const textColor = theme === "dark" ? "text-gray-100" : "text-gray-900";
@@ -108,8 +119,13 @@ function Navbar() {
               </span>
             </button>
 
-            <Link to="/wishlist" className="icon-link">
+            <Link to="/wishlist" className="icon-link relative">
               <HeartIcon className={`w-6 h-6 ${textColor}`} />
+              {wishlistNumber > 0 && (
+                <span className={`absolute -top-2 -right-2 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${theme === "dark" ? "bg-red-600 text-white" : "bg-red-500 text-white"}`}>
+                  {wishlistNumber}
+                </span>
+              )}
             </Link>
 
             <Link to="/cart" className="icon-link">
