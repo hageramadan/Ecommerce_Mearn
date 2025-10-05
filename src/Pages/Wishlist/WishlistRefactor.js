@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Wishlist.css';
 import WishlistContainer from '../../Components/wishlit/WishlistContainer.js';
-import { getwishlist, removeFromwishlist, removewishlist } from '../../api/wishlist/api.wishlist.js';
+import { getwishlist, removeFromwishlist } from '../../api/wishlist/api.wishlist.js';
 import Spinner from '../../Components/spinner.js';
 import EmptyWishlist from '../../Components/wishlit/emptyWishlist.js';
 

@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   HeartIcon,
@@ -17,36 +17,32 @@ import { toggeleTheme } from "../Redux/theme.slice.js";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const lang = useSelector((state) => state.langReducer);
   const theme = useSelector((state) => state.themeReducer);
-  const dispatch = useDispatch()
-  const [language, setLanguage] = useState(lang);
+  const dispatch = useDispatch();
 
-  console.log({ lang, theme })
+  console.log({ lang, theme });
+
 
 
   const toggleTheme = () => {
-    dispatch(toggeleTheme())
-
-    if (theme === "dark") {
-      setIsDarkMode(false);
-    } else {
-      setIsDarkMode(true);
-    }
+    dispatch(toggeleTheme());
   };
 
   const toggleLanguage = () => {
-
-    dispatch(toggeleLang())
-
-    setLanguage(lang)
+    dispatch(toggeleLang());
   };
+
+  // Define navbar classes based on theme
+  const navbarBg = theme === "dark" ? "bg-gray-800" : "bg-white";
+  const textColor = theme === "dark" ? "text-gray-100" : "text-gray-900";
+  const hoverColor = theme === "dark" ? "hover:text-gray-300" : "hover:text-black/60";
+  const iconColor = theme === "dark" ? "text-yellow-400" : "text-gray-900";
 
   return (
     <>
-      <nav className="flex items-center relative shadow px-2 md:px-20">
+      <nav className={`flex items-center relative shadow px-2 md:px-20 ${navbarBg} ${textColor}`}>
         <div className="flex w-full items-center justify-between">
           {/* Logo */}
           <div className="py-2">
@@ -62,22 +58,22 @@ function Navbar() {
           {/* Links (Desktop) */}
           <ul className={`gap-4 hidden md:flex labtop:hidden`}>
             <li>
-              <Link to="/" className="hover:text-black/60">
+              <Link to="/" className={hoverColor}>
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/products" className="hover:text-black/60">
+              <Link to="/products" className={hoverColor}>
                 Products
               </Link>
             </li>
             <li>
-              <Link to="/about" className="hover:text-black/60">
+              <Link to="/about" className={hoverColor}>
                 About
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:text-black/60">
+              <Link to="/contact" className={hoverColor}>
                 Contact
               </Link>
             </li>
@@ -93,10 +89,10 @@ function Navbar() {
               className="icon-link"
               aria-label="Toggle theme"
             >
-              {isDarkMode ? (
-                <SunIcon className="w-6 h-6" />
+              {theme === "dark" ? (
+                <SunIcon className={`w-6 h-6 ${iconColor}`} />
               ) : (
-                <MoonIcon className="w-6 h-6" />
+                <MoonIcon className={`w-6 h-6 ${iconColor}`} />
               )}
             </button>
 
@@ -106,22 +102,22 @@ function Navbar() {
               className="icon-link relative"
               aria-label="Toggle language"
             >
-              <LanguageIcon className="w-6 h-6" />
-              <span className="absolute -bottom-1 -right-1 text-xs font-bold bg-gray-200 rounded-full w-5 h-5 flex items-center justify-center">
-                {language.toUpperCase()}
+              <LanguageIcon className={`w-6 h-6 ${textColor}`} />
+              <span className={`absolute -bottom-1 -right-1 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${theme === "dark" ? "bg-gray-700 text-white" : "bg-gray-200 text-gray-900"}`}>
+                {lang.toUpperCase()}
               </span>
             </button>
 
             <Link to="/wishlist" className="icon-link">
-              <HeartIcon className="w-6 h-6" />
+              <HeartIcon className={`w-6 h-6 ${textColor}`} />
             </Link>
 
             <Link to="/cart" className="icon-link">
-              <ShoppingBagIcon className="w-6 h-6" />
+              <ShoppingBagIcon className={`w-6 h-6 ${textColor}`} />
             </Link>
 
             <Link to="/login" className="icon-link">
-              <UserIcon className="w-6 h-6" />
+              <UserIcon className={`w-6 h-6 ${textColor}`} />
             </Link>
 
             {/* Mobile Menu Button */}
@@ -130,9 +126,9 @@ function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
-                <XMarkIcon className="w-6 h-6" />
+                <XMarkIcon className={`w-6 h-6 ${textColor}`} />
               ) : (
-                <Bars3Icon className="w-6 h-6" />
+                <Bars3Icon className={`w-6 h-6 ${textColor}`} />
               )}
             </button>
           </div>
@@ -141,27 +137,26 @@ function Navbar() {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 laptop:block bg-white shadow-lg z-50 transform transition-transform duration-500 1160:flex ${isOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`fixed top-0 left-0 h-full w-64 laptop:block shadow-lg z-50 transform transition-transform duration-500 1160:flex ${isOpen ? "translate-x-0" : "-translate-x-full"} ${theme === "dark" ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"}`}
       >
         <ul className="p-4 flex flex-col gap-4 pt-8">
           <li>
-            <Link to="/" className="hover:text-orange-500">
+            <Link to="/" className={theme === "dark" ? "hover:text-orange-400" : "hover:text-orange-500"}>
               Home
             </Link>
           </li>
           <li>
-            <Link to="/products" className="hover:text-orange-500">
+            <Link to="/products" className={theme === "dark" ? "hover:text-orange-400" : "hover:text-orange-500"}>
               Products
             </Link>
           </li>
           <li>
-            <Link to="/about" className="hover:text-orange-500">
+            <Link to="/about" className={theme === "dark" ? "hover:text-orange-400" : "hover:text-orange-500"}>
               About
             </Link>
           </li>
           <li>
-            <Link to="/contact" className="hover:text-orange-500">
+            <Link to="/contact" className={theme === "dark" ? "hover:text-orange-400" : "hover:text-orange-500"}>
               Contact
             </Link>
           </li>
