@@ -11,7 +11,6 @@ import ProductHover from '../../Components/ProductHover.js';
 import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
-import Offer from '../../Components/Offer.js';
 import { addwishlist, getwishlist } from '../../api/wishlist/api.wishlist.js';
 import { addToWishlist } from '../../Redux/wishlist.slice.js';
 import { useDispatch, useSelector } from 'react-redux';
