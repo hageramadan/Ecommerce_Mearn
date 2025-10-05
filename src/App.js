@@ -5,7 +5,7 @@ import Home from "./Pages/Home/Home";
 import Products from "./Pages/Products/Products";
 import Cart from "./Pages/Cart/Cart";
 import AdminLayout from "./Layouts/AdminLayout";
-import Dashboard from "./Pages/Admin/Dashboard";
+// import Dashboard from "./Pages/Admin/Dashboard";
 import Orders from "./Pages/Admin/Orders";
 import Register from "./Pages/Register/RefactorRegister.js";
 import Order from "./Pages/Orders/Order";
@@ -51,7 +51,7 @@ function AppContent() {
         </Route>
         {/* Routes للادمن */}
         <Route path="/admin" element={<AdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
+          {/* <Route path="dashboard" element={<Dashboard />} /> */}
           <Route path="products" element={<MangeProducts />} />
           <Route path="categories" element={<Categories />} />
           <Route path="orders" element={<Orders />} />
