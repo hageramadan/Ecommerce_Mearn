@@ -7,12 +7,12 @@ export const langSlice = createSlice(
         name : "lang",
         initialState : "en",
         reducers : {
-            toggeleTheme : (state) => {
+            toggeleLang : (state) => {
                 (state === "en") ? state = "ar" : state = "en";
             }
         }
     }
 )
 
-export const { toggeleTheme } = langSlice.actions;
+export const { toggeleLang } = langSlice.actions;
 
