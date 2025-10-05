@@ -8,12 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import { sendLoginRequest } from '../../api/auth/api.auth.js';
 import Alert from '@mui/material/Alert';
 import Spinner from '../../Components/spinner.js';
+import { useSelector } from 'react-redux';
 
 
 
 
 
 const Login = () => {
+  const content = useSelector((state) => state.langReducer.content);
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
@@ -109,7 +111,7 @@ const Login = () => {
       )}
 
       <AuthCard
-        title="Sign In"
+        title= {content.signIn}       
         subtitle="Access your account"
         footerText="Don't have an account?"
         footerLink="/register"
