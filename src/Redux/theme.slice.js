@@ -8,7 +8,7 @@ export const themeSlice = createSlice(
         initialState : "light",
         reducers : {
             toggeleTheme : (state) => {
-                (state === "light") ? state = "dark" : state = "light";
+               return (state === "light") ? state = "dark" : state = "light";
             }
         }
     }

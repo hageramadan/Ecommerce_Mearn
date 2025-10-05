@@ -8,7 +8,7 @@ export const langSlice = createSlice(
         initialState : "en",
         reducers : {
             toggeleLang : (state) => {
-                (state === "en") ? state = "ar" : state = "en";
+                return (state === "en") ? state = "ar" : state = "en";
             }
         }
     }
