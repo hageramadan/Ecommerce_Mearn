@@ -27,10 +27,9 @@ function ProductDetails() {
 
   const handleAddToWishlist = async () => {
     try {
-      // const res = await axiosInstance.post("/wishlist", {
-      //   productId: product._id,
-      // });
-      const res = await addwishlist(product._id);
+      const res = await axiosInstance.post("/wishlist", {
+        productId: product._id,
+      });
       console.log("Added to wishlist:", res.data);
       dispatch(addToWishlist(product._id));
 
