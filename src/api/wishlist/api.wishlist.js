@@ -15,10 +15,15 @@ export const addwishlist = async (productID) => {
             {
                 productId: productID
             }
+
+
         );
+        return response
     } catch (error) {
 
     }
+
+
 };
 export const removeFromwishlist = async (productID) => {
     try {
@@ -29,6 +34,7 @@ export const removeFromwishlist = async (productID) => {
                 }
             }
         );
+        return response
     } catch (error) {
 
     }
