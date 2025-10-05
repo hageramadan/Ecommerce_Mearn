@@ -12,20 +12,29 @@ import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
 import Offer from '../../Components/Offer.js';
+import Spinner from '../../Components/spinner.js'; 
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../AxiosInstance/axiosConfig.js';
+import { motion } from "framer-motion"; 
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(8);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     axiosInstance
-      .get(`/products?limit=10000`)
+      .get(`/products?limit=1000`)
       .then((res) => {
         setProducts(res.data.data);
+        setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, []);
 
   const message = (
@@ -50,6 +59,25 @@ function Home() {
     prevArrow: <PrevArrow />
   };
 
+  const filteredProducts = selectedCategory
+    ? products.filter(p => p.category?.Name === selectedCategory)
+    : products;
+
+  // Variants للأنيميشن
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
   return (
     <>
       <HeroBanner img={glass} />
@@ -64,7 +92,7 @@ function Home() {
 
       <div className="mx-4 md:mx-40 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <div className="h-96 animate-slide-left">
+          <div className="h-96">
             <Slider {...settings}>
               <div className="h-96">
                 <img src={c1} alt="cover" className="w-full h-full object-cover" />
@@ -82,29 +110,52 @@ function Home() {
               img={c4}
               title="Kids Collection"
               desc="Choose your style"
-              animationClass="animate-slide-top"
             />
             <ProductHover
               img={c5}
               title="Man Collection"
               desc="Choose your style"
-              animationClass="animate-slide-right"
             />
           </div>
         </div>
       </div>
 
-      <Category onSelectCategory={setSelectedCategory} />
+      {loading ? (
+        <div className="flex justify-center items-center my-16">
+          <Spinner />
+        </div>
+      ) : (
+        <>
+          <Category onSelectCategory={setSelectedCategory} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-4 md:mx-40 my-12">
-        <ProductCard
-          products={
-            selectedCategory
-              ? products.filter(p => p.category?.Name === selectedCategory)
-              : products
-          }
-        />
-      </div>
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-4 md:mx-40 my-12"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {filteredProducts.slice(0, visibleCount).map((product, index) => (
+              <motion.div
+                key={product._id || index}
+                variants={cardVariants}
+              >
+                <ProductCard products={[product]} />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {visibleCount < filteredProducts.length && (
+            <div className="flex justify-center mb-12">
+              <button
+                onClick={() => setVisibleCount(prev => prev + 8)}
+                className="px-6 py-2 bg-orange-600 text-white rounded hover:bg-gray-800 transition"
+              >
+               show more
+              </button>
+            </div>
+          )}
+        </>
+      )}
 
       <Offer />
     </>
