@@ -1,4 +1,3 @@
-
 import { createSlice } from '@reduxjs/toolkit';
 
 export const wishlistSlice = createSlice({
@@ -11,12 +10,12 @@ export const wishlistSlice = createSlice({
             const id = action.payload;
             // Only add if not already in wishlist
             if (!state.items.includes(id)) {
-                return state.items.push(id);
+                state.items.push(id);
             }
         },
         removeFromWishlist: (state, action) => {
             const id = action.payload;
-            return state.items = state.items.filter(itemId => itemId !== id);
+            state.items = state.items.filter(itemId => itemId !== id);
         },
         toggleWishlist: (state, action) => {
             const id = action.payload;
@@ -24,16 +23,20 @@ export const wishlistSlice = createSlice({
 
             if (index > -1) {
                 // Remove if exists
-                return state.items.splice(index, 1);
+                state.items.splice(index, 1);
             } else {
                 // Add if doesn't exist
-                return state.items.push(id);
+                state.items.push(id);
             }
         },
         clearWishlist: (state) => {
-            return state.items = [];
+            state.items = [];
+        },
+        // New action to set all wishlist items at once
+        setWishlist: (state, action) => {
+            state.items = action.payload;
         },
     },
 });
 
-export const { addToWishlist, removeFromWishlist, toggleWishlist, clearWishlist } = wishlistSlice.actions;
+export const { addToWishlist, removeFromWishlist, toggleWishlist, clearWishlist, setWishlist } = wishlistSlice.actions;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   HeartIcon,
@@ -14,17 +14,37 @@ import SearchOverlay from "./Search";
 import { useDispatch, useSelector } from "react-redux";
 import { toggeleLang } from "../Redux/lang.slice.js";
 import { toggeleTheme } from "../Redux/theme.slice.js";
+import { getwishlist } from "../api/wishlist/api.wishlist.js";
+import { setWishlist } from "../Redux/wishlist.slice.js";
 
 function Navbar() {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
   const lang = useSelector((state) => state.langReducer.lang);
   const theme = useSelector((state) => state.themeReducer);
-  const dispatch = useDispatch();
+  const wishlistItems = useSelector((state) => state.wishlistReducer.items);
 
-  console.log({ lang, theme });
+  console.log("Redux State:", { lang, theme, wishlistItems });
 
-
+  // Fetch wishlist items on component mount (after login)
+  useEffect(() => {
+    async function fetchWishlistItems() {
+      try {
+        const items = await getwishlist();
+        console.log("Fetched wishlist items:", items);
+        // Extract IDs from the items array
+        const wishlistIds = items.map(item => item._id);
+        console.log("Wishlist IDs to dispatch:", wishlistIds);
+        // Set all wishlist items at once - ONLY pass the IDs array
+        dispatch(setWishlist(wishlistIds));
+        console.log("Dispatch completed");
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    }
+    fetchWishlistItems();
+  }, [dispatch]);
 
   const toggleTheme = () => {
     dispatch(toggeleTheme());
@@ -108,8 +128,14 @@ function Navbar() {
               </span>
             </button>
 
-            <Link to="/wishlist" className="icon-link">
+            {/* Wishlist with Count Badge */}
+            <Link to="/wishlist" className="icon-link relative">
               <HeartIcon className={`w-6 h-6 ${textColor}`} />
+              {wishlistItems.length > 0 && (
+                <span className={`absolute -top-2 -right-2 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${theme === "dark" ? "bg-red-600 text-white" : "bg-red-500 text-white"}`}>
+                  {wishlistItems.length}
+                </span>
+              )}
             </Link>
 
             <Link to="/cart" className="icon-link">

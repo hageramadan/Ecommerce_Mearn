@@ -15,10 +15,9 @@ import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
 import Offer from '../../Components/Offer.js';
 
+
 // Remove 'async' here ↓
 function Home() {
- 
-
   const message = (
     <span className="flex items-center gap-2">
       <BoltIcon className="w-4 h-4 " />
