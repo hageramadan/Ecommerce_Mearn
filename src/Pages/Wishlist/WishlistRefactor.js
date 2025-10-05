@@ -69,7 +69,7 @@ const Wishlist = () => {
 
       {
         !isEmpty && (
-          <div className="flex flex-col min-h-screen bg-[#0000] text-slate-800 font-['Inter',sans-serif]">
+          <div className="flex flex-col min-h-screen font-['Inter',sans-serif]">
             <WishlistContainer
               wishlistItems={wishlistItems}
               onRemoveItem={handleRemoveItem}
