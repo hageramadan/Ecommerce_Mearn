@@ -7,8 +7,7 @@ function Order() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
-  const imageBaseUrl =
-    "https://raw.githubusercontent.com/MMarzoo/my-image/main/images/";
+  const imageBaseUrl = "https://raw.githubusercontent.com/MMarzoo/my-image/main/images/"; // غيّره لو بتستخدم Vercel
 
   const fetchCart = async () => {
     try {

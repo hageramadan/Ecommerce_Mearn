@@ -24,3 +24,12 @@ Admin
 
 1-Remove Redux
 2- Handle Error message
+
+----------------------------------
+1-Not Found Ahmed
+4- Not Found --> Hager
+5-card functionality to in home page ---> Hager
+6- navbar problems
+7-localization 
+
+    Hager ---> 

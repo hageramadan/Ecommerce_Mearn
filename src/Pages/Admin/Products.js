@@ -4,6 +4,8 @@ import ProductForm from "../../Components/ProductForm";
 import ProductTable from "../../Components/ProductTable";
 import ProductFilters from "../../Components/ProductFilter";
 import Spinner from "../../Components/spinner";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 
 function MangeProducts() {
   const [products, setProducts] = useState([]);
@@ -15,16 +17,24 @@ function MangeProducts() {
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
+  //Pagination status
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 8;
+
+  //fetch Product with pagination
   useEffect(() => {
     axiosInstance
-      .get("/products/")
+      .get(`/products?page=${page}&limit=${limit}`)
       .then((res) => {
         setProducts(res.data.data);
+        setTotalPages(res.data.totalPages || 1);
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [page]);
 
+  //fetch categories
   useEffect(() => {
     axiosInstance
       .get("/category")
@@ -48,12 +58,13 @@ function MangeProducts() {
 
     const data = new FormData();
     data.append("name", formData.get("name"));
+    data.append("description", formData.get("description"));
     data.append("price", formData.get("price"));
     data.append("quantity", formData.get("quantity"));
     data.append("category", formData.get("category"));
 
     if (imageFile && imageFile.name) {
-      data.append("images", imageFile);
+      data.append("images", formData.get("images"));
     }
 
     const config = {
@@ -85,6 +96,7 @@ function MangeProducts() {
         rawErrors.forEach((msg) => {
           const lowerMsg = msg.toLowerCase();
           if (lowerMsg.includes("name")) mappedErrors.name = msg;
+          if (lowerMsg.includes("description")) mappedErrors.name = msg;
           if (lowerMsg.includes("price")) mappedErrors.price = msg;
           if (lowerMsg.includes("quantity")) mappedErrors.quantity = msg;
           if (lowerMsg.includes("category")) mappedErrors.category = msg;
@@ -163,7 +175,17 @@ function MangeProducts() {
         }}
         onDelete={handleDelete}
       />
-
+      <div className="flex justify-center mt-6">
+        <Stack spacing={2}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(e, value) => setPage(value)}
+            color="warning"
+            size="large"
+          />
+        </Stack>
+      </div>
       {showForm && (
         <ProductForm
           editingProduct={editingProduct}

@@ -8,9 +8,12 @@ import Alert from '@mui/material/Alert';
 import Spinner from '../../Components/spinner.js';
 import SuccessPopup from '../../Components/successPopup.js';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Register = () => {
   const navigate = useNavigate();
+  const content = useSelector((state) => state.langReducer.content);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -32,9 +35,7 @@ const Register = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
   const [errorMessage, seterrorMessage] = useState('');
-
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleChange = (e) => {
@@ -44,7 +45,6 @@ const Register = () => {
       [name]: value
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prevErrors => ({
         ...prevErrors,
@@ -62,66 +62,66 @@ const Register = () => {
 
     // First Name validation
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
+      newErrors.firstName = content.firstNameRequired;
     } else if (formData.firstName.trim().length < 2) {
-      newErrors.firstName = 'First name must be at least 2 characters';
+      newErrors.firstName = content.firstNameMinLength;
     }
 
     // Last Name validation
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
+      newErrors.lastName = content.lastNameRequired;
     } else if (formData.lastName.trim().length < 2) {
-      newErrors.lastName = 'Last name must be at least 2 characters';
+      newErrors.lastName = content.lastNameMinLength;
     }
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = content.emailRequiredReg;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = content.invalidEmail;
     }
 
     // Username validation
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+      newErrors.username = content.usernameRequired;
     } else if (formData.username.trim().length < 3) {
-      newErrors.username = 'Username must be at least 3 characters';
+      newErrors.username = content.usernameMinLength;
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      newErrors.username = 'Username can only contain letters, numbers, and underscores';
+      newErrors.username = content.usernameInvalid;
     }
 
     // Date of Birth validation
     if (!formData.dateOfBirth) {
-      newErrors.dateOfBirth = 'Date of birth is required';
+      newErrors.dateOfBirth = content.dobRequired;
     } else {
       const dob = new Date(formData.dateOfBirth);
       const today = new Date();
       const age = today.getFullYear() - dob.getFullYear();
       if (age < 13) {
-        newErrors.dateOfBirth = 'You must be at least 13 years old';
+        newErrors.dateOfBirth = content.dobMinAge;
       } else if (age > 120) {
-        newErrors.dateOfBirth = 'Please enter a valid date of birth';
+        newErrors.dateOfBirth = content.dobInvalid;
       }
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = content.passwordRequired;
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
+      newErrors.password = content.passwordMinLengthReg;
     } else if (!/(?=.*[a-z])/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one lowercase letter';
+      newErrors.password = content.passwordLowercase;
     } else if (!/(?=.*[A-Z])/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one uppercase letter';
+      newErrors.password = content.passwordUppercase;
     } else if (!/(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one number';
+      newErrors.password = content.passwordNumber;
     }
 
     // Confirm Password validation
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      newErrors.confirmPassword = content.confirmPasswordRequired;
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = content.passwordsNotMatch;
     }
 
     setErrors(newErrors);
@@ -133,7 +133,7 @@ const Register = () => {
     if (!validateForm()) {
       return;
     }
-    // Validate form
+
     // Format date
     const date = new Date(formData.dateOfBirth);
     const formatted = date.toLocaleDateString('en-US', {
@@ -146,17 +146,17 @@ const Register = () => {
       ...formData,
       dateOfBirth: formatted
     };
-    setIsLoading(true)
+
+    setIsLoading(true);
     try {
       const response = await sendRegisterRequest(formattedDate);
-      setIsLoading(false)
-      seterrorMessage(``)
+      setIsLoading(false);
+      seterrorMessage('');
       setShowSuccessPopup(true);
       console.log('Registration attempt:', formattedDate, response);
     } catch (error) {
-      // Handle API errors
-      seterrorMessage(error.response.data.info)
-      setIsLoading(false)
+      seterrorMessage(error.response.data.info);
+      setIsLoading(false);
       console.log(error, `error message : ${error.response.data.info}`);
     }
   };
@@ -174,27 +174,27 @@ const Register = () => {
 
   return (
     <>
-      {isLoading && (
-        <Spinner />
-      )}
+      {isLoading && <Spinner />}
 
       <SuccessPopup
         open={showSuccessPopup}
         onClose={handleClosePopup}
         email={formData.email}
       />
+
       <AuthCard
-        title="Create Account"
-        subtitle="Join us today"
-        footerText="Already have an account?"
+        title={content.createAccount}
+        subtitle={content.joinUsToday}
+        footerText={content.alreadyHaveAccount}
         footerLink="/login"
-        footerLinkText="Sign in"
+        footerLinkText={content.signIn}
       >
         {errorMessage && (
           <Alert severity="error" style={{ marginBottom: '1rem' }}>
             {errorMessage}
           </Alert>
         )}
+        
         <form onSubmit={handleSubmit} className="register-form" noValidate>
           <div className="form-fields">
             <div className="name-fields">
@@ -202,8 +202,8 @@ const Register = () => {
                 id="first-name"
                 name="firstName"
                 type="text"
-                label="First Name"
-                placeholder="John"
+                label={content.firstName}
+                placeholder={content.firstNamePlaceholder}
                 value={formData.firstName}
                 onChange={handleChange}
                 autoComplete="given-name"
@@ -215,8 +215,8 @@ const Register = () => {
                 id="last-name"
                 name="lastName"
                 type="text"
-                label="Last Name"
-                placeholder="Doe"
+                label={content.lastName}
+                placeholder={content.lastNamePlaceholder}
                 value={formData.lastName}
                 onChange={handleChange}
                 autoComplete="family-name"
@@ -229,8 +229,8 @@ const Register = () => {
               id="email-address"
               name="email"
               type="email"
-              label="Email Address"
-              placeholder="you@example.com"
+              label={content.emailAddress}
+              placeholder={content.emailPlaceholder}
               value={formData.email}
               onChange={handleChange}
               autoComplete="email"
@@ -241,8 +241,8 @@ const Register = () => {
               id="username"
               name="username"
               type="text"
-              label="Username"
-              placeholder="username"
+              label={content.username}
+              placeholder={content.usernamePlaceholder}
               value={formData.username}
               onChange={handleChange}
               autoComplete="username"
@@ -253,7 +253,7 @@ const Register = () => {
               id="date-of-birth"
               name="dateOfBirth"
               type="date"
-              label="Date of Birth"
+              label={content.dateOfBirth}
               placeholder=""
               value={formData.dateOfBirth}
               onChange={handleChange}
@@ -265,8 +265,8 @@ const Register = () => {
               id="password"
               name="password"
               type="password"
-              label="Password"
-              placeholder="••••••••"
+              label={content.password}
+              placeholder={content.passwordPlaceholder}
               value={formData.password}
               onChange={handleChange}
               autoComplete="new-password"
@@ -277,8 +277,8 @@ const Register = () => {
               id="confirm-password"
               name="confirmPassword"
               type="password"
-              label="Confirm Password"
-              placeholder="••••••••"
+              label={content.confirmPassword}
+              placeholder={content.passwordPlaceholder}
               value={formData.confirmPassword}
               onChange={handleChange}
               autoComplete="new-password"
@@ -293,7 +293,7 @@ const Register = () => {
               fullWidth
               leftIcon={userIcon}
             >
-              Create Account
+              {content.createAccount}
             </Button>
           </div>
         </form>

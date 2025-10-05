@@ -2,28 +2,53 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosInstance/axiosConfig";
 import Spinner from "../../Components/spinner";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist } from "../../Redux/wishlist.slice";
 
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const content = useSelector((state) => state.langReducer.content);
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity] = useState(1);
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   useEffect(() => {
     axiosInstance
       .get(`/products/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        setProduct(res.data.data);
-      })
+      .then((res) => setProduct(res.data.data))
       .catch((err) => console.error("Error fetching product:", err))
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <Spinner />;
-  if (!product) return <p>product not found</p>;
+  const handleAddToWishlist = async () => {
+    try {
+      const res = await axiosInstance.post("/wishlist", {
+        productId: product._id,
+      });
+      console.log("Added to wishlist:", res.data);
+      dispatch(addToWishlist(product._id));
+
+      setToast({
+        show: true,
+        message: content.productDetails.addedToWishlist,
+        type: "success",
+      });
+    } catch (err) {
+      console.error("Error adding to wishlist:", err);
+      setToast({
+        show: true,
+        message: content.productDetails.wishlistError,
+        type: "error",
+      });
+    } finally {
+      setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+    }
+  };
 
   const handleAddToCart = async () => {
     try {
@@ -35,15 +60,35 @@ function ProductDetails() {
       navigate("/cart");
     } catch (err) {
       console.error("Error adding to cart:", err.response?.data || err.message);
+      setToast({
+        show: true,
+        message: content.productDetails.cartError,
+        type: "error",
+      });
+      setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     }
   };
 
+  if (loading) return <Spinner />;
+  if (!product) return <p>Product not found</p>;
+
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 relative">
+      {/* Toast Message */}
+      {toast.show && (
+        <div
+          className={`fixed top-6 right-6 px-4 py-3 rounded-lg shadow-md text-white z-50 transition-all duration-300 ${
+            toast.type === "success" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {toast.message}
+        </div>
+      )}
+
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4">
         <Link to="/" className="hover:underline">
-          Home
+          {content.productDetails.home}
         </Link>{" "}
         /{" "}
         <span className="hover:underline cursor-default">
@@ -53,7 +98,7 @@ function ProductDetails() {
 
       {/* Product Section */}
       <div className="grid md:grid-cols-2 gap-10 mb-10">
-        {/* photo Products*/}
+        {/* Product Image */}
         <div className="flex justify-center">
           <img
             src={
@@ -66,7 +111,7 @@ function ProductDetails() {
           />
         </div>
 
-        {/* product details */}
+        {/* Product Details */}
         <div>
           <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
           <p className="text-2xl text-gray-600 font-semibold mb-4">
@@ -74,26 +119,32 @@ function ProductDetails() {
           </p>
           <p className="text-gray-600 mb-6">{product.description}</p>
 
-          {/* Size & Color */}
           <div className="grid grid-cols-1 gap-4 mb-6">
             <div className="grid grid-cols-2 gap-4">
               <select className="border rounded-lg px-4 py-3 w-full">
                 <option disabled selected>
-                  Size
+                  {content.productDetails.size}
                 </option>
               </select>
               <select className="border rounded-lg px-4 py-3 w-full">
                 <option disabled selected>
-                  Color
+                  {content.productDetails.color}
                 </option>
               </select>
             </div>
-            {/* add to cart button */}
+
+            {/* Buttons */}
             <button
               onClick={handleAddToCart}
               className="w-full md:w-auto px-6 py-3 bg-[rgb(254,153,0)] text-white rounded-lg shadow hover:bg-[rgb(230,130,0)] transition"
             >
-              Add to Cart
+              {content.productDetails.addToCart}
+            </button>
+            <button
+              onClick={handleAddToWishlist}
+              className="w-full md:w-auto px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
+            >
+              {content.productDetails.addToWishlist}
             </button>
           </div>
         </div>
