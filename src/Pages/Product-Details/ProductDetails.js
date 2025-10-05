@@ -4,7 +4,7 @@ import axiosInstance from "../../AxiosInstance/axiosConfig";
 import Spinner from "../../Components/spinner";
 import { useDispatch } from "react-redux";
 import { addToWishlist } from "../../Redux/wishlist.slice";
-import { addwishlist } from "../../api/wishlist/api.wishlist";
+
 
 function ProductDetails() {
   const { id } = useParams();
