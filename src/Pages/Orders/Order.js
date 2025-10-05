@@ -5,7 +5,6 @@ import placeholderImage from "../Cart/placeholder.jpg"; // المسار الصح
 function Order() {
   const [cart, setCart] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
-  const [paymentMethod, setPaymentMethod] = useState("cash");
   const [message, setMessage] = useState("");
 
   const imageBaseUrl = "https://raw.githubusercontent.com/MMarzoo/my-image/main/images/"; // غيّره لو بتستخدم Vercel
@@ -14,7 +13,6 @@ function Order() {
     try {
       setLoading(true);
       const res = await axiosInstance.get("/cart");
-      console.log("Cart Data:", res.data.data);
       setCart(res.data.data || { items: [] });
     } catch (err) {
       console.error("❌ Error fetching cart:", err);
@@ -28,18 +26,23 @@ function Order() {
     fetchCart();
   }, []);
 
-  // ⬅️ Place Order
+  // ⬅️ Place Order عبر PayPal فقط
   const handlePlaceOrder = async () => {
     try {
-      const res = await axiosInstance.post("/orders", {
-        items: cart.items.map((item) => ({
-          productId: item.productId._id,
-          quantity: item.quantity,
-        })),
-        paymentMethod,
-      });
-      setMessage("✅ Order placed successfully!");
-      console.log("Order response:", res.data);
+     const res = await axiosInstance.post("/payment/placeOrder", {
+  items: cart.items.map((item) => ({
+    productId: item.productId._id,
+    quantity: item.quantity,
+  })),
+  paymentMethod: "paypal",
+});
+
+      const approveUrl = res.data.data; // الرابط اللي هيدخل عليه المستخدم للدفع
+      if (approveUrl) {
+        window.location.href = approveUrl; // تحويل المستخدم مباشرة لدفع PayPal
+      } else {
+        setMessage("❌ Failed to get PayPal link.");
+      }
     } catch (err) {
       console.error("❌ Error placing order:", err);
       setMessage("❌ Failed to place order.");
@@ -68,12 +71,7 @@ function Order() {
           const imageUrl = item.productId.images?.[0]
             ? `${imageBaseUrl}${item.productId.images[0]}`
             : placeholderImage;
-          console.log(
-            "Image URL for product",
-            item.productId._id,
-            ":",
-            imageUrl
-          );
+
           return (
             <div
               key={item._id}
@@ -84,11 +82,6 @@ function Order() {
                 alt={item.productId.name || "Product Image"}
                 className="w-24 h-24 rounded-lg object-cover border-2 border-gray-200 mr-3"
                 onError={(e) => {
-                  console.log(
-                    "Image failed to load for product",
-                    item.productId._id,
-                    "using placeholder"
-                  );
                   e.target.src = placeholderImage;
                   e.target.alt = "No Image Available";
                 }}
@@ -128,34 +121,8 @@ function Order() {
       </div>
 
       {/* Payment Method */}
-      <div className="mt-6">
-        <h4 className="font-semibold mb-3 text-center">
-          Choose Payment Method
-        </h4>
-        <div className="grid grid-cols-2 gap-3">
-          <div
-            onClick={() => setPaymentMethod("paypal")}
-            className={`cursor-pointer p-3 rounded-xl border-2 transition flex items-center justify-center gap-2 ${
-              paymentMethod === "paypal"
-                ? "border-blue-600 bg-blue-50"
-                : "border-gray-300"
-            }`}
-          >
-            <span className="text-blue-600 text-lg">💳</span>
-            <p className="font-semibold text-sm">PayPal</p>
-          </div>
-          <div
-            onClick={() => setPaymentMethod("cash")}
-            className={`cursor-pointer p-3 rounded-xl border-2 transition flex items-center justify-center gap-2 ${
-              paymentMethod === "cash"
-                ? "border-green-600 bg-green-50"
-                : "border-gray-300"
-            }`}
-          >
-            <span className="text-green-600 text-lg">💵</span>
-            <p className="font-semibold text-sm">Cash</p>
-          </div>
-        </div>
+      <div className="mt-6 text-center">
+        <h4 className="font-semibold mb-3">Payment Method: PayPal 💳</h4>
       </div>
 
       {/* Place Order */}
@@ -163,7 +130,7 @@ function Order() {
         onClick={handlePlaceOrder}
         className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
       >
-        Place Order
+        Pay with PayPal
       </button>
 
       {/* Message */}
