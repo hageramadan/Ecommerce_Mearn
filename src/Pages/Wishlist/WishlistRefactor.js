@@ -4,8 +4,7 @@ import WishlistContainer from '../../Components/wishlit/WishlistContainer.js';
 import { getwishlist, removeFromwishlist } from '../../api/wishlist/api.wishlist.js';
 import Spinner from '../../Components/spinner.js';
 import EmptyWishlist from '../../Components/wishlit/emptyWishlist.js';
-import { useDispatch } from 'react-redux';
-import { addToWishlist } from '../../Redux/wishlist.slice.js';
+
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
