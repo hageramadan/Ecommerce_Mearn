@@ -1,4 +1,3 @@
-import { data } from "react-router-dom";
 import axiosInstance from "../../AxiosInstance/axiosConfig.js";
 
 
@@ -14,15 +13,17 @@ export const addwishlist = async (productID) => {
     try {
         const response = await axiosInstance.post(`/wishlist`,
             {
-                data:
-                {
-                    productId: productID
-                }
+                productId: productID
             }
+
+
         );
+        return response
     } catch (error) {
 
     }
+
+
 };
 export const removeFromwishlist = async (productID) => {
     try {
@@ -33,6 +34,7 @@ export const removeFromwishlist = async (productID) => {
                 }
             }
         );
+        return response
     } catch (error) {
 
     }
