@@ -21,6 +21,7 @@ function Navbar() {
   const lang = useSelector((state) => state.langReducer.lang);
   const theme = useSelector((state) => state.themeReducer);
   const wishlistItems = useSelector((state) => state.wishlistReducer.items);
+   const content = useSelector((state) => state.langReducer.content);
 
 
 
@@ -70,22 +71,22 @@ function Navbar() {
           <ul className={`gap-4 hidden md:flex labtop:hidden`}>
             <li>
               <Link to="/" className={hoverColor}>
-                Home
+                {content.navbar.home}
               </Link>
             </li>
             <li>
               <Link to="/products" className={hoverColor}>
-                Products
+                {content.navbar.products}
               </Link>
             </li>
             <li>
               <Link to="/about" className={hoverColor}>
-                About
+                {content.navbar.about}
               </Link>
             </li>
             <li>
               <Link to="/contact" className={hoverColor}>
-                Contact
+                {content.navbar.contact}
               </Link>
             </li>
           </ul>

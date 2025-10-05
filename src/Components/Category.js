@@ -4,6 +4,7 @@ import c2 from '../assets/category/elc.jpg';
 import c3 from '../assets/category/ip.jpeg';
 import c4 from '../assets/category/clo.jpg';
 import { getCategories } from '../api/category/categoryApi';
+import { useSelector } from 'react-redux';
 
 const categoryImages = [c1, c2, c3, c4];
 
@@ -22,11 +23,12 @@ function Category({ onSelectCategory }) {
     };
     fetchData();
   }, []);
+ const content = useSelector((state) => state.langReducer.content);
 
   return (
     <>
       <div className='mx-10 md:mx-40'>
-        <h2 className='text-center my-[50px] text-2xl'>Trending Categories</h2>
+        <h2 className='text-center my-[50px] text-2xl'>{content.TrendingCategories}</h2>
         <div className='flex items-center justify-center flex-wrap lg:flex-nowrap gap-7 lg:gap-12 mx-10 lg:mx-35'>
           {categories.map((category, index) => (
             <div

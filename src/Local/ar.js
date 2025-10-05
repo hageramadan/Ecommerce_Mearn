@@ -53,7 +53,46 @@ const ar = {
     "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
     "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
     "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
-    "passwordsNotMatch": "كلمات المرور غير متطابقة"
+    "passwordsNotMatch": "كلمات المرور غير متطابقة",
+      // 🔹 الصفحة الرئيسية
+  home: {
+    bannerMessage: "شحن مجاني على جميع الطلبات داخل مصر  أو أكثر من 200 جنية",
+    kidsCollection: "مجموعة الأطفال",
+    manCollection: "مجموعة الرجال",
+    chooseStyle: "اختر أسلوبك",
+    showMoreButton: "عرض المزيد",
+    loading: "جارٍ التحميل...",
+    noProducts: "لا توجد منتجات متاحة",
+   banner: "لا تفوت خصم 70% على جميع التخفيضات! لا حاجة لاستخدام كود!",
+    ShopNow: "تسوق الآن",
+  },
+
+  // 🔹 الأزرار
+  buttons: {
+    addToCart: "أضف إلى السلة",
+    addToWishlist: "أضف إلى المفضلة",
+    removeFromWishlist: "إزالة من المفضلة",
+  },
+
+  // 🔹 المفضلة
+  wishlist: {
+    title: "قائمتي المفضلة",
+    emptyMessage: "لا توجد عناصر في المفضلة",
+    addedToast: "تمت إضافة المنتج إلى المفضلة",
+    removedToast: "تمت إزالة المنتج من المفضلة",
+  },
+    navbar: {
+    home: "الرئيسية",
+    products: "المنتجات",
+    about: "من نحن",
+    contact: "تواصل معنا",
+  },
+   productHover: {
+    kidsCollection: "مجموعة الأطفال",
+    menCollection: "مجموعة الرجال",
+    chooseStyle: "اختر ستايلك",
+  },
+  TrendingCategories:"التصنيفات الشائعة",
 };
 
 export default ar;

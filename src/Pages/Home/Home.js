@@ -11,10 +11,9 @@ import ProductHover from '../../Components/ProductHover.js';
 import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
-import Offer from '../../Components/Offer.js';
 import { getwishlist } from '../../api/wishlist/api.wishlist.js';
 import { addToWishlist } from '../../Redux/wishlist.slice.js';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../AxiosInstance/axiosConfig.js';
@@ -26,7 +25,7 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [visibleCount, setVisibleCount] = useState(8);
   const [loading, setLoading] = useState(true);
-
+ const content = useSelector((state) => state.langReducer.content);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,7 +66,7 @@ function Home() {
   const message = (
     <span className="flex items-center gap-2">
       <BoltIcon className="w-4 h-4 " />
-      Free shipping on all US order or order above $200
+      {content.home.bannerMessage}
       <span className="text-[2rem] mb-4">.</span>
     </span>
   );
@@ -134,8 +133,8 @@ function Home() {
             </Slider>
           </div>
           <div className="flex gap-1 h-96">
-            <ProductHover img={c4} title="Kids Collection" desc="Choose your style" />
-            <ProductHover img={c5} title="Man Collection" desc="Choose your style" />
+            <ProductHover img={c4} title={content.productHover.kidsCollection} desc={content.productHover.chooseStyle} />
+            <ProductHover img={c5} title={content.productHover.menCollection} desc={content.productHover.chooseStyle} />
           </div>
         </div>
       </div>
@@ -173,14 +172,14 @@ function Home() {
                 onClick={() => setVisibleCount(prev => prev + 8)}
                 className="px-6 py-2 bg-orange-600 text-white rounded hover:bg-gray-800 transition"
               >
-                Show More
+                {content.home.showMoreButton}
               </button>
             </div>
           )}
         </>
       )}
 
-      <Offer />
+      
     </>
   );
 }

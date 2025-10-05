@@ -53,7 +53,46 @@ const en = {
     "passwordUppercase": "Password must contain at least one uppercase letter",
     "passwordNumber": "Password must contain at least one number",
     "confirmPasswordRequired": "Please confirm your password",
-    "passwordsNotMatch": "Passwords do not match"
+    "passwordsNotMatch": "Passwords do not match",
+  home: {
+    bannerMessage: "Free shipping on all Egypt order or order above 200 EGP",
+    kidsCollection: "Kids Collection",
+    manCollection: "Man Collection",
+    chooseStyle: "Choose your style",
+    showMoreButton: "Show More",
+    loading: "Loading...",
+    noProducts: "No products available",
+    banner:"DON'T MISS 70% OFF ALL SALE! NO CODE NEEDED!",
+    ShopNow:"Shop Now"
+  },
+
+  // 🔹 Buttons
+  buttons: {
+    addToCart: "Add to Cart",
+    addToWishlist: "Add to Wishlist",
+    removeFromWishlist: "Remove from Wishlist",
+  },
+
+  // 🔹 Wishlist
+  wishlist: {
+    title: "My Wishlist",
+    emptyMessage: "No items in wishlist",
+    addedToast: "Product added to wishlist",
+    removedToast: "Product removed from wishlist",
+  },
+    navbar: {
+    home: "Home",
+    products: "Products",
+    about: "About",
+    contact: "Contact",
+  },
+   productHover: {
+    kidsCollection: "Kids Collection",
+    menCollection: "Men Collection",
+    chooseStyle: "Choose your style",
+  },
+  TrendingCategories:"Trending Categories"
+
 };
 
 export default en;
