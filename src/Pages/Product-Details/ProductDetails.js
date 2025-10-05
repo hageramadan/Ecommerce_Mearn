@@ -9,9 +9,8 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [quantity] = useState(1);
 
-  // ✅ toast message state
+  //  toast message state
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   useEffect(() => {
@@ -29,7 +28,7 @@ function ProductDetails() {
       });
       console.log("Added to wishlist:", res.data);
 
-      // ✅ Show success toast
+      // Show success toast
       setToast({
         show: true,
         message: "Product added to wishlist!",
@@ -38,7 +37,7 @@ function ProductDetails() {
       setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     } catch (err) {
       console.error("Error adding to wishlist:", err);
-      // ❌ Show error toast
+      //  Show error toast
       setToast({
         show: true,
         message: "Failed to add to wishlist!",
@@ -53,7 +52,7 @@ function ProductDetails() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 relative">
-      {/* ✅ Toast Message */}
+      {/* Toast Message */}
       {toast.show && (
         <div
           className={`fixed top-6 right-6 px-4 py-3 rounded-lg shadow-md text-white z-50 transition-all duration-300 ${
