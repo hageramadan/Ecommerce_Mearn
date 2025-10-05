@@ -4,6 +4,7 @@ import axiosInstance from "../../AxiosInstance/axiosConfig";
 import Spinner from "../../Components/spinner";
 import { useDispatch } from "react-redux";
 import { addToWishlist } from "../../Redux/wishlist.slice";
+import { addwishlist } from "../../api/wishlist/api.wishlist";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -26,9 +27,10 @@ function ProductDetails() {
 
   const handleAddToWishlist = async () => {
     try {
-      const res = await axiosInstance.post("/wishlist", {
-        productId: product._id,
-      });
+      // const res = await axiosInstance.post("/wishlist", {
+      //   productId: product._id,
+      // });
+      const res = await addwishlist(product._id);
       console.log("Added to wishlist:", res.data);
       dispatch(addToWishlist(product._id));
 
