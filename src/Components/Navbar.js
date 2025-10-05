@@ -18,7 +18,7 @@ import { toggeleTheme } from "../Redux/theme.slice.js";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const lang = useSelector((state) => state.langReducer);
+  const lang = useSelector((state) => state.langReducer.lang);
   const theme = useSelector((state) => state.themeReducer);
   const dispatch = useDispatch();
 

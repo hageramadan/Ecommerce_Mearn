@@ -1,14 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
+import en from "../Local/en.js";
+import ar from "../Local/ar.js";
 
 
 
 export const langSlice = createSlice(
     {
         name : "lang",
-        initialState : "en",
+        initialState :
+        {
+            lang : "en",
+            content : en
+        },
         reducers : {
             toggeleLang : (state) => {
-                return (state === "en") ? state = "ar" : state = "en";
+                if (state.lang === "en") {
+                    state.lang = "ar";
+                    state.content = ar;
+                } else {
+                    state.lang = "en";
+                    state.content = en;
+                }
             }
         }
     }

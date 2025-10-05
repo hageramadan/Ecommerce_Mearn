@@ -8,13 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { sendLoginRequest } from '../../api/auth/api.auth.js';
 import Alert from '@mui/material/Alert';
 import Spinner from '../../Components/spinner.js';
-
-
-
-
+import { useSelector } from 'react-redux';
 
 const Login = () => {
-  const navigate = useNavigate()
+  const content = useSelector((state) => state.langReducer.content);
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -27,8 +26,8 @@ const Login = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
   const [errorMessage, seterrorMessage] = useState('');
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prevState => ({
@@ -36,7 +35,6 @@ const Login = () => {
       [name]: type === 'checkbox' ? checked : value
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prevErrors => ({
         ...prevErrors,
@@ -54,16 +52,16 @@ const Login = () => {
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = 'Email or username is required';
+      newErrors.email = content.emailRequired;
     } else if (formData.email.includes('@') && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = content.invalidEmail;
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = content.passwordRequired;
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = content.passwordMinLength;
     }
 
     setErrors(newErrors);
@@ -73,15 +71,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Login attempt:', formData);
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       await sendLoginRequest({ emailOrUsername: formData.email, password: formData.password });
-      setIsLoading(false)
+      setIsLoading(false);
       navigate("/");
     } catch (error) {
-      seterrorMessage(error.response.data.info)
+      seterrorMessage(error.response.data.info);
       console.log(error, `error message : ${error.response.data.info}`);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -104,16 +102,14 @@ const Login = () => {
 
   return (
     <>
-      {isLoading && (
-        <Spinner />
-      )}
+      {isLoading && <Spinner />}
 
       <AuthCard
-        title="Sign In"
-        subtitle="Access your account"
-        footerText="Don't have an account?"
+        title={content.signIn}
+        subtitle={content.accessYourAccount}
+        footerText={content.dontHaveAccount}
         footerLink="/register"
-        footerLinkText="Sign up now"
+        footerLinkText={content.signUpNow}
       >
         {errorMessage && (
           <Alert severity="error" style={{ marginBottom: '1rem' }}>
@@ -126,8 +122,8 @@ const Login = () => {
               id="email-address"
               name="email"
               type="email"
-              label="Email or Username"
-              placeholder="you@example.com"
+              label={content.emailOrUsername}
+              placeholder={content.emailPlaceholder}
               value={formData.email}
               onChange={handleChange}
               autoComplete="email"
@@ -138,8 +134,8 @@ const Login = () => {
               id="password"
               name="password"
               type="password"
-              label="Password"
-              placeholder="••••••••"
+              label={content.password}
+              placeholder={content.passwordPlaceholder}
               value={formData.password}
               onChange={handleChange}
               autoComplete="current-password"
@@ -149,10 +145,10 @@ const Login = () => {
             <Checkbox
               id="admin-login"
               name="isAdmin"
-              label="Log as admin"
+              label={content.logAsAdmin}
               checked={formData.isAdmin}
               onChange={handleChange}
-              description="Check this box to access admin features"
+              description={content.adminDescription}
             />
           </div>
 
@@ -163,7 +159,7 @@ const Login = () => {
               fullWidth
               leftIcon={lockIcon}
             >
-              Log in
+              {content.logIn}
             </Button>
           </div>
         </form>
