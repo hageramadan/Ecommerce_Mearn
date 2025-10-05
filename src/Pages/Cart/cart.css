@@ -124,10 +124,10 @@
   background: #dc3545;
   border: none;
   color: #fff;
-  font-size: 14px; /* تصغير النص */
+  font-size: 14px; /* أصغر شوي */
   cursor: pointer;
-  padding: 8px 12px; /* تصغير الحجم */
-  border-radius: 6px;
+  padding: 4px 8px; /* تقليل مساحة الزرار */
+  border-radius: 4px; /* حواف خفيفة */
   text-decoration: none;
   transition: background 0.3s ease;
 }
@@ -135,6 +135,72 @@
 .remove-btn:hover {
   background: #c82333;
 }
+
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.confirm-modal {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.confirm-modal p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.yes-btn {
+  background: #dc3545;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.no-btn {
+  background: #6c757d;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.yes-btn:hover {
+  background: #c82333;
+}
+
+.no-btn:hover {
+  background: #5a6268;
+}
+
+
+
 
 .cart-summary {
   margin-top: 25px;

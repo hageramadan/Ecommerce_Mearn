@@ -40,19 +40,20 @@ function AdminLayout() {
         <Outlet />
       </main>
 
-      <style jsx>{`
-        @keyframes slideIn {
-          from {
-            transform: translateX(-100%);
-          }
-          to {
-            transform: translateX(0);
-          }
-        }
-        .animate-slide-in {
-          animation: slideIn 0.3s ease-out;
-        }
-      `}</style>
+      <style>{`
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+`}</style>
+
     </div>
   );
 }
