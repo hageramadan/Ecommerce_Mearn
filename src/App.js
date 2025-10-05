@@ -17,7 +17,7 @@ import { ToastContainer } from "react-toastify";
 import Wishlist from "./Pages/Wishlist/WishlistRefactor.js";
 import Categories from "./Pages/Admin/Categories.js";
 import { useEffect } from "react";
-
+import 'react-toastify/dist/ReactToastify.css';
 function AppContent() {
   const theme = useSelector((state) => state.themeReducer);
 
@@ -65,7 +65,7 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+        <AppContent />
     </BrowserRouter>
   );
 }
