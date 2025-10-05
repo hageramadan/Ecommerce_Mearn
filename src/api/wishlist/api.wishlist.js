@@ -1,4 +1,3 @@
-import { data } from "react-router-dom";
 import axiosInstance from "../../AxiosInstance/axiosConfig.js";
 
 
@@ -14,10 +13,7 @@ export const addwishlist = async (productID) => {
     try {
         const response = await axiosInstance.post(`/wishlist`,
             {
-                data:
-                {
-                    productId: productID
-                }
+                productId: productID
             }
         );
     } catch (error) {
