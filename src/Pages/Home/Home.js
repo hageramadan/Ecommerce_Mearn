@@ -12,7 +12,7 @@ import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
 import Offer from '../../Components/Offer.js';
-import { getwishlist } from '../../api/wishlist/api.wishlist.js';
+import { addwishlist, getwishlist } from '../../api/wishlist/api.wishlist.js';
 import { addToWishlist } from '../../Redux/wishlist.slice.js';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -63,7 +63,7 @@ function Home() {
   useEffect(() => {
     getwishlisonLoading()
     console.log("function executed-------------------------------");
-  },[])
+  }, [])
   const message = (
     <span className="flex items-center gap-2">
       <BoltIcon className="w-4 h-4 " />
@@ -102,8 +102,15 @@ function Home() {
   };
 
   // دوال Cart/Wishlist/Details
-  const addToCart = (product) => console.log("Add to Cart", product);
-  // const addToWishlist = (product) => console.log("Add to Wishlist", product);
+  const addToCartCardHanle = (product) => {
+    console.log("Add to Cart", product)
+
+  };
+  const addTowishlistCardHanle = async (product) => {
+    console.log("Add to Wishlist", product)
+    await addwishlist(product._id)
+    dispatch(addToWishlist(product._id))
+  };
   const goToDetails = (id) => navigate(`/details/${id}`);
 
   return (
@@ -159,8 +166,8 @@ function Home() {
               <motion.div key={product._id || index} variants={cardVariants}>
                 <ProductCard
                   products={[product]}
-                  addToCart={addToCart}
-                  addToWishlist={addToWishlist}
+                  addToCart={addToCartCardHanle}
+                  addToWishlist={addTowishlistCardHanle}
                   goToDetails={goToDetails}
                 />
               </motion.div>
