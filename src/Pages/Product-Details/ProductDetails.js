@@ -5,13 +5,13 @@ import Spinner from "../../Components/spinner";
 import { useDispatch } from "react-redux";
 import { addToWishlist } from "../../Redux/wishlist.slice";
 
-
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [quantity] = useState(1);
   const dispatch = useDispatch();
 
   //  toast message state
@@ -54,6 +54,18 @@ function ProductDetails() {
 
   if (loading) return <Spinner />;
   if (!product) return <p>Product not found</p>;
+  const handleAddToCart = async () => {
+    try {
+      const res = await axiosInstance.post("/cart/add", {
+        productId: product._id,
+        quantity: quantity,
+      });
+      console.log("Added to cart:", res.data);
+      navigate("/cart");
+    } catch (err) {
+      console.error("Error adding to cart:", err.response?.data || err.message);
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-6 relative">
@@ -118,7 +130,7 @@ function ProductDetails() {
 
             {/* Buttons */}
             <button
-              onClick={() => navigate("/cart")}
+              onClick={handleAddToCart}
               className="w-full md:w-auto px-6 py-3 bg-[rgb(254,153,0)] text-white rounded-lg shadow hover:bg-[rgb(230,130,0)] transition"
             >
               Add to Cart
