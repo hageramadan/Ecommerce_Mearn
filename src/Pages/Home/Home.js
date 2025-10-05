@@ -1,5 +1,3 @@
-"use client"
-
 import c1 from '../../assets/c1.webp';
 import c2 from '../../assets/c2.webp';
 import c3 from '../../assets/c3.webp';
@@ -14,10 +12,21 @@ import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
 import Offer from '../../Components/Offer.js';
+import { useEffect, useState } from 'react';
+import axiosInstance from '../../AxiosInstance/axiosConfig.js';
 
-// Remove 'async' here ↓
 function Home() {
- 
+  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    axiosInstance
+      .get(`/products?limit=10000`)
+      .then((res) => {
+        setProducts(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   const message = (
     <span className="flex items-center gap-2">
@@ -44,6 +53,7 @@ function Home() {
   return (
     <>
       <HeroBanner img={glass} />
+
       <div className="overflow-hidden whitespace-nowrap shadow text-sm">
         <div className="flex animate-marquee">
           {repeatedMessages.map((msg, index) => (
@@ -53,8 +63,7 @@ function Home() {
       </div>
 
       <div className="mx-4 md:mx-40 mt-6">
-        <div className="grid grid-cols-1 md:grid-cols-2  gap-2">
-          {/* Slider */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div className="h-96 animate-slide-left">
             <Slider {...settings}>
               <div className="h-96">
@@ -68,24 +77,35 @@ function Home() {
               </div>
             </Slider>
           </div>
-          {/* Grid Images */}
-          <div className="flex  gap-1 h-96 ">
-            <ProductHover img={c4} title="Kids Collection" desc="Choose your style" animationClass="animate-slide-top" />
-            <ProductHover img={c5} title="Man Collection" desc="Choose your style" animationClass="animate-slide-right" />
+          <div className="flex gap-1 h-96">
+            <ProductHover
+              img={c4}
+              title="Kids Collection"
+              desc="Choose your style"
+              animationClass="animate-slide-top"
+            />
+            <ProductHover
+              img={c5}
+              title="Man Collection"
+              desc="Choose your style"
+              animationClass="animate-slide-right"
+            />
           </div>
         </div>
       </div>
-      <Category />
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-4 md:mx-40 my-12'>
-        <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style" />
-        <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style" />
-        <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style" />
-        <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style" />
-        <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style" />
-        <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style" />
-        <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style" />
-        <ProductCard img={c1} title="Man Collection" price="20$" description="Choose your style" />
+
+      <Category onSelectCategory={setSelectedCategory} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-4 md:mx-40 my-12">
+        <ProductCard
+          products={
+            selectedCategory
+              ? products.filter(p => p.category?.Name === selectedCategory)
+              : products
+          }
+        />
       </div>
+
       <Offer />
     </>
   );

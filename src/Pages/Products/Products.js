@@ -31,6 +31,7 @@ export default function Products() {
       .get("/category")
       .then((res) => {
         setCategories(res.data.data || []);
+        console.log("Categories API Response:", res.data.data);
       })
       .catch((err) => console.error(err));
   }, []);
