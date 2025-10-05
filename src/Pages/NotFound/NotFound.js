@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center p-6 bg-gray-50">
       {/* النصوص */}
-      <h1 className="text-6xl font-bold text-blue-700 mb-2">Oops!</h1>
+      <h1 className="text-6xl font-bold text-orange-700 mb-2">Oops!</h1>
       <h2 className="text-2xl font-semibold text-gray-800 mb-2">
         404 - Page Not Found
       </h2>
@@ -16,7 +16,7 @@ export default function NotFound() {
       {/* الزرار */}
       <Link
         to="/"
-        className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+        className="px-6 py-3 bg-orange-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
       >
         Go to Homepage
       </Link>
