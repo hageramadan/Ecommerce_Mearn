@@ -16,6 +16,7 @@ import ProtectedRoute from "./Components/Router/ProtectedRoute.js";
 import { ToastContainer } from "react-toastify";
 import Wishlist from "./Pages/Wishlist/WishlistRefactor.js";
 import Categories from "./Pages/Admin/Categories.js";
+import { useEffect } from "react";
 
 function AppContent() {
   const theme = useSelector((state) => state.themeReducer);
@@ -24,6 +25,15 @@ function AppContent() {
   const bgClass = theme === "dark" ? "bg-gray-900" : "bg-gray-50";
   const textClass = theme === "dark" ? "text-gray-100" : "text-gray-900";
 
+
+  const lang = useSelector((state) => state.langReducer);
+  const content = lang.content;
+
+  // Update direction and language globally
+  useEffect(() => {
+    document.documentElement.dir = content.langDirection;
+    document.documentElement.lang = content.langCode;
+  }, [content]);
   return (
     <div className={`min-h-screen ${bgClass} ${textClass} transition-colors duration-300`}>
       <Routes>

@@ -1,12 +1,60 @@
-const ar = 
-{
-    "lang" : "ar",
-    "langName" : "العربية",
-    "langCode" : "ar",
-    "langIcon" : "🇸🇦`",
-    "langDirection" : "rtl",
-    "signIn" : "تسجيل الدخول",
+const ar = {
+    "lang": "ar",
+    "langName": "العربية",
+    "langCode": "ar",
+    "langIcon": "🇸🇦",
+    "langDirection": "rtl",
+    
+    // Login Page
+    "signIn": "تسجيل الدخول",
+    "accessYourAccount": "الوصول إلى حسابك",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "signUpNow": "سجل الآن",
+    "emailOrUsername": "البريد الإلكتروني أو اسم المستخدم",
+    "emailPlaceholder": "you@example.com",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "••••••••",
+    "logAsAdmin": "تسجيل الدخول كمسؤول",
+    "adminDescription": "حدد هذا المربع للوصول إلى ميزات المسؤول",
+    "logIn": "تسجيل الدخول",
+    
+    // Register Page
+    "createAccount": "إنشاء حساب",
+    "joinUsToday": "انضم إلينا اليوم",
+    "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "أحمد",
+    "lastName": "اسم العائلة",
+    "lastNamePlaceholder": "محمد",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "اسم_المستخدم",
+    "dateOfBirth": "تاريخ الميلاد",
+    "confirmPassword": "تأكيد كلمة المرور",
+    
+    // Validation Messages
+    "emailRequired": "البريد الإلكتروني أو اسم المستخدم مطلوب",
+    "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "passwordMinLength": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+    "firstNameRequired": "الاسم الأول مطلوب",
+    "firstNameMinLength": "يجب أن يتكون الاسم الأول من حرفين على الأقل",
+    "lastNameRequired": "اسم العائلة مطلوب",
+    "lastNameMinLength": "يجب أن يتكون اسم العائلة من حرفين على الأقل",
+    "emailRequiredReg": "البريد الإلكتروني مطلوب",
+    "usernameRequired": "اسم المستخدم مطلوب",
+    "usernameMinLength": "يجب أن يتكون اسم المستخدم من 3 أحرف على الأقل",
+    "usernameInvalid": "يمكن أن يحتوي اسم المستخدم على أحرف وأرقام وشرطات سفلية فقط",
+    "dobRequired": "تاريخ الميلاد مطلوب",
+    "dobMinAge": "يجب أن يكون عمرك 13 عامًا على الأقل",
+    "dobInvalid": "يرجى إدخال تاريخ ميلاد صحيح",
+    "passwordMinLengthReg": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+    "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+    "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+    "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+    "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+    "passwordsNotMatch": "كلمات المرور غير متطابقة"
+};
 
-}
+export default ar;
 
-export default ar
