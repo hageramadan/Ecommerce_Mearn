@@ -2,12 +2,17 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosInstance/axiosConfig";
 import Spinner from "../../Components/spinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../../Redux/wishlist.slice";
+import ar from "../../Local/ar";
+import en from "../../Local/en";
 
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const lang = useSelector((state) => state.langReducer.lang);
+  const changeLang = lang === "ar" ? ar : en;
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -68,11 +73,18 @@ function ProductDetails() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 relative">
+    <div
+      className={`max-w-6xl mx-auto p-6 relative ${
+        lang === "ar" ? "text-right" : "text-left"
+      }`}
+      dir={changeLang.langDirection}
+    >
       {/* Toast Message */}
       {toast.show && (
         <div
-          className={`fixed top-6 right-6 px-4 py-3 rounded-lg shadow-md text-white z-50 transition-all duration-300 ${
+          className={`fixed top-6 ${
+            lang === "ar" ? "left-6" : "right-6"
+          } px-4 py-3 rounded-lg shadow-md text-white z-50 transition-all duration-300 ${
             toast.type === "success" ? "bg-green-500" : "bg-red-500"
           }`}
         >
@@ -80,10 +92,10 @@ function ProductDetails() {
         </div>
       )}
 
-      {/* Breadcrumb */}
+      {/*  Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4">
         <Link to="/" className="hover:underline">
-          Home
+          {changeLang.home}
         </Link>{" "}
         /{" "}
         <span className="hover:underline cursor-default">
@@ -91,7 +103,7 @@ function ProductDetails() {
         </span>
       </nav>
 
-      {/* Product Section */}
+      {/*  Product Section */}
       <div className="grid md:grid-cols-2 gap-10 mb-10">
         {/* Product Image */}
         <div className="flex justify-center">
@@ -109,21 +121,26 @@ function ProductDetails() {
         {/* Product Details */}
         <div>
           <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+
           <p className="text-2xl text-gray-600 font-semibold mb-4">
-            ${product.price}
+            {changeLang.price}: ${product.price}
           </p>
-          <p className="text-gray-600 mb-6">{product.description}</p>
+
+          <p className="text-gray-600 mb-6">
+            {changeLang.description}: {product.description}
+          </p>
 
           <div className="grid grid-cols-1 gap-4 mb-6">
+            {/* Size & Color */}
             <div className="grid grid-cols-2 gap-4">
               <select className="border rounded-lg px-4 py-3 w-full">
                 <option disabled selected>
-                  Size
+                  {changeLang.size}
                 </option>
               </select>
               <select className="border rounded-lg px-4 py-3 w-full">
                 <option disabled selected>
-                  Color
+                  {changeLang.color}
                 </option>
               </select>
             </div>
@@ -133,13 +150,14 @@ function ProductDetails() {
               onClick={handleAddToCart}
               className="w-full md:w-auto px-6 py-3 bg-[rgb(254,153,0)] text-white rounded-lg shadow hover:bg-[rgb(230,130,0)] transition"
             >
-              Add to Cart
+              {changeLang.addToCart}
             </button>
+
             <button
               onClick={handleAddToWishlist}
               className="w-full md:w-auto px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
             >
-              Add to Wishlist
+              {changeLang.addToWishlist}
             </button>
           </div>
         </div>
