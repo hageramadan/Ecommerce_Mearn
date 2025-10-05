@@ -2,6 +2,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosInstance/axiosConfig";
 import Spinner from "../../Components/spinner";
+import { useDispatch } from "react-redux";
+import { addToWishlist } from "../../Redux/wishlist.slice";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -9,6 +11,7 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   //  toast message state
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
@@ -27,6 +30,7 @@ function ProductDetails() {
         productId: product._id,
       });
       console.log("Added to wishlist:", res.data);
+      dispatch(addToWishlist(product._id));
 
       // Show success toast
       setToast({
