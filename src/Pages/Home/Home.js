@@ -18,6 +18,8 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../AxiosInstance/axiosConfig.js';
+import Spinner from '../../Components/spinner.js';
+import { motion } from 'framer-motion';
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -60,6 +62,7 @@ function Home() {
 
   useEffect(() => {
     getwishlisonLoading()
+    console.log("function executed-------------------------------");
   },[])
   const message = (
     <span className="flex items-center gap-2">
@@ -100,7 +103,7 @@ function Home() {
 
   // دوال Cart/Wishlist/Details
   const addToCart = (product) => console.log("Add to Cart", product);
-  const addToWishlist = (product) => console.log("Add to Wishlist", product);
+  // const addToWishlist = (product) => console.log("Add to Wishlist", product);
   const goToDetails = (id) => navigate(`/details/${id}`);
 
   return (
