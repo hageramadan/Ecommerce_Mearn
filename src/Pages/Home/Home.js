@@ -14,11 +14,29 @@ import HeroBanner from '../../Components/HeroBanner.js';
 import Category from '../../Components/Category.js';
 import ProductCard from '../../Components/Product-card.js';
 import Offer from '../../Components/Offer.js';
+import { getwishlist } from '../../api/wishlist/api.wishlist.js';
+import { addToWishlist } from '../../Redux/wishlist.slice.js';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 // Remove 'async' here ↓
 function Home() {
- 
+  const dispatch = useDispatch()
+  async function getwishlisonLoading() {
+    try {
+      const response = await getwishlist()
+      const items = response.data.items
+      for (let index = 0; index < items.length; index++) {
+        dispatch(addToWishlist(items[index]._id))
+      }
+    } catch (error) {
 
+    }
+  }
+
+  useEffect(() => {
+    getwishlisonLoading()
+  },[])
   const message = (
     <span className="flex items-center gap-2">
       <BoltIcon className="w-4 h-4 " />
