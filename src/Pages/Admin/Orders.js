@@ -35,7 +35,7 @@ function Orders() {
   const handleSubmitNewOrder = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post("http://localhost:3000/orders", {
+      await axiosInstance.post("/orders", {
         user: { fullName: formData.customerName },
         totalPrice: parseFloat(formData.total),
         status: "pending",
@@ -76,7 +76,7 @@ function Orders() {
 
   const handleDoneOrder = async () => {
     try {
-      await axiosInstance.put(`http://localhost:3000/orders/${currentOrder._id}`, { status: "completed" });
+      await axiosInstance.put(`/orders/${currentOrder._id}`, { status: "completed" });
       refetchOrders();
       setShowOrderModal(false);
     } catch (err) {
@@ -87,7 +87,7 @@ function Orders() {
 
   const handleRemoveOrder = async () => {
     try {
-      await axiosInstance.delete(`http://localhost:3000/orders/${currentOrder._id}`);
+      await axiosInstance.delete(`/orders/${currentOrder._id}`);
       refetchOrders();
       setShowOrderModal(false);
     } catch (err) {

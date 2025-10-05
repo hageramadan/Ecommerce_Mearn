@@ -40,19 +40,25 @@ function Cart() {
 
   // Update quantity of item
   const updateQuantity = async (productId, quantity) => {
-    try {
-      if (quantity <= 0) {
-        // Show confirm modal if user decreases below 1
-        setItemToRemove(productId);
-        setShowConfirm(true);
-        return;
-      }
-      await axiosInstance.put("/cart/update", { productId, quantity });
-      fetchCart();
-    } catch (err) {
-      console.error("❌ Error updating quantity:", err.response?.data || err.message);
+  try {
+    if (quantity <= 0) {
+      setItemToRemove(productId);
+      setShowConfirm(true);
+      return;
     }
-  };
+
+    await axiosInstance.put("/cart/update", { productId, quantity });
+
+    setCart(prevCart => ({
+      ...prevCart,
+      items: prevCart.items.map(item =>
+        item.productId._id === productId ? { ...item, quantity } : item
+      )
+    }));
+  } catch (err) {
+    console.error("❌ Error updating quantity:", err.response?.data || err.message);
+  }
+};
 
   useEffect(() => {
     fetchCart();

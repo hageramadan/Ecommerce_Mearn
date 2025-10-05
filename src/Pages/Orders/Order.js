@@ -27,7 +27,6 @@ function Order() {
     fetchCart();
   }, []);
 
-  // ⬅️ Place Order عبر PayPal فقط
   const handlePlaceOrder = async () => {
     try {
      const res = await axiosInstance.post("/payment/placeOrder", {
@@ -38,9 +37,9 @@ function Order() {
   paymentMethod: "paypal",
 });
 
-      const approveUrl = res.data.data; // الرابط اللي هيدخل عليه المستخدم للدفع
+      const approveUrl = res.data.data;
       if (approveUrl) {
-        window.location.href = approveUrl; // تحويل المستخدم مباشرة لدفع PayPal
+        window.location.href = approveUrl; 
       } else {
         setMessage("❌ Failed to get PayPal link.");
       }
