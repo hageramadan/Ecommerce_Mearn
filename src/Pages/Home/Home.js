@@ -102,9 +102,18 @@ function Home() {
   };
 
   // دوال Cart/Wishlist/Details
-  const addToCartCardHanle = (product) => {
+  const addToCartCardHanle = async (product) => {
     console.log("Add to Cart", product)
 
+    try {
+      const res = await axiosInstance.post("/cart/add", {
+        productId: product._id,
+        quantity: 1,
+      });
+      console.log("Added to cart:", res.data);
+    } catch (err) {
+      console.error("Error adding to cart:", err.response?.data || err.message);
+    }
   };
   const addTowishlistCardHanle = async (product) => {
     console.log("Add to Wishlist", product)
