@@ -4,12 +4,31 @@ import WishlistContainer from '../../Components/wishlit/WishlistContainer.js';
 import { getwishlist, removeFromwishlist } from '../../api/wishlist/api.wishlist.js';
 import Spinner from '../../Components/spinner.js';
 import EmptyWishlist from '../../Components/wishlit/emptyWishlist.js';
+import { useDispatch } from 'react-redux';
+import { removeFromWishlist } from '../../Redux/wishlist.slice.js';
 
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
+  const dispatch = useDispatch()
+
+  const handleRemoveItem = async (id) => {
+    console.log(id)
+    await removeFromwishlist(id)
+    dispatch(removeFromWishlist(id))
+    const updatedItems = wishlistItems.filter(item => item._id !== id);
+    setWishlistItems(updatedItems);
+
+    console.log(updatedItems) // This will show the correct filtered array
+
+    if (updatedItems.length === 0) {
+      setIsEmpty(true);
+    }
+  };
+
+
   useEffect(() => {
     // fetchWishlistItems();
     async function getwishlisonLoading() {
@@ -34,19 +53,7 @@ const Wishlist = () => {
     getwishlisonLoading()
   }, []);
 
-  const handleRemoveItem = async (id) => {
-    console.log(id)
-    await removeFromwishlist(id)
-
-    const updatedItems = wishlistItems.filter(item => item._id !== id);
-    setWishlistItems(updatedItems);
-
-    console.log(updatedItems) // This will show the correct filtered array
-
-    if (updatedItems.length === 0) {
-      setIsEmpty(true);
-    }
-  };
+  
 
   return (
     <>
