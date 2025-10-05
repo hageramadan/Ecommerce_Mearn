@@ -8,15 +8,13 @@ import { addToWishlist } from "../../Redux/wishlist.slice";
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const content = useSelector((state) => state.langReducer.content);
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity] = useState(1);
-  const dispatch = useDispatch();
-
-  //  toast message state
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   useEffect(() => {
@@ -35,27 +33,23 @@ function ProductDetails() {
       console.log("Added to wishlist:", res.data);
       dispatch(addToWishlist(product._id));
 
-      // Show success toast
       setToast({
         show: true,
-        message: "Product added to wishlist!",
+        message: content.productDetails.addedToWishlist,
         type: "success",
       });
-      setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     } catch (err) {
       console.error("Error adding to wishlist:", err);
-      //  Show error toast
       setToast({
         show: true,
-        message: "Failed to add to wishlist!",
+        message: content.productDetails.wishlistError,
         type: "error",
       });
+    } finally {
       setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     }
   };
 
-  if (loading) return <Spinner />;
-  if (!product) return <p>Product not found</p>;
   const handleAddToCart = async () => {
     try {
       const res = await axiosInstance.post("/cart/add", {
@@ -66,8 +60,17 @@ function ProductDetails() {
       navigate("/cart");
     } catch (err) {
       console.error("Error adding to cart:", err.response?.data || err.message);
+      setToast({
+        show: true,
+        message: content.productDetails.cartError,
+        type: "error",
+      });
+      setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     }
   };
+
+  if (loading) return <Spinner />;
+  if (!product) return <p>Product not found</p>;
 
   return (
     <div className="max-w-6xl mx-auto p-6 relative">
@@ -85,7 +88,7 @@ function ProductDetails() {
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4">
         <Link to="/" className="hover:underline">
-          {content.home}
+          {content.productDetails.home}
         </Link>{" "}
         /{" "}
         <span className="hover:underline cursor-default">
@@ -120,12 +123,12 @@ function ProductDetails() {
             <div className="grid grid-cols-2 gap-4">
               <select className="border rounded-lg px-4 py-3 w-full">
                 <option disabled selected>
-                  {content.size}
+                  {content.productDetails.size}
                 </option>
               </select>
               <select className="border rounded-lg px-4 py-3 w-full">
                 <option disabled selected>
-                  {content.color}
+                  {content.productDetails.color}
                 </option>
               </select>
             </div>
@@ -135,13 +138,13 @@ function ProductDetails() {
               onClick={handleAddToCart}
               className="w-full md:w-auto px-6 py-3 bg-[rgb(254,153,0)] text-white rounded-lg shadow hover:bg-[rgb(230,130,0)] transition"
             >
-              {content.addToCart}
+              {content.productDetails.addToCart}
             </button>
             <button
               onClick={handleAddToWishlist}
               className="w-full md:w-auto px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
             >
-              {content.addToWishlist}
+              {content.productDetails.addToWishlist}
             </button>
           </div>
         </div>
