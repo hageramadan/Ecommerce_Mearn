@@ -64,7 +64,7 @@ function MangeProducts() {
     data.append("category", formData.get("category"));
 
     if (imageFile && imageFile.name) {
-      data.append("images", formData.get("images"));
+      // data.append("images", formData.get("images"));
     }
 
     const config = {

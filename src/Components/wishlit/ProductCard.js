@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {TrashIcon} from '@heroicons/react/24/outline';
 const ProductCard = ({
     item,
     animationDelay,
@@ -16,12 +16,12 @@ const ProductCard = ({
 
     return (
         <div
-            className={`p-4 flex items-center justify-between gap-6 animate-fade-in ${outOfStock ? 'opacity-60' : ''}`}
+            className={`rounded-xl shadow-md hover:shadow-xl transition-shadow p-4 flex items-center justify-between gap-6 animate-fade-in ${outOfStock ? 'opacity-60' : ''}`}
             style={{ animationDelay: `${animationDelay}s` }}
         >
-            <div className="flex items-center gap-6">
-                <div className="relative w-24 h-24 overflow-hidden rounded-lg group">
-                    {console.log("arr of images",item)}
+            <div className="flex items-center gap-4 sm:gap-6">
+                {/* Image */}
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg group">
                     <img
                         alt={name}
                         className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
@@ -33,31 +33,35 @@ const ProductCard = ({
                         </div>
                     )}
                 </div>
-                <div className="flex flex-col gap-1">
-                    <h3 className="font-semibold text-xl text-slate-900">
+
+                {/* Details */}
+                <div className="flex flex-col gap-1 sm:gap-2">
+                    <h3 className="font-semibold text-lg sm:text-xl  truncate">
                         {name}
                     </h3>
-                    <p className="text-lg text-slate-500">
+                    <p className=" font-medium sm:text-lg">
                         ${price.toFixed(2)}
                     </p>
-                    {onSale && (
-                        <span className="text-sm font-medium bg-[#0b73da]/10 text-[#0b73da] px-2 py-0.5 rounded-md inline-block w-fit">
+                    {onSale && !outOfStock && (
+                        <span className="text-xs sm:text-sm font-semibold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full w-fit">
                             On Sale
                         </span>
                     )}
                     {outOfStock && (
-                        <span className="text-sm font-medium bg-red-100 text-red-700 px-2 py-0.5 rounded-md inline-block w-fit">
+                        <span className="text-xs sm:text-sm font-semibold bg-red-100 text-red-700 px-2 py-0.5 rounded-full w-fit">
                             Out of Stock
                         </span>
                     )}
                 </div>
             </div>
-            <div className="flex items-center gap-2">
+
+            {/* Remove Button */}
+            <div className="flex items-center">
                 <button
-                    className="p-2 rounded-full hover:bg-slate-200/60 transition-colors text-slate-500"
+                    className="p-2 rounded-full hover:bg-red-100  transition-colors text-red-600 shadow-sm hover:shadow-md"
                     onClick={() => onRemove(_id)}
                 >
-                    <span>🗑️</span>
+                    <TrashIcon className="w-6 h-6 " />
                 </button>
             </div>
         </div>

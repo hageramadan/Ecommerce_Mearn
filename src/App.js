@@ -17,14 +17,14 @@ import { ToastContainer } from "react-toastify";
 import Wishlist from "./Pages/Wishlist/WishlistRefactor.js";
 import Categories from "./Pages/Admin/Categories.js";
 import { useEffect } from "react";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import NotFound from "./Pages/NotFound/NotFound.js";
 function AppContent() {
   const theme = useSelector((state) => state.themeReducer);
 
   // Define classes based on theme
   const bgClass = theme === "dark" ? "bg-gray-900" : "bg-gray-50";
   const textClass = theme === "dark" ? "text-gray-100" : "text-gray-900";
-
 
   const lang = useSelector((state) => state.langReducer);
   const content = lang.content;
@@ -35,7 +35,9 @@ function AppContent() {
     document.documentElement.lang = content.langCode;
   }, [content]);
   return (
-    <div className={`min-h-screen ${bgClass} ${textClass} transition-colors duration-300`}>
+    <div
+      className={`min-h-screen ${bgClass} ${textClass} transition-colors duration-300`}
+    >
       <Routes>
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
@@ -54,8 +56,11 @@ function AppContent() {
           {/* <Route path="dashboard" element={<Dashboard />} /> */}
           <Route path="products" element={<MangeProducts />} />
           <Route path="categories" element={<Categories />} />
+          <Route path="dashboard" element={<AdminLayout />} />
           <Route path="orders" element={<Orders />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={2000} />
     </div>
@@ -65,7 +70,7 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-        <AppContent />
+      <AppContent />
     </BrowserRouter>
   );
 }

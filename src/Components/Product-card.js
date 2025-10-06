@@ -12,7 +12,7 @@ function ProductCard({ products, addToCart, addToWishlist, goToDetails, wishlist
             key={product._id}
             className="relative flex flex-col gap-1 p-1 cursor-pointer overflow-hidden shadow hover:shadow-sm transition group"
           >
-            {/* صورة المنتج */}
+            {/* Product Image */}
             <div
               className="overflow-hidden w-full h-48 relative"
               onClick={() => goToDetails(product._id)}
@@ -23,13 +23,13 @@ function ProductCard({ products, addToCart, addToWishlist, goToDetails, wishlist
                 alt={product.name}
               />
 
-              {/* أزرار الإضافة */}
+              {/* Action Buttons */}
               <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); // لمنع الانتقال عند الضغط على الأزرار
+                    e.stopPropagation(); // prevent navigation when clicking buttons
                     addToCart(product);
-                    toast.success("تمت إضافة المنتج إلى السلة!");
+                    toast.success("Product added to cart!");
                   }}
                   className="bg-white p-2 rounded-full shadow hover:bg-gray-100"
                 >
@@ -40,7 +40,7 @@ function ProductCard({ products, addToCart, addToWishlist, goToDetails, wishlist
                   onClick={(e) => {
                     e.stopPropagation();
                     addToWishlist(product);
-                    toast.success("تمت إضافة المنتج للمفضلة!");
+                    toast.success("Product added to wishlist!");
                   }}
                   className={`p-2 rounded-full shadow hover:bg-gray-100 ${
                     isWishlisted ? "bg-red-100" : "bg-white"
@@ -53,7 +53,7 @@ function ProductCard({ products, addToCart, addToWishlist, goToDetails, wishlist
               </div>
             </div>
 
-            {/* بيانات المنتج */}
+            {/* Product Info */}
             <div className="flex flex-col p-2 relative">
               <h5 className="font-semibold">{product.name}</h5>
               <p className="text-gray-700">{product.price ? product.price : "5$"} EGP</p>
