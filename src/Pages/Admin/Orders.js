@@ -7,7 +7,7 @@ import UpdateStatusModal from "../../Components/UpdateStatusModal";
 import AddOrderModal from "../../Components/AddOrderModal";
 
 function Orders() {
-  // State to store all orders
+  
   const [orders, setOrders] = useState([]);
 
   // State to track loading while fetching data
