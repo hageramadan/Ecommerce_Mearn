@@ -56,6 +56,7 @@ function AppContent() {
           {/* <Route path="dashboard" element={<Dashboard />} /> */}
           <Route path="products" element={<MangeProducts />} />
           <Route path="categories" element={<Categories />} />
+          <Route path="dashboard" element={<AdminLayout />} />
           <Route path="orders" element={<Orders />} />
         </Route>
 
