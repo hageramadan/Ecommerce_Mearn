@@ -42,7 +42,6 @@ function Home() {
       });
   }, []);
 
-  // إعادة ضبط عدد المنتجات عند تغيير الكاتيجوري
   useEffect(() => {
     setVisibleCount(8);
   }, [selectedCategory]);
@@ -61,7 +60,6 @@ function Home() {
 
   useEffect(() => {
     getwishlisonLoading()
-    console.log("function executed-------------------------------");
   }, [])
   const message = (
     <span className="flex items-center gap-2">
@@ -89,7 +87,6 @@ function Home() {
     ? products.filter(p => p.category?.Name === selectedCategory)
     : products;
 
-  // Framer Motion Variants
   const containerVariants = {
     hidden: {},
     visible: { transition: { staggerChildren: 0.15 } },
@@ -100,7 +97,6 @@ function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
-  // دوال Cart/Wishlist/Details
   const addToCartCardHanle = async (product) => {
     console.log("Add to Cart", product)
 

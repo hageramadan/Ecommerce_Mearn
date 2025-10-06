@@ -52,6 +52,7 @@ function AppContent() {
           </Route>
         </Route>
         {/* Routes للادمن */}
+        <Route element={<ProtectedRoute />}>
         <Route path="/admin" element={<AdminLayout />}>
           {/* <Route path="dashboard" element={<Dashboard />} /> */}
           <Route path="products" element={<MangeProducts />} />
@@ -59,7 +60,7 @@ function AppContent() {
           <Route path="dashboard" element={<AdminLayout />} />
           <Route path="orders" element={<Orders />} />
         </Route>
-
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={2000} />

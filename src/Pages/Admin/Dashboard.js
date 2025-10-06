@@ -19,7 +19,6 @@ const Dashboard = () => {
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [categoriesCount, setCategoriesCount] = useState(0);
 
-  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -33,7 +32,6 @@ const Dashboard = () => {
     fetchCategories();
   }, []);
 
-  // Generate chart data
   useEffect(() => {
     const generateData = () => {
       const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
@@ -61,9 +59,7 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8">
-      {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Products */}
         <div className={cardStyle}>
           <div className="flex items-center justify-between w-full mb-2">
             <span className="text-gray-400 uppercase text-sm">Products</span>
@@ -84,7 +80,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Categories */}
         <div className={cardStyle}>
           <div className="flex items-center justify-between w-full mb-2">
             <span className="text-gray-400 uppercase text-sm">Categories</span>
@@ -95,7 +90,6 @@ const Dashboard = () => {
           <span className="text-3xl font-bold mt-2">{categoriesCount}</span>
         </div>
 
-        {/* Orders */}
         <div className={cardStyle}>
           <div className="flex items-center justify-between w-full mb-2">
             <span className="text-gray-400 uppercase text-sm">Orders</span>
@@ -106,7 +100,6 @@ const Dashboard = () => {
           <span className="text-3xl font-bold mt-2">75</span>
         </div>
 
-        {/* Revenue */}
         <div className={cardStyle}>
           <div className="flex items-center justify-between w-full mb-2">
             <span className="text-gray-400 uppercase text-sm">Revenue</span>
@@ -137,7 +130,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Recent Orders */}
       <div className="bg-white p-6 rounded-xl shadow-lg">
         <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
         <table className="w-full text-left border-collapse">

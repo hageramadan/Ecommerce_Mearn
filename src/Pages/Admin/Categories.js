@@ -14,11 +14,9 @@ export default function Categories() {
   const [editId, setEditId] = useState(null);
   const [showInput, setShowInput] = useState(false);
 
-  // ✅ خلي الفانكشن فوق
   const fetchCategories = async () => {
     try {
       const data = await getCategories();
-      // لو الـ API بيرجع {data: []} هات الجزء الصح
       setCategories(data.data || data);
     } catch (error) {
       toast.error("Failed to fetch categories");
@@ -26,7 +24,7 @@ export default function Categories() {
   };
 
   useEffect(() => {
-    fetchCategories(); // ✅ هتشتغل أول ما الصفحة تفتح
+    fetchCategories(); 
   }, []);
 
   const handleSave = async () => {
@@ -46,7 +44,7 @@ export default function Categories() {
         setEditId(null);
       } else {
         const newCat = await addCategory(trimmed);
-        setCategories([...categories, newCat.data || newCat]); // ✅ دعم الاستجابة
+        setCategories([...categories, newCat.data || newCat]); 
         toast.success("Category added");
       }
       setCategoryName("");
@@ -125,7 +123,6 @@ export default function Categories() {
         </div>
       )}
 
-      {/* Table */}
       {categories.length > 0 ? (
         <table className="w-full border shadow rounded-lg overflow-hidden">
           <thead>

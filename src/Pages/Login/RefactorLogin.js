@@ -75,7 +75,13 @@ const Login = () => {
     try {
       await sendLoginRequest({ emailOrUsername: formData.email, password: formData.password });
       setIsLoading(false);
-      navigate("/");
+      if (adminCheck) {
+        navigate("/admin");
+      }
+      else
+      {
+        navigate("/");
+      }
     } catch (error) {
       seterrorMessage(error.response.data.info);
       console.log(error, `error message : ${error.response.data.info}`);

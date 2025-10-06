@@ -67,18 +67,10 @@ function MangeProducts() {
       // data.append("images", formData.get("images"));
     }
 
-    const config = {
-      headers: { "Content-Type": "multipart/form-data" },
-    };
-
     try {
       const res = editingProduct
-        ? await axiosInstance.put(
-            `/products/${editingProduct._id}`,
-            data,
-            config
-          )
-        : await axiosInstance.post("/products", data, config);
+        ? await axiosInstance.put(`/products/${editingProduct._id}`, data)
+        : await axiosInstance.post("/products", data);
 
       const newProduct = res.data.data;
       setProducts((prev) =>

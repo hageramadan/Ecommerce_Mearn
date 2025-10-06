@@ -24,19 +24,17 @@ export default function Products() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // الوصول الصحيح للwishlist من Redux
   const wishlist = useSelector((state) => state.wishlistReducer.items);
 
   const handleAddToWishlist = async (product) => {
     try {
-      await addwishlist(product._id); // إرسال للـ backend
-      dispatch(addToWishlist(product._id)); // تحديث الـ Redux state
+      await addwishlist(product._id); 
+      dispatch(addToWishlist(product._id)); 
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Fetch all products once
   useEffect(() => {
     setLoading(true);
     axiosInstance
@@ -48,7 +46,6 @@ export default function Products() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Fetch categories
   useEffect(() => {
     axiosInstance
       .get("/category")
@@ -58,7 +55,6 @@ export default function Products() {
 
   if (loading) return <div className="text-center py-10">Loading...</div>;
 
-  // Apply filters & search
   let filteredProducts = [...products];
 
   if (selectedCategory) {
@@ -79,7 +75,6 @@ export default function Products() {
     filteredProducts.sort((a, b) => b.price - a.price);
   }
 
-  // Pagination frontend
   const totalPages = Math.ceil(filteredProducts.length / limit);
   const startIndex = (page - 1) * limit;
   const paginatedProducts = filteredProducts.slice(startIndex, startIndex + limit);
@@ -88,7 +83,6 @@ export default function Products() {
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
         
-        {/* Sidebar Filters */}
         <div className="w-full md:w-1/4 bg-white shadow-md rounded-xl p-4 h-fit">
           <h2 className="text-lg font-bold mb-4 text-gray-700">Filters</h2>
 
@@ -134,7 +128,6 @@ export default function Products() {
           </div>
         </div>
 
-        {/* Products List */}
         <div className="flex-1">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
             <input
