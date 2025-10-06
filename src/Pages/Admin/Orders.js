@@ -20,7 +20,7 @@ function Orders() {
     setLoading(true);
     setError("");
     try {
-      const res = await axiosInstance.get("http://localhost:3000/orders/all");
+      const res = await axiosInstance.get("http://localhost:3000/orders/my-orders");
       setOrders(res.data.orders || []);
     } catch (err) {
       console.error("Fetch orders error:", err);
