@@ -35,7 +35,7 @@ function Orders() {
   const fetchOrders = async () => {
     try {
       setLoading(true); // start loading
-      const res = await axiosInstance.get("http://localhost:3000/orders/all");
+      const res = await axiosInstance.get("http://localhost:3000/orders/my-orders");
       setOrders(res.data.orders || []); // save orders in state
     } catch (err) {
       console.error("Error fetching orders", err.response?.data || err.message);
