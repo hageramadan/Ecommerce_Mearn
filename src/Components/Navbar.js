@@ -39,7 +39,6 @@ function Navbar() {
     console.log({ wishlistItems });
     setwishlistNumber(wishlistItems.length);
   }, [wishlistItems]);
-  // Define navbar classes based on theme
   const navbarBg = theme === "dark" ? "bg-gray-800" : "bg-white";
   const textColor = theme === "dark" ? "text-gray-100" : "text-gray-900";
   const hoverColor =
@@ -52,7 +51,6 @@ function Navbar() {
         className={`flex items-center relative shadow px-2 md:px-20 ${navbarBg} ${textColor}`}
       >
         <div className="flex w-full items-center justify-between">
-          {/* Logo */}
           <div className="py-2">
             <Link to="/">
               <img
@@ -63,7 +61,6 @@ function Navbar() {
             </Link>
           </div>
 
-          {/* Links (Desktop) */}
           <ul className={`gap-4 hidden md:flex labtop:hidden`}>
             <li>
               <Link to="/" className={hoverColor}>
@@ -78,11 +75,9 @@ function Navbar() {
           
           </ul>
 
-          {/* Icons */}
           <div className="flex cursor-pointer items-center gap-2">
             <SearchOverlay />
 
-            {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
               className="icon-link"
@@ -95,7 +90,6 @@ function Navbar() {
               )}
             </button>
 
-            {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
               className="icon-link relative"
@@ -136,7 +130,6 @@ function Navbar() {
               <UserIcon className={`w-6 h-6 ${textColor}`} />
             </Link>
 
-            {/* Mobile Menu Button */}
             <button
               className="block md:hidden icon-link"
               onClick={() => setIsOpen(!isOpen)}
@@ -151,7 +144,6 @@ function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Sidebar */}
       <div
         className={`fixed top-0 left-0 h-full w-64 laptop:block shadow-lg z-50 transform transition-transform duration-500 1160:flex ${
           isOpen ? "translate-x-0" : "-translate-x-full"
