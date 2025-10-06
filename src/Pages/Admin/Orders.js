@@ -20,9 +20,8 @@ function Orders() {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await axiosInstance.get("http://localhost:3000/orders/all", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axiosInstance.get("http://localhost:3000/orders/all"
+      );
       setOrders(res.data.orders || []);
     } catch (err) {
       console.error("Error fetching orders", err.response?.data || err.message);
@@ -71,12 +70,7 @@ function Orders() {
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Customer Orders</h1>
         <div className="flex justify-between items-center">
           <p className="text-gray-600">Manage and track customer orders</p>
-          <button
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
-            onClick={() => setShowAddModal(true)}
-          >
-            + Add Order
-          </button>
+          
         </div>
       </div>
 
