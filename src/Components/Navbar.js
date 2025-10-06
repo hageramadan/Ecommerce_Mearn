@@ -75,16 +75,7 @@ function Navbar() {
                 {content.navbar.products}
               </Link>
             </li>
-            <li>
-              <Link to="/about" className={hoverColor}>
-                {content.navbar.about}
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" className={hoverColor}>
-                {content.navbar.contact}
-              </Link>
-            </li>
+          
           </ul>
 
           {/* Icons */}
