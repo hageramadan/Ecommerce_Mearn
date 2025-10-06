@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../AxiosInstance/axiosConfig";
-import placeholderImage from "../Cart/placeholder.jpg"; // المسار الصحيح
+import OrderItem from "../../Components/OrderItem";
+import OrderSummary from "../../Components/OrderSummary";
+import PaymentSection from "../../Components/PaymentSection";
+import Spinner from "../../Components/spinner";
 
 function Order() {
   const [cart, setCart] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
-
-  const imageBaseUrl = "https://raw.githubusercontent.com/MMarzoo/my-image/main/images/"; // غيّره لو بتستخدم Vercel
+  const [processing, setProcessing] = useState(false);
 
   const fetchCart = async () => {
     try {
@@ -27,28 +29,65 @@ function Order() {
   }, []);
 
   const handlePlaceOrder = async () => {
-    try {
-     const res = await axiosInstance.post("/payment/placeOrder", {
-  items: cart.items.map((item) => ({
-    productId: item.productId._id,
-    quantity: item.quantity,
-  })),
-  paymentMethod: "paypal",
-});
+    if (processing) return;
+    
+    setProcessing(true);
+    setMessage("🔄 Processing your order...");
 
+    try {
+      // 1. أولاً: نتأكد من البيانات قبل الإرسال
+      if (!cart.items || cart.items.length === 0) {
+        setMessage("❌ Your cart is empty");
+        setProcessing(false);
+        return;
+      }
+
+      // 2. نجهز البيانات بشكل صحيح
+      const orderData = {
+        items: cart.items.map((item) => ({
+          productId: item.productId._id,
+          quantity: item.quantity,
+        })),
+        paymentMethod: "paypal",
+        totalAmount: cart.items.reduce((acc, item) => acc + item.productId.price * item.quantity, 0)
+      };
+
+      console.log("📦 Sending order data:", orderData);
+
+      // 3. نرسل الطلب
+      const res = await axiosInstance.post("/payment/placeOrder", orderData);
+
+      console.log("✅ Order response:", res.data);
+
+      // 4. نتأكد من وجود الرابط
       const approveUrl = res.data.data;
       if (approveUrl) {
-        window.location.href = approveUrl; 
+        setMessage("✅ Redirecting to PayPal...");
+        setTimeout(() => {
+          window.location.href = approveUrl;
+        }, 1000);
       } else {
-        setMessage("❌ Failed to get PayPal link.");
+        setMessage("❌ Failed to get PayPal link. Please try again.");
       }
     } catch (err) {
-      console.error("❌ Error placing order:", err);
-      setMessage("❌ Failed to place order.");
+      console.error("❌ Full error details:", err);
+      
+      // 5. نظهر الرسالة المناسبة حسب نوع الخطأ
+      if (err.response?.status === 400) {
+        setMessage("❌ Invalid order data. Please check your cart items.");
+      } else if (err.response?.status === 401) {
+        setMessage("❌ Please login again.");
+      } else if (err.response?.status === 500) {
+        setMessage("❌ Server error. Please try again later.");
+      } else {
+        setMessage("❌ Failed to place order. Please try again.");
+      }
+    } finally {
+      setProcessing(false);
     }
   };
 
-  if (loading) return <p>Loading order...</p>;
+  if (loading) return <Spinner />;
   if (!cart.items || cart.items.length === 0) return <p>No items in cart 🛒</p>;
 
   const subtotal = cart.items.reduce(
@@ -64,80 +103,27 @@ function Order() {
     <div className="max-w-md mx-auto mt-10 bg-white rounded-2xl shadow-lg p-6">
       <h2 className="text-2xl font-bold mb-6 text-center">Order Summary</h2>
 
-      {/* Items */}
+      {/* Items List */}
       <div className="space-y-3">
-        {cart.items.map((item) => {
-          const imageUrl = item.productId.images?.[0]
-            ? `${imageBaseUrl}${item.productId.images[0]}`
-            : placeholderImage;
-
-          return (
-            <div
-              key={item._id}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-            >
-              <img
-                src={imageUrl}
-                alt={item.productId.name || "Product Image"}
-                className="w-24 h-24 rounded-lg object-cover border-2 border-gray-200 mr-3"
-                onError={(e) => {
-                  e.target.src = placeholderImage;
-                  e.target.alt = "No Image Available";
-                }}
-              />
-              <div className="flex-1">
-                <p className="font-semibold text-base">{item.productId.name}</p>
-                <p className="text-gray-500 text-sm">Qty: {item.quantity}</p>
-              </div>
-              <p className="font-semibold text-base">
-                ${(item.productId.price * item.quantity).toFixed(2)}
-              </p>
-            </div>
-          );
-        })}
+        {cart.items.map((item) => (
+          <OrderItem key={item._id} item={item} />
+        ))}
       </div>
 
-      {/* Totals */}
-      <div className="border-t my-5"></div>
-      <div className="space-y-2 text-gray-700">
-        <div className="flex justify-between text-sm">
-          <span>Subtotal</span>
-          <span>${subtotal.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span>Shipping</span>
-          <span>${shipping.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span>Tax</span>
-          <span>${tax.toFixed(2)}</span>
-        </div>
-        <div className="border-t my-3"></div>
-        <div className="flex justify-between font-bold text-lg">
-          <span>Total</span>
-          <span>${total.toFixed(2)}</span>
-        </div>
-      </div>
+      {/* Order Summary */}
+      <OrderSummary 
+        subtotal={subtotal}
+        shipping={shipping}
+        tax={tax}
+        total={total}
+      />
 
-      {/* Payment Method */}
-      <div className="mt-6 text-center">
-        <h4 className="font-semibold mb-3">Payment Method: PayPal 💳</h4>
-      </div>
-
-      {/* Place Order */}
-      <button
-        onClick={handlePlaceOrder}
-        className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-      >
-        Pay with PayPal
-      </button>
-
-      {/* Message */}
-      {message && (
-        <div className="mt-4 p-3 rounded-lg bg-blue-50 text-blue-700 text-sm text-center">
-          {message}
-        </div>
-      )}
+      {/* Payment Section */}
+      <PaymentSection 
+        message={message}
+        onPlaceOrder={handlePlaceOrder}
+        processing={processing}
+      />
     </div>
   );
 }
