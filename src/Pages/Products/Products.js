@@ -28,8 +28,8 @@ export default function Products() {
 
   const handleAddToWishlist = async (product) => {
     try {
-      await addwishlist(product._id); 
-      dispatch(addToWishlist(product._id)); 
+      await addwishlist(product._id);
+      dispatch(addToWishlist(product._id));
     } catch (err) {
       console.error(err);
     }
@@ -58,9 +58,7 @@ export default function Products() {
   let filteredProducts = [...products];
 
   if (selectedCategory) {
-    filteredProducts = filteredProducts.filter(
-      (p) => p.category?._id === selectedCategory
-    );
+    filteredProducts = filteredProducts.filter((p) => p.category?._id === selectedCategory);
   }
 
   if (searchTerm) {
@@ -82,10 +80,11 @@ export default function Products() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
-        
+        {/* Filters */}
         <div className="w-full md:w-1/4 bg-white shadow-md rounded-xl p-4 h-fit">
           <h2 className="text-lg font-bold mb-4 text-gray-700">Filters</h2>
 
+          {/* Categories */}
           <div className="mb-4">
             <label className="block text-sm text-gray-600 mb-2">Category</label>
             <ul className="space-y-2">
@@ -114,6 +113,7 @@ export default function Products() {
             </ul>
           </div>
 
+          {/* Price Sorting */}
           <div>
             <label className="block text-sm text-gray-600 mb-2">Sort by Price</label>
             <select
@@ -128,7 +128,9 @@ export default function Products() {
           </div>
         </div>
 
+        {/* Products */}
         <div className="flex-1">
+          {/* Search & Grid buttons */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
             <input
               type="text"
@@ -156,10 +158,11 @@ export default function Products() {
             </div>
           </div>
 
+          {/* Product Grid */}
           {paginatedProducts.length === 0 ? (
             <div className="text-center text-gray-500 py-12">No products found.</div>
           ) : (
-            <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-${columns} gap-6`}>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 ${columns === 3 ? "md:grid-cols-3" : "md:grid-cols-2"} gap-6`}>
               <ProductCard
                 products={paginatedProducts}
                 addToCart={() => {}}
@@ -170,6 +173,7 @@ export default function Products() {
             </div>
           )}
 
+          {/* Pagination */}
           <div className="flex justify-center mt-8">
             <Stack spacing={2}>
               <Pagination
