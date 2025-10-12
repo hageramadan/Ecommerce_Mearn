@@ -94,4 +94,3 @@ This frontend expects a RESTful backend exposing endpoints for auth, products, c
 ## Scripts
 - npm start: start development server
 - npm run build: build production bundle
-- npm test: run tests (CRA default)
