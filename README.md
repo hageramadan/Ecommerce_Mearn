@@ -1,70 +1,97 @@
-# Getting Started with Create React App
+# E-commerce Frontend (React)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based frontend for an e-commerce platform. This repository contains only the frontend application and integrates with a separate backend API.
 
-## Available Scripts
+Note: This project is the frontend for another backend project. The API base URL is configured in src/AxiosInstance/axiosConfig.js.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+User-facing
+- Home with hero banner, carousel, and featured categories
+- Product listing with search, category filter, and price sorting
+- Product details page
+- Wishlist (add/remove)
+- Cart (add/update/remove)
+- Checkout flow that redirects to PayPal
+- Authentication (login/register)
+- Dark/Light theme toggle
+- English/Arabic localization
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Admin
+- Products management (list, add, edit, delete)
+- Categories management (list, add, edit, delete)
+- Orders management (list, view details, update status)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
+- React (Create React App)
+- React Router
+- Redux Toolkit (state), React-Redux
+- Axios (API client)
+- Tailwind CSS
+- Material UI (selected components)
+- React Toastify (notifications)
+- Framer Motion (animations)
+- React Slick (carousel)
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1) Install dependencies
 
-### `npm run build`
+```
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2) Run in development
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3) Build for production
 
-### `npm run eject`
+```
+npm run build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Configuration
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- API base URL: src/AxiosInstance/axiosConfig.js (default: http://3.84.61.66:4000)
+- Auth token is stored in localStorage under the key authToken after successful login.
+- Protected routes require authToken in localStorage.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+If you need to point to a different backend, update the baseURL value in src/AxiosInstance/axiosConfig.js.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Routes
 
-## Learn More
+Public
+- / (Home)
+- /products
+- /details/:id
+- /login
+- /register
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Protected (requires auth token)
+- /cart
+- /wishlist
+- /order
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Admin (protected)
+- /admin
+- /admin/products
+- /admin/categories
+- /admin/orders
+- /admin/dashboard
 
-### Code Splitting
+## Backend Requirements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+This frontend expects a RESTful backend exposing endpoints for auth, products, categories, wishlist, cart, orders, and payments (PayPal redirect). Ensure the backend project is running and accessible at the configured base URL before using this app.
 
-### Analyzing the Bundle Size
+## Notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- This repository only contains the frontend. Integrate with your backend by adjusting the base URL.
+- Role enforcement for admin routes is assumed to be handled by the backend. The frontend currently guards routes by token presence.
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Scripts
+- npm start: start development server
+- npm run build: build production bundle
+- npm test: run tests (CRA default)
